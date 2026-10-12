@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PhishGuard — Secure Access</title>
+  <link rel="stylesheet" href="theme.css">
+  <style>
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}.auth-page{min-height:100vh;display:grid;grid-template-columns:1.08fr .92fr}.intro{position:relative;overflow:hidden;padding:clamp(45px,7vw,100px);display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid var(--line);background:radial-gradient(circle at 75% 25%,rgba(177,18,27,.2),transparent 29%),var(--bg)}.intro:after{content:"PG";position:absolute;right:-40px;bottom:-105px;color:color-mix(in srgb,var(--text) 4%,transparent);font-size:330px;font-weight:900;letter-spacing:-.13em;z-index:0}.brand,.intro-copy,.trust{position:relative;z-index:1}.brand{font-size:13px;font-weight:900;letter-spacing:.16em}.brand b{color:#d01820;margin-right:9px}.intro-copy{max-width:650px}.eyebrow{color:var(--muted);font-size:10px;font-weight:900;letter-spacing:.2em}.eyebrow i{display:inline-block;width:8px;height:8px;margin-right:9px;border-radius:50%;background:#c5161d;box-shadow:0 0 0 5px rgba(197,22,29,.14)}.intro h1{margin:25px 0;font-size:clamp(48px,6.2vw,92px);line-height:.88;letter-spacing:-.065em}.intro h1 em{color:#d01820;font-style:normal}.intro-copy p{max-width:560px;color:var(--muted);font-size:16px;line-height:1.75}.trust{display:flex;gap:28px;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.12em}.panel{position:relative;padding:45px clamp(24px,6vw,85px);display:grid;place-items:center;background:var(--surface)}.theme{position:absolute;right:28px;top:26px;width:39px;height:39px;border:1px solid var(--line);border-radius:50%;background:var(--surface2);color:var(--text);cursor:pointer}.card{width:min(440px,100%);background:transparent!important;border:0!important;box-shadow:none!important}.mark{width:46px;height:46px;display:grid;place-items:center;margin-bottom:22px;border:1px solid var(--line);color:#d01820;font-size:22px}.card>span{color:var(--muted);font-size:10px;font-weight:900;letter-spacing:.2em}.card h2{margin:12px 0 8px;font-size:38px;letter-spacing:-.05em}.sub{margin:0 0 28px;color:var(--muted);font-size:13px;line-height:1.65}.tabs{display:flex;margin-bottom:22px;padding:4px;background:var(--surface2);border:1px solid var(--line);border-radius:6px}.tab{flex:1;padding:10px;border:0;border-radius:4px;background:transparent;color:var(--muted);font-size:12px;font-weight:900;cursor:pointer}.tab.active{background:#b1121b;color:#fff8eb}form{display:grid;gap:15px}label{display:grid;gap:7px;color:var(--text);font-size:11px;font-weight:800;letter-spacing:.03em}input{width:100%;padding:13px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--text);outline:0}input:focus{border-color:#c5161d;box-shadow:0 0 0 3px rgba(177,18,27,.16)}.password-field{position:relative}.password-field input{padding-right:72px}.password-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);padding:4px 3px 4px 10px;border:0;border-left:1px solid var(--line);background:transparent;color:var(--muted);font-size:10px;font-weight:900;cursor:pointer}.password-toggle:hover{color:#d01820}.submit{width:100%;margin-top:5px;padding:13px;border:0;border-radius:5px;background:#b1121b;color:#fff8eb;font-weight:900;cursor:pointer}.submit:hover{background:#d01820}.message{min-height:18px;color:#d01820;font-size:12px;line-height:1.5;text-align:center}.note{margin:16px 0 0;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:10px;line-height:1.55;text-align:center}.hidden{display:none!important}@media(max-width:850px){.auth-page{grid-template-columns:1fr}.intro{min-height:360px;padding:45px 28px;border-right:0;border-bottom:1px solid var(--line)}.intro h1{font-size:54px}.trust{flex-wrap:wrap}.panel{padding:70px 24px}.intro:after{font-size:240px}}
+  </style>
+</head>
+<body>
+  <main class="auth-page">
+    <section class="intro">
+      <div class="brand"><b>◆</b> PHISHGUARD</div>
+      <div class="intro-copy">
+        <div class="eyebrow"><i></i> SECURE BROWSER ACCESS</div>
+        <h1>Browse with<br><em>confidence.</em></h1>
+        <p>Sign in to activate automatic risk assessments and your private on-device dashboard. Sign in again after restarting your browser.</p>
+      </div>
+      <div class="trust"><span>RULE-BASED</span><span>LOCAL LOGS</span><span>REAL-TIME</span></div>
+    </section>
+
+    <section class="panel">
+      <button class="theme" id="theme-toggle" aria-label="Toggle light or dark mode">☾</button>
+      <div class="card">
+        <div class="mark">◆</div>
+        <span>SECURE ACCESS</span>
+        <h2 id="form-title">Welcome back</h2>
+        <p class="sub" id="form-subtitle">Log in to activate PhishGuard on this browser.</p>
+
+        <div class="tabs">
+          <button class="tab active" data-mode="login" type="button">Log In</button>
+          <button class="tab" data-mode="signup" type="button">Sign Up</button>
+        </div>
+
+        <form id="account-form">
+          <div id="name-field" class="hidden">
+            <label for="name">Full Name
+              <input id="name" maxlength="100" autocomplete="name" placeholder="Your full name">
+            </label>
+          </div>
+
+          <label for="email">Email Address
+            <input id="email" type="email" autocomplete="email" placeholder="name@example.com" required>
+          </label>
+
+          <label for="password">Password
+            <div class="password-field">
+              <input id="password" type="password" minlength="1" maxlength="128" autocomplete="current-password" placeholder="12+ characters for new accounts" required>
+              <button class="password-toggle" id="password-toggle" type="button" aria-label="Show password" aria-pressed="false">Show</button>
+            </div>
+          </label>
+
+          <button class="submit" id="submit-button" type="submit">Log In</button>
+        </form>
+
+        <button id="forgot" type="button" class="tab">Forgot password? Enter your email above</button><div class="message" id="message" role="status" aria-live="polite"></div>
+        <p class="note">Account authentication uses the PhishGuard backend. Your browsing logs and risk history remain on this device.</p>
+      </div>
+    </section>
+  </main>
+  <script src="auth.js"></script>
+</body>
+</html>

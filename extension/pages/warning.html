@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PhishGuard - Warning</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root { --warning-bg:#f4f7fb; --warning-card:#fff; --warning-inner:#eef2f7; --warning-text:#202532; }
+    :root[data-theme="dark"] { --warning-bg:#0f1117; --warning-card:#1a1d2e; --warning-inner:#0f1117; --warning-text:#e0e0e0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--warning-bg);
+      color: var(--warning-text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      border-radius: 12px;
+      max-width: 580px;
+      width: 92%;
+      padding: 38px 34px;
+      text-align: center;
+    }
+
+    /* MEDIUM style */
+    .container.medium {
+      background: var(--warning-card);
+      border: 2px solid #ffc107;
+    }
+
+    /* HIGH style */
+    .container.high {
+      background: #1a0a0a;
+      border: 2px solid #dc3545;
+    }
+
+    .icon { font-size: 60px; margin-bottom: 14px; }
+
+    h1 { font-size: 24px; margin-bottom: 10px; }
+    .medium h1 { color: #ffc107; }
+    .high    h1 { color: #dc3545; }
+
+    .subtitle { font-size: 13px; color: #aaa; margin-bottom: 16px; line-height: 1.5; }
+
+    .score-badge {
+      display: inline-block;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 6px 22px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+    .medium .score-badge { background: #ffc107; color: #1a1000; }
+    .high   .score-badge { background: #dc3545; color: #fff; }
+
+    .url-box {
+      background: var(--warning-inner);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin: 0 0 14px;
+      font-size: 13px;
+      color: #aaa;
+      word-break: break-all;
+    }
+
+    .reasons-section {
+      text-align: left;
+      background: var(--warning-inner);
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin-bottom: 14px;
+    }
+
+    .reasons-title {
+      font-size: 12px;
+      font-weight: bold;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .reason-item {
+      font-size: 12px;
+      padding: 4px 0;
+      border-bottom: 1px solid #1a1d2e;
+    }
+    .reason-item:last-child { border-bottom: none; }
+    .medium .reason-item { color: #ffe082; }
+    .high   .reason-item { color: #f08080; }
+
+    /* BLOCKED banner — only shown for HIGH */
+    .blocked-banner {
+      display: none;
+      background: #dc3545;
+      color: #fff;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      letter-spacing: 0.5px;
+    }
+    .high .blocked-banner { display: block; }
+
+    .btn-row { display: flex; gap: 12px; margin-top: 4px; }
+
+    .btn {
+      flex: 1;
+      padding: 12px 0;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Leave button — shown for both */
+    .btn-leave { background: #dc3545; color: #fff; }
+    .btn-leave:hover { background: #b02030; }
+
+    /* Proceed button — shown for MEDIUM only, hidden for HIGH */
+    .btn-proceed {
+      background: #2a2d3e;
+      color: #aaa;
+      border: 1px solid #555;
+    }
+    .btn-proceed:hover { background: #33364a; }
+    .btn-proceed.hidden { display: none; }
+
+    .footer-note { font-size: 11px; color: #555; margin-top: 18px; }
+  </style>
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  <div class="container" id="container">
+
+    <div class="icon" id="icon"></div>
+    <h1 id="title"></h1>
+    <p class="subtitle" id="subtitle"></p>
+
+    <div class="score-badge" id="score-badge">Risk Score: --</div>
+    <div class="url-box" id="url-display">Loading...</div>
+
+    <div class="reasons-section">
+      <div class="reasons-title">Risk Factors Detected</div>
+      <div id="reasons-list">Loading...</div>
+    </div>
+
+    <!-- Only visible for HIGH risk -->
+    <div class="blocked-banner">
+      &#128683; ACCESS BLOCKED — High-risk assessment: no proceed option for this warning.
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-leave"    id="btn-leave">&#10006; Leave Page (Recommended)</button>
+      <button class="btn btn-proceed"  id="btn-proceed" hidden>Proceed Anyway</button>
+    </div>
+
+    <div class="footer-note">PhishGuard v4.1.0 &mdash; Chrome, Edge &amp; Firefox</div>
+  </div>
+
+  <script src="warning.js"></script>
+</body>
+</html>
