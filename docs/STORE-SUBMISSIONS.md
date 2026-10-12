@@ -21,6 +21,10 @@ Status: **package and reviewer-content preparation only**. **Not uploaded, signe
 
 **Name:** PhishGuard
 
+**Publisher display name (requested):** Norah Jasmine
+
+**Publisher verification:** Pending signup or confirmation by the named account owner in Microsoft Partner Center and Mozilla Add-on Developer Hub. This label does not constitute a verified account, claim of legal ownership or completed store submission.
+
 **Short description:** Rule-based webpage risk assessments, explainable warnings and private local reports.
 
 **Full description:**
@@ -66,7 +70,7 @@ Features:
 
 **Already in repository:** provisional shield/logo and 16/32/48/128-pixel browser PNG icons; captured prototype screenshots in `docs/assets/` (warning-medium/high, dashboard, login, report, account).
 
-**Still required:** approved publisher name, official logo rights, real support/deletion contact, updated store privacy statements, **actual desktop Edge and Firefox smoke tests**, authentic final-build screenshots at the store's permitted sizes, production email confirmation/recovery testing, and source-review metadata. The provisional mark is usable only with team approval. GMI is an academic attribution, not a claim of endorsement.
+**Still required:** verification of the requested publisher identity (Norah Jasmine), official logo rights, real support/deletion contact, updated store privacy statements, **actual desktop Edge and Firefox smoke tests**, authentic final-build screenshots at the store's permitted sizes, production email confirmation/recovery testing, and source-review metadata. The provisional mark is usable only with team approval. GMI is an academic attribution, not a claim of endorsement.
 
 For Edge, the listing requires an extension icon (minimum 128 x 128, recommended 300 x 300), description and privacy information. The store accepts up to six optional screenshots at 640 x 480 or 1280 x 800. Microsoft also supports 440 x 280 and 1400 x 560 promotional images. Use screenshots from the **actual current extension**, never a fabricated UI. See https://learn.microsoft.com/en-us/microsoft-edge/extensions/publish/publish-extension .
 
@@ -74,7 +78,7 @@ For Firefox, AMO accepts ZIP/XPI/CRX uploads with a 200 MB cap, and may require 
 
 ## No duplicate submission policy
 
-1. Sign in to the **existing** Edge Partner Center and Firefox AMO publisher accounts (create one only if none exists).
+1. Norah Jasmine should sign in to the **existing** Edge Partner Center and Firefox AMO publisher accounts, if she controls them; create a publisher account in that name only if needed and authorized.
 2. Before selecting "New extension", check each publisher's dashboard and public catalog for an existing PhishGuard listing under the publisher's identity. If one exists, edit/update it.
 3. Complete ownership and policy declarations truthfully, upload the browser-specific reviewed ZIP, supply required assets and reviewer notes.
 4. Let Edge/Firefox review and sign the extension. **Do not claim publication until the actual approved store URL exists.**
