@@ -20,12 +20,14 @@ jobs:
       - run: npm ci --include=dev
       - run: npm run format
       - run: npm install --package-lock-only --ignore-scripts --no-audit
-      - name: Commit formatting and lockfile if changed
+      - name: Publish formatted code to clean review branch
         run: |
+          git reset --soft 6374397b9b6e502c12c0d7dddf187a02832e071a
+          rm -f .github/workflows/format-feature.yml
+          git add -A
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .
           if ! git diff --cached --quiet; then
             git commit -m "Normalize formatting and dependency lockfile"
-            git push origin HEAD:feature/free-fyp-release-prep-20261012
+            git push origin HEAD:feature/fyp-release-ready-20261012
           fi
