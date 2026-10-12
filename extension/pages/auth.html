@@ -289,8 +289,8 @@
           <div class="eyebrow"><i></i> SECURE BROWSER ACCESS</div>
           <h1>Browse with<br /><em>confidence.</em></h1>
           <p>
-            Sign in to activate automatic risk assessments and your private on-device dashboard.
-            Sign in again after restarting your browser.
+            Risk assessments run locally even without an account. Sign in for account-specific
+            history and browser registration; sign in again after restarting your browser.
           </p>
         </div>
         <div class="trust">
@@ -304,7 +304,9 @@
           <div class="mark">◆</div>
           <span>SECURE ACCESS</span>
           <h2 id="form-title">Welcome back</h2>
-          <p class="sub" id="form-subtitle">Log in to activate PhishGuard on this browser.</p>
+          <p class="sub" id="form-subtitle">
+            Optional account sign-in. Local protection works without login.
+          </p>
 
           <div class="tabs">
             <button class="tab active" data-mode="login" type="button">Log In</button>
@@ -357,6 +359,9 @@
             <button class="submit" id="submit-button" type="submit">Log In</button>
           </form>
 
+          <button class="tab" id="guest-mode" type="button">
+            Continue with local protection (no account)
+          </button>
           <button id="forgot" type="button" class="tab">
             Forgot password? Enter your email above
           </button>

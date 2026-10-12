@@ -37,6 +37,21 @@ try {
   await worker.evaluate(mockSource);
   const auth = await context.newPage();
   await auth.goto(base + "auth.html");
+  await context.route("http://127.0.0.1:4173/guest-fixture", (route) =>
+    route.fulfill({
+      contentType: "text/html",
+      body: "<!doctype html><title>Guest fixture</title>",
+    }),
+  );
+  const guestTab = await context.newPage();
+  await guestTab.goto("http://127.0.0.1:4173/guest-fixture").catch(() => {});
+  await guestTab.waitForURL("**/warning.html?id=**");
+  const guestState = await auth.evaluate(() => chrome.runtime.sendMessage({ type: "GET_STATE" }));
+  assert.equal(guestState.guestMode, true);
+  assert.equal(guestState.user, null);
+  assert.ok(guestState.log.some((row) => row.url.includes("guest-fixture")));
+  await guestTab.close();
+  record("guest risk scan, warning and local history work without logging in");
   await auth.locator('[data-mode="signup"]').click();
   await auth.locator("#name").fill("Alice");
   await auth.locator("#email").fill("alice@example.test");
@@ -69,6 +84,8 @@ try {
   }
   let state = await auth.evaluate(() => chrome.runtime.sendMessage({ type: "GET_STATE" }));
   assert.equal(state.user.name, "Alice");
+  assert.equal(state.log.length, 0);
+  record("guest history stays separate from the signed-in account");
   record("extension login and dashboard use real SDK with isolated mock service");
   const persisted = await auth.evaluate(() => chrome.storage.local.get(null));
   assert.ok(!JSON.stringify(persisted).includes("refresh-"));

@@ -45,6 +45,7 @@ $("account-form").addEventListener("submit", async (event) => {
     $("submit-button").disabled = false;
   }
 });
+$("guest-mode").addEventListener("click", () => (location.href = "dashboard.html"));
 $("forgot").addEventListener("click", async () => {
   $("forgot").disabled = true;
   try {

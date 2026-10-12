@@ -22,7 +22,7 @@ PhishGuard is a rule-based browser extension and companion website developed as 
 
 | Capability            | Behaviour                                                                                                                                       |
 | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| Account onboarding    | Signup, email-verification requirement, login, profile editing and website password recovery                                                    |
+| Account onboarding    | Optional signup, email-verification requirement, login, profile editing and website password recovery                                           |
 | Session handling      | Official Supabase SDK refresh; extension credentials in trusted browser-session storage; local cleanup even when logout cannot reach the server |
 | Automatic assessments | Page-load scan, relevant DOM-change reassessment and URL-change polling with bounded work                                                       |
 | Explainable rules     | Weighted indicators, documented thresholds and human-readable reasons                                                                           |
@@ -84,8 +84,10 @@ flowchart LR
 ```mermaid
 flowchart TD
   Load["Page loaded / relevant structure changed"] --> Session{"Signed in?"}
-  Session -- No --> Idle["Monitoring awaits login"]
-  Session -- Yes --> Validate["Validate browser sender and current tab"]
+  Session -- No --> Guest["Use separate local guest history"]
+  Session -- Yes --> Account["Use account-scoped local history"]
+  Guest --> Validate["Validate browser sender and current tab"]
+  Account --> Validate
   Validate --> Score["Apply weighted rules and cap score at 100"]
   Score --> Save["Store redacted assessment under this user"]
   Save --> Risk{"Risk level"}
@@ -137,7 +139,7 @@ npm test
 npm run serve
 ```
 
-Open **http://127.0.0.1:4173**. The website can be previewed without a real account; real signup/login requires a working Supabase configuration.
+Open **http://127.0.0.1:4173**. The website can be previewed without a real account, and the extension performs local guest-mode risk assessments without Supabase. Real signup/login still requires a working Supabase configuration.
 
 | Browser target                  | Development installation                                                                                         |
 | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
@@ -176,7 +178,7 @@ Apply/review [the SQL migration](database/001_accounts.sql), enable email confir
 
 Scores are capped at 100: **LOW 0–30 · MEDIUM 31–70 · HIGH 71–100**. Domain matching uses a proper boundary, so `evilgoogle.com` does not match `google.com`.
 
-These are **heuristics, not probabilities**. HTTPS phishing pages can score LOW, legitimate login pages can trigger keywords, and a known-domain discount does not prove safety. Dynamic work is limited to 100 assessments per document, with debounced mutation handling and URL polling. The synthetic evaluation contains intentional false positives and false negatives; it must not be reported as real-world accuracy.
+These are **heuristics, not probabilities**. HTTPS phishing pages can score LOW, legitimate login pages can trigger keywords, and a known-domain discount does not prove safety. Dynamic work is limited to 100 assessments per rolling ten-minute window, with debounced mutation handling and URL polling. The synthetic evaluation contains intentional false positives and false negatives; it must not be reported as real-world accuracy.
 
 ## Privacy and security
 
@@ -189,7 +191,7 @@ These are **heuristics, not probabilities**. HTTPS phishing pages can score LOW,
 - Logout clears local credentials even when remote cleanup fails; offline cleanup does not prove server-side session revocation.
 - Exported PDFs remain separate files until the user deletes them.
 
-The extension requests `storage`, `tabs` and HTTP/HTTPS site access. Executable dependencies are bundled locally; extension pages use a restrictive CSP and are not exposed as web-accessible account pages.
+The extension can scan in guest mode when authentication is unavailable. Guest history uses its own on-device owner key and is not silently merged into an account. The extension requests `storage`, `tabs` and HTTP/HTTPS site access. Executable dependencies are bundled locally; extension pages use a restrictive CSP and are not exposed as web-accessible account pages.
 
 [Security reporting](SECURITY.md) · [Product privacy disclosure](website/privacy.html) · [Release requirements](docs/RELEASE-READINESS.md)
 
@@ -219,7 +221,7 @@ Override the selected browser with `TEST_BROWSER_CHANNEL` when needed.
 | Package / repository | ZIP entries match generated sources; outputs, dependencies and private environment files stay out of Git                                    | Reproducible delivery                                        |
 | CI                   | Formatting, build, tests, Firefox validation, browser scenarios, demo checks and production dependency audit                                | Remote run status available in the repository Actions tab    |
 
-The GitHub workflow uses pinned action revisions, read-only job permissions and uploaded verification artifacts. Dependency updates are proposed through Dependabot. No live credentials are required by CI.
+The GitHub workflow uses pinned action revisions, read-only job permissions and CI logs (artifact uploads disabled while quota is exhausted). Dependency updates are proposed through Dependabot. No live credentials are required by CI.
 
 ## Repository layout
 
@@ -252,7 +254,7 @@ Import **this repository root** into Vercel using the **Other** framework preset
 
 A stable HTTPS Vercel URL is sufficient for an academic demonstration; a custom domain is optional. Store packages need separate browser review/signing. Do not describe a development ZIP as a store-approved release.
 
-Before public release: restore/configure the live Supabase project, verify email and deployed ownership policies, provide a real operator/privacy contact, test supported browsers/devices, complete a representative holdout evaluation, obtain approved institutional branding and finish store approvals. [Publishing and mobile feasibility →](docs/PUBLISHING.md)
+Before public release: restore/configure the live Supabase project, verify email and deployed ownership policies, provide a real operator/privacy contact, test supported browsers/devices, complete a representative holdout evaluation, obtain approved institutional branding and finish store approvals. [Free Vercel deployment handoff →](docs/DEPLOY-VERCEL-FREE.md) · [Branding handoff →](docs/BRANDING.md) · [Publishing and mobile feasibility →](docs/PUBLISHING.md)
 
 ## Documentation
 
