@@ -4,26 +4,15 @@
   "version": "4.1.0",
   "description": "Rule-based browser risk assessments, account-separated local activity, and monthly PDF reports.",
   "minimum_chrome_version": "120",
-  "permissions": [
-    "storage",
-    "tabs"
-  ],
-  "host_permissions": [
-    "http://*/*",
-    "https://*/*"
-  ],
+  "permissions": ["storage", "tabs"],
+  "host_permissions": ["http://*/*", "https://*/*"],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": [
-        "http://*/*",
-        "https://*/*"
-      ],
-      "js": [
-        "content.js"
-      ],
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"],
       "run_at": "document_idle"
     }
   ],

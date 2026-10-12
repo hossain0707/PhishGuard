@@ -1,0 +1,9 @@
+node_modules
+dist
+test-results
+website/script.js
+website/config.js
+website/downloads
+website/THIRD-PARTY-NOTICES.txt
+package-lock.json
+docs/assets/*.svg

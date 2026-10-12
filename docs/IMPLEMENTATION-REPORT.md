@@ -6,26 +6,26 @@ Layout update: there is one source repository, `PhishGuard`, with `extension/`, 
 
 ## Outcome
 
-The supplied prototype was updated with account-separated histories, official SDK session refresh, private browser-session token storage, profile editing, recovery completion, controlled warning exceptions, accurate current-tab results, dynamic reassessment, readable monthly PDFs and database ownership policies. Download archives are regenerated from one source build. The static website and optional Next.js portal now share the same implementation.
+The supplied prototype was updated with account-separated histories, official SDK session refresh, private browser-session token storage, profile editing, recovery completion, controlled warning exceptions, accurate current-tab results, dynamic reassessment, readable monthly PDFs and database ownership policies. Download archives are regenerated from one source build. The maintained deployment is the static website; the optional Next.js wrapper was retired during consolidation.
 
 Package source is in `extension/src`, `website/src` and `shared`. `extension/pages` supplies maintained HTML/CSS; both browser targets are generated under ignored `dist/` directories. Packages include dependency notices. A provisional SVG shield mark and store-size PNG icons are supplied; approved GMI and final project logos remain external assets.
 
 ## Observed checks
 
-| Check | Result | What it proves |
-|---|---|---|
-| Automated tests | 14 passed, no failures | Rules, redaction, retention, month selection, PDFs, session refresh/revocation, package matching and local SQL policy logic |
-| Repository-layout tests | 2 additional checks passed after reorganisation | One source layout and actual Git exclusion of generated files, dependencies and ZIP copies |
-| Browser scenarios | 22 passed | Actual extension and portal interactions in installed Microsoft Edge, using isolated mocked Supabase |
-| PostgreSQL/RLS | Included in automated tests | Two accounts cannot cross-access records; old permissive policies/grants are constrained; anonymous access is denied |
-| Firefox `web-ext lint` | 0 errors, 0 warnings | Generated package passes current automated validation; not a runtime/device/store approval |
-| Next.js 16.4.0 | Production build and TypeScript passed | Optional deployment wrapper compiles |
-| Local production server | Redirect, portal response, CSP/security headers and download passed | Built Next.js variant serves its portal correctly |
-| Production dependency audits | No reported vulnerabilities in both package roots | Current advisory checks passed; not a complete security audit |
-| PDF sample | 75 rows, 7 pages | All rows, repeated headers/page numbers, no text clipping; every page visually inspected |
-| Website mobile layout | 390px viewport passed | Responsive layout, not mobile extension compatibility |
-| Download archives | All copies/source entries matched | Users receive current compiled files rather than stale packages |
-| Live Supabase | Blocked: supplied hostname does not resolve | Real authentication/email/table behaviour remains unverified |
+| Check                       | Result                                                        | What it proves                                                                                                                      |
+| --------------------------- | ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Automated tests             | 22 passed, no failures                                        | Rules, history, PDFs, SDK sessions, offline logout, safe public build configuration, packaging, repository layout and SQL ownership |
+| Repository-layout tests     | Included in the 22 automated tests                            | One source layout and actual Git exclusion of generated files, dependencies and ZIP copies                                          |
+| Browser scenarios           | 22 passed                                                     | Actual extension and portal interactions in installed Microsoft Edge, using isolated mocked Supabase                                |
+| PostgreSQL/RLS              | Included in automated tests                                   | Two accounts cannot cross-access records; old permissive policies/grants are constrained; anonymous access is denied                |
+| Firefox `web-ext lint`      | 0 errors, 0 warnings                                          | Generated package passes current automated validation; not a runtime/device/store approval                                          |
+| Historical Next.js wrapper  | Build, TypeScript and serving checks passed before retirement | Historical evidence only; not a current deployment requirement                                                                      |
+| Production dependency audit | No reported vulnerabilities                                   | Current advisory check passed; not a complete security audit                                                                        |
+| Accessibility               | Eight desktop screens, zero automated axe violations          | Controlled WCAG A/AA checks, not an accessibility certification                                                                     |
+| PDF sample                  | 75 rows, 7 pages                                              | All rows, repeated headers/page numbers, no text clipping; every page visually inspected                                            |
+| Website mobile layout       | 390px viewport passed                                         | Responsive layout, not mobile extension compatibility                                                                               |
+| Download archives           | All copies/source entries matched                             | Users receive current compiled files rather than stale packages                                                                     |
+| Live Supabase               | Blocked: supplied hostname does not resolve                   | Real authentication/email/table behaviour remains unverified                                                                        |
 
 The synthetic evaluation demonstrates 4 true positives, 1 false positive, 4 true negatives and 1 false negative across ten controlled examples. Its 0.8 precision/recall and 0.2 false-positive rate are illustrative and must not be presented as production phishing accuracy.
 
@@ -42,6 +42,11 @@ The synthetic evaluation demonstrates 4 true positives, 1 false positive, 4 true
 - Signup/login selectors and recovery callbacks were tested, including a recovery link reusing an existing portal tab.
 - Firefox uses supported background scripts, declares required account data, and gates optional browser metadata registration on technical-data consent.
 - Report export creates a white, readable, paginated PDF with an alternative Print path for Unicode names.
+- Dark-mode printing now overrides the report's dark theme and table backgrounds; a browser regression checks the paper layout.
+- Logout clears local credentials even when refresh, registration cleanup or the logout service fails.
+- Build-time configuration rejects secret/service-role keys, unexpected backend hosts and unsafe callback URLs.
+- Small-screen website navigation retains authenticated account controls.
+- Professional documentation includes architecture and account diagrams, reproducible synthetic screenshots, an animated walkthrough, security guidance, contribution rules and a pinned CI workflow template.
 - The supplied vulnerable Next.js dependencies and broken Tailwind import were updated/fixed.
 - Public downloads and after-load detection are described accurately; guaranteed blocking and XML-export claims were removed.
 

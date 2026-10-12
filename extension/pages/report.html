@@ -1,69 +1,97 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>PhishGuard Monthly Report</title>
-  <link rel="stylesheet" href="theme.css">
-  <link rel="stylesheet" href="report.css">
-</head>
-<body>
-  <header class="report-nav">
-    <button id="back" class="ghost">← Dashboard</button>
-    <div class="brand"><span class="shield">◆</span> PHISHGUARD</div>
-    <div class="nav-actions"><label>Month <input id="month" type="month" aria-label="Reporting month"></label><button id="print" class="ghost">Print</button>
-      <button id="theme-toggle" class="ghost" aria-label="Toggle theme">☾</button>
-      <button id="clear-report" class="danger-btn">Clear Monthly Report</button>
-      <button id="download" class="download">Download PDF</button>
-    </div>
-  </header>
-
-  <main class="report-shell"><p id="message" role="status" aria-live="polite"></p>
-    <section class="report-hero">
-      <div>
-        <p class="eyebrow">SECURITY INTELLIGENCE / MONTHLY</p>
-        <h1>Monthly<br><em>Protection Report</em></h1>
-        <p id="period" class="period">Loading report…</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>PhishGuard Monthly Report</title>
+    <link rel="stylesheet" href="theme.css" />
+    <link rel="stylesheet" href="report.css" />
+  </head>
+  <body>
+    <header class="report-nav">
+      <button id="back" class="ghost">← Dashboard</button>
+      <div class="brand"><span class="shield">◆</span> PHISHGUARD</div>
+      <div class="nav-actions">
+        <label>Month <input id="month" type="month" aria-label="Reporting month" /></label
+        ><button id="print" class="ghost">Print</button>
+        <button id="theme-toggle" class="ghost" aria-label="Toggle theme">☾</button>
+        <button id="clear-report" class="danger-btn">Clear Monthly Report</button>
+        <button id="download" class="download">Download PDF</button>
       </div>
-      <div class="seal" aria-hidden="true"><span>PG</span><small>PROTECTED</small></div>
-    </section>
+    </header>
 
-    <section id="empty" class="empty" hidden>
-      <strong>No scans recorded in the selected month</strong>
-      <p>Browse with PhishGuard enabled, then return here to generate your monthly report.</p>
-    </section>
-
-    <div id="content" hidden>
-      <section class="identity">
-        <div><span>REPORT OWNER</span><strong id="user-name">—</strong></div>
-        <div><span>EMAIL</span><strong id="user-email">—</strong></div>
-        <div><span>GENERATED</span><strong id="generated">—</strong></div>
-      </section>
-
-      <section class="summary-grid">
-        <article class="total"><span>Total Scanned</span><strong id="total">0</strong><small>URLs analysed</small></article>
-        <article class="low"><span>Low Risk</span><strong id="low">0</strong><small>Low-risk assessments</small></article>
-        <article class="medium"><span>Medium Risk</span><strong id="medium">0</strong><small>Medium-risk assessments</small></article>
-        <article class="high"><span>High Risk</span><strong id="high">0</strong><small>High-risk assessments</small></article>
-      </section>
-
-      <section class="activity">
-        <div class="section-heading">
-          <div><span>ACTIVITY LOG</span><h2>Websites analysed</h2></div>
-          <p>Latest assessment per page visit in the selected month</p>
+    <main class="report-shell">
+      <p id="message" role="status" aria-live="polite"></p>
+      <section class="report-hero">
+        <div>
+          <p class="eyebrow">SECURITY INTELLIGENCE / MONTHLY</p>
+          <h1>Monthly<br /><em>Protection Report</em></h1>
+          <p id="period" class="period">Loading report…</p>
         </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Date &amp; time</th><th>Website</th><th>Score</th><th>Risk</th><th>Assessment</th></tr></thead>
-            <tbody id="visits"></tbody>
-          </table>
-        </div>
+        <div class="seal" aria-hidden="true"><span>PG</span><small>PROTECTED</small></div>
       </section>
-      <aside class="pdf-note">Download PDF creates a paginated report. Print preserves Unicode names. Scores: LOW 0–30, MEDIUM 31–70, HIGH 71–100. These indicators are not proof of phishing. Queries, fragments and credentials are excluded; URL paths remain visible. Up to 5,000 assessments are retained for 366 days; deleted or expired records will not appear in reports.</aside>
-    </div>
 
-    <footer><b>PHISHGUARD</b><span>Monthly security report • Version 4.1.0</span></footer>
-  </main>
-  <script src="report.js"></script>
-</body>
+      <section id="empty" class="empty" hidden>
+        <strong>No scans recorded in the selected month</strong>
+        <p>Browse with PhishGuard enabled, then return here to generate your monthly report.</p>
+      </section>
+
+      <div id="content" hidden>
+        <section class="identity">
+          <div><span>REPORT OWNER</span><strong id="user-name">—</strong></div>
+          <div><span>EMAIL</span><strong id="user-email">—</strong></div>
+          <div><span>GENERATED</span><strong id="generated">—</strong></div>
+        </section>
+
+        <section class="summary-grid">
+          <article class="total">
+            <span>Total Scanned</span><strong id="total">0</strong><small>URLs analysed</small>
+          </article>
+          <article class="low">
+            <span>Low Risk</span><strong id="low">0</strong><small>Low-risk assessments</small>
+          </article>
+          <article class="medium">
+            <span>Medium Risk</span><strong id="medium">0</strong
+            ><small>Medium-risk assessments</small>
+          </article>
+          <article class="high">
+            <span>High Risk</span><strong id="high">0</strong><small>High-risk assessments</small>
+          </article>
+        </section>
+
+        <section class="activity">
+          <div class="section-heading">
+            <div>
+              <span>ACTIVITY LOG</span>
+              <h2>Websites analysed</h2>
+            </div>
+            <p>Latest assessment per page visit in the selected month</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date &amp; time</th>
+                  <th>Website</th>
+                  <th>Score</th>
+                  <th>Risk</th>
+                  <th>Assessment</th>
+                </tr>
+              </thead>
+              <tbody id="visits"></tbody>
+            </table>
+          </div>
+        </section>
+        <aside class="pdf-note">
+          Download PDF creates a paginated report. Print preserves Unicode names. Scores: LOW 0–30,
+          MEDIUM 31–70, HIGH 71–100. These indicators are not proof of phishing. Queries, fragments
+          and credentials are excluded; URL paths remain visible. Up to 5,000 assessments are
+          retained for 366 days; deleted or expired records will not appear in reports.
+        </aside>
+      </div>
+
+      <footer><b>PHISHGUARD</b><span>Monthly security report • Version 4.1.0</span></footer>
+    </main>
+    <script src="report.js"></script>
+  </body>
 </html>

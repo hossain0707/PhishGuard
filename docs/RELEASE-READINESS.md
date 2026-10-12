@@ -12,6 +12,9 @@ Local implementation and testing do not certify the project as “100% productio
 - Supported Firefox background manifest and Firefox Android candidate metadata.
 - Ownership RLS migration, reproducible build, matching download archives, dependency lockfile and supporting documentation.
 - Accurate public downloads and detection limitations; privacy page and reduced permissions.
+- Offline logout always clears local credentials; safe environment-driven client configuration rejects privileged keys.
+- Professional README with architecture/ER diagrams, actual UI screenshots and reduced-motion-aware animated SVGs.
+- Pinned CI workflow, formatting checks, dependency monitoring and controlled desktop accessibility scans.
 
 ## External release gates
 

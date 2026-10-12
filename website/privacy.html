@@ -1,1 +1,55 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PhishGuard — Privacy and limitations</title><link rel="stylesheet" href="style.css"></head><body><main class="portal narrow"><a href="index.html">← PhishGuard</a><h1>Privacy and limitations</h1><p>Updated 12 October 2026. PhishGuard is a student FYP prototype for rule-based browser risk assessment.</p><h2>Account data</h2><p>Email, display name, authentication data and browser installation registrations are processed by the configured Supabase service. Passwords are managed by Supabase Auth. Extension tokens stay in browser-session memory; restarting the browser requires logging in again. The website uses local browser storage for its session.</p><h2>Browsing assessments</h2><p>While signed in, the extension reads the URL and counts of password inputs, forms and embedded frames. It does not read passwords, form contents or page text. URLs without queries, fragments or credentials, scores, reasons and timestamps remain locally stored and separated by account. Paths may still contain personal information. Up to 5,000 assessments are retained; records older than 366 days are removed on the next scan. Browsing history is not uploaded or sold.</p><h2>Your controls</h2><p>Log out to stop monitoring. Erase your local history in the extension profile, or delete a selected month in Reports. Uninstalling deletes extension storage. Exported PDFs remain on your device until you delete them. To request account deletion or report a privacy concern, contact the project team using the contact supplied with your installation.</p><h2>Limitations</h2><p>Heuristics can produce false positives and false negatives. HTTPS and low scores do not prove safety. Redirects happen after loading; they cannot guarantee prevention of requests, downloads or credential theft. Dynamic changes are monitored with rate limits. Browser internal pages are excluded.</p><h2>Release status</h2><p>Development packages are for testing. Store approval, Android device tests, live database verification and operator contact details are required before public release. GMI identifies the academic context and does not imply institutional endorsement.</p></main></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>PhishGuard — Privacy and limitations</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="portal narrow">
+      <a href="index.html">← PhishGuard</a>
+      <h1>Privacy and limitations</h1>
+      <p>
+        Updated 12 October 2026. PhishGuard is a student FYP prototype for rule-based browser risk
+        assessment.
+      </p>
+      <h2>Account data</h2>
+      <p>
+        Email, display name, authentication data and browser installation registrations are
+        processed by the configured Supabase service. Passwords are managed by Supabase Auth.
+        Extension tokens stay in browser-session memory; restarting the browser requires logging in
+        again. The website uses local browser storage for its session.
+      </p>
+      <h2>Browsing assessments</h2>
+      <p>
+        While signed in, the extension reads the URL and counts of password inputs, forms and
+        embedded frames. It does not read passwords, form contents or page text. URLs without
+        queries, fragments or credentials, scores, reasons and timestamps remain locally stored and
+        separated by account. Paths may still contain personal information. Up to 5,000 assessments
+        are retained; records older than 366 days are removed on the next scan. Browsing history is
+        not uploaded or sold.
+      </p>
+      <h2>Your controls</h2>
+      <p>
+        Log out to stop monitoring. Erase your local history in the extension profile, or delete a
+        selected month in Reports. Uninstalling deletes extension storage. Exported PDFs remain on
+        your device until you delete them. To request account deletion or report a privacy concern,
+        contact the project team using the contact supplied with your installation.
+      </p>
+      <h2>Limitations</h2>
+      <p>
+        Heuristics can produce false positives and false negatives. HTTPS and low scores do not
+        prove safety. Redirects happen after loading; they cannot guarantee prevention of requests,
+        downloads or credential theft. Dynamic changes are monitored with rate limits. Browser
+        internal pages are excluded.
+      </p>
+      <h2>Release status</h2>
+      <p>
+        Development packages are for testing. Store approval, Android device tests, live database
+        verification and operator contact details are required before public release. GMI identifies
+        the academic context and does not imply institutional endorsement.
+      </p>
+    </main>
+  </body>
+</html>

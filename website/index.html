@@ -1,134 +1,315 @@
 <!doctype html>
 <html lang="en" data-theme="dark">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Rule-based phishing detection, risk warnings, account-separated local activity and monthly PDF reports for Chrome, Edge and Firefox.">
-  <title>PhishGuard — Real-time browser protection</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <main>
-    <header class="nav">
-      <button class="brand" data-view="home"><img src="logo.svg" alt="" width="28" height="28"> PHISHGUARD</button>
-      <nav>
-        <button data-view="home">Home</button>
-        <button data-view="download">Download</button>
-        <span id="guest-nav">
-          <button data-view="login">Log in</button>
-          <button class="primary small" data-view="signup">Get protected</button>
-        </span>
-        <span id="user-nav" hidden>
-          <button data-view="dashboard">Dashboard</button>
-          <button data-view="profile">Profile</button>
-          <button id="logout-button">Log out</button>
-        </span>
-        <button class="theme" id="theme-button" aria-label="Toggle light or dark mode">☀</button>
-      </nav>
-    </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Rule-based phishing detection, risk warnings, account-separated local activity and monthly PDF reports for Chrome, Edge and Firefox."
+    />
+    <title>PhishGuard — Real-time browser protection</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <header class="nav">
+        <button class="brand" data-view="home">
+          <img src="logo.svg" alt="" width="28" height="28" /> PHISHGUARD
+        </button>
+        <nav>
+          <button data-view="home">Home</button>
+          <button data-view="download">Download</button>
+          <span id="guest-nav">
+            <button data-view="login">Log in</button>
+            <button class="primary small" data-view="signup">Get protected</button>
+          </span>
+          <span id="user-nav" hidden>
+            <button data-view="dashboard">Dashboard</button>
+            <button data-view="profile">Profile</button>
+            <button id="logout-button">Log out</button>
+          </span>
+          <button class="theme" id="theme-button" aria-label="Toggle light or dark mode">☀</button>
+        </nav>
+      </header>
 
-    <div role="status" aria-live="polite" id="message-banner" class="status global-status" hidden></div>
+      <div
+        role="status"
+        aria-live="polite"
+        id="message-banner"
+        class="status global-status"
+        hidden
+      ></div>
 
-    <div class="view" id="view-home">
-      <section class="hero">
-        <div class="eyebrow"><i></i> Live browser protection</div>
-        <h1>Browse smarter.<br><em>Stop phishing.</em></h1>
-        <p>PhishGuard analyzes risky URLs and suspicious page behavior in real time—showing risk indicators and redirecting suspicious pages after detection.</p>
-        <div class="actions">
-          <button class="primary" id="start-button">Start protecting your browser →</button>
-          <button class="secondary" id="features-button">See how it works</button>
-        </div>
-        <div class="browsers"><span>CHROME</span><span>EDGE</span><span>FIREFOX</span><b>Rule engine 4.1</b></div>
-      </section>
-      <section class="risks">
-        <div><strong>LOW</strong><span>Browse normally</span></div>
-        <div><strong>MEDIUM</strong><span>Review warning</span></div>
-        <div><strong>HIGH</strong><span>Access blocked</span></div>
-      </section>
-      <section class="features" id="features">
-        <div class="heading"><span>PROTECTION ENGINE</span><h2>Explainable assessments while you browse.</h2></div>
-        <div class="feature-grid">
-          <article><b>01</b><h3>Rule-based detection</h3><p>Weighted indicators examine HTTPS, suspicious keywords, IP-based domains, unsafe password forms and embedded content.</p></article>
-          <article><b>02</b><h3>Decisive risk response</h3><p>Low-risk pages continue normally, medium-risk pages show a choice, and high-risk pages redirect to a warning with no proceed option. Pages may load before detection.</p></article>
-          <article><b>03</b><h3>Privacy by design</h3><p>Browsing logs remain on your device. The online database holds only profile and authenticated browser-session data.</p></article>
-          <article><b>04</b><h3>Monthly PDF reports</h3><p>Export readable monthly PDF reports containing scan totals, threat levels and account-separated local assessments. Export from the extension dashboard.</p></article>
-        </div>
-      </section>
-    </div>
+      <div class="view" id="view-home">
+        <section class="hero">
+          <div class="eyebrow"><i></i> Live browser protection</div>
+          <h1>Browse smarter.<br /><em>Stop phishing.</em></h1>
+          <p>
+            PhishGuard analyzes risky URLs and suspicious page behavior in real time—showing risk
+            indicators and redirecting suspicious pages after detection.
+          </p>
+          <div class="actions">
+            <button class="primary" id="start-button">Start protecting your browser →</button>
+            <button class="secondary" id="features-button">See how it works</button>
+          </div>
+          <div class="browsers">
+            <span>CHROME</span><span>EDGE</span><span>FIREFOX</span><b>Rule engine 4.1</b>
+          </div>
+        </section>
+        <section class="risks">
+          <div><strong>LOW</strong><span>Browse normally</span></div>
+          <div><strong>MEDIUM</strong><span>Review warning</span></div>
+          <div><strong>HIGH</strong><span>Access blocked</span></div>
+        </section>
+        <section class="features" id="features">
+          <div class="heading">
+            <span>PROTECTION ENGINE</span>
+            <h2>Explainable assessments while you browse.</h2>
+          </div>
+          <div class="feature-grid">
+            <article>
+              <b>01</b>
+              <h3>Rule-based detection</h3>
+              <p>
+                Weighted indicators examine HTTPS, suspicious keywords, IP-based domains, unsafe
+                password forms and embedded content.
+              </p>
+            </article>
+            <article>
+              <b>02</b>
+              <h3>Decisive risk response</h3>
+              <p>
+                Low-risk pages continue normally, medium-risk pages show a choice, and high-risk
+                pages redirect to a warning with no proceed option. Pages may load before detection.
+              </p>
+            </article>
+            <article>
+              <b>03</b>
+              <h3>Privacy by design</h3>
+              <p>
+                Browsing logs remain on your device. The online database holds only profile and
+                authenticated browser-session data.
+              </p>
+            </article>
+            <article>
+              <b>04</b>
+              <h3>Monthly PDF reports</h3>
+              <p>
+                Export readable monthly PDF reports containing scan totals, threat levels and
+                account-separated local assessments. Export from the extension dashboard.
+              </p>
+            </article>
+          </div>
+        </section>
+      </div>
 
-    <div class="view" id="view-signup" hidden>
-      <section class="auth"><div class="auth-card"><div class="mark">◆</div><span>SECURE ACCESS</span><h1>Create your account</h1><p>Verify your email, then activate PhishGuard on your browsers.</p>
-        <form id="signup-form">
-          <label>Full name<input name="full_name" maxlength="100" required placeholder="Your full name" maxlength="100"></label>
-          <label>Email address<input name="email" type="email" required></label>
-          <label>Password<input name="password" type="password" minlength="12" maxlength="128" required placeholder="Minimum 12 characters"></label>
-          <button class="primary full" type="submit">Create secure account</button>
-          <div class="status form-status" hidden></div>
-          <p>Already registered? <button type="button" data-view="login">Log in</button></p>
-        </form>
-      </div></section>
-    </div>
+      <div class="view" id="view-signup" hidden>
+        <section class="auth">
+          <div class="auth-card">
+            <div class="mark">◆</div>
+            <span>SECURE ACCESS</span>
+            <h1>Create your account</h1>
+            <p>Verify your email, then activate PhishGuard on your browsers.</p>
+            <form id="signup-form">
+              <label
+                >Full name<input
+                  name="full_name"
+                  maxlength="100"
+                  required
+                  placeholder="Your full name"
+                  maxlength="100"
+              /></label>
+              <label>Email address<input name="email" type="email" required /></label>
+              <label
+                >Password<input
+                  name="password"
+                  type="password"
+                  minlength="12"
+                  maxlength="128"
+                  required
+                  placeholder="Minimum 12 characters"
+              /></label>
+              <button class="primary full" type="submit">Create secure account</button>
+              <div class="status form-status" hidden></div>
+              <p>Already registered? <button type="button" data-view="login">Log in</button></p>
+            </form>
+          </div>
+        </section>
+      </div>
 
-    <div class="view" id="view-login" hidden>
-      <section class="auth"><div class="auth-card"><div class="mark">◆</div><span>SECURE ACCESS</span><h1>Welcome back</h1><p>Log in to access your dashboard and installation files.</p>
-        <form id="login-form">
-          <label>Email address<input name="email" type="email" required></label>
-          <label>Password<input name="password" type="password" required></label>
-          <button class="link" type="button" data-view="forgot">Forgot password?</button>
-          <button class="primary full" type="submit">Log in to PhishGuard</button>
-          <div class="status form-status" hidden></div>
-          <p>New user? <button type="button" data-view="signup">Create account</button></p>
-        </form>
-      </div></section>
-    </div>
+      <div class="view" id="view-login" hidden>
+        <section class="auth">
+          <div class="auth-card">
+            <div class="mark">◆</div>
+            <span>SECURE ACCESS</span>
+            <h1>Welcome back</h1>
+            <p>Log in to access your dashboard and installation files.</p>
+            <form id="login-form">
+              <label>Email address<input name="email" type="email" required /></label>
+              <label>Password<input name="password" type="password" required /></label>
+              <button class="link" type="button" data-view="forgot">Forgot password?</button>
+              <button class="primary full" type="submit">Log in to PhishGuard</button>
+              <div class="status form-status" hidden></div>
+              <p>New user? <button type="button" data-view="signup">Create account</button></p>
+            </form>
+          </div>
+        </section>
+      </div>
 
-    <div class="view" id="view-forgot" hidden>
-      <section class="auth"><div class="auth-card"><div class="mark">◆</div><span>SECURE ACCESS</span><h1>Reset your password</h1><p>We will send a secure recovery link to your email.</p>
-        <form id="forgot-form">
-          <label>Email address<input name="email" type="email" required></label>
-          <button class="primary full" type="submit">Send recovery email</button>
-          <div class="status form-status" hidden></div>
-          <p><button type="button" data-view="login">← Back to login</button></p>
-        </form>
-      </div></section>
-    </div>
+      <div class="view" id="view-forgot" hidden>
+        <section class="auth">
+          <div class="auth-card">
+            <div class="mark">◆</div>
+            <span>SECURE ACCESS</span>
+            <h1>Reset your password</h1>
+            <p>We will send a secure recovery link to your email.</p>
+            <form id="forgot-form">
+              <label>Email address<input name="email" type="email" required /></label>
+              <button class="primary full" type="submit">Send recovery email</button>
+              <div class="status form-status" hidden></div>
+              <p><button type="button" data-view="login">← Back to login</button></p>
+            </form>
+          </div>
+        </section>
+      </div>
 
-    <div class="view" id="view-dashboard" hidden>
-      <section class="portal">
-        <div class="portal-head"><div><span>SECURITY OVERVIEW</span><h1>Welcome, <span id="dashboard-name">PhishGuard user</span>.</h1><p>Install the extension and log in there to activate monitoring.</p></div><div class="active"><i></i><div><b>ACCOUNT SIGNED IN</b><small id="dashboard-email"></small></div></div></div>
-        <div class="metrics"><article><span>CONNECTED BROWSERS</span><strong id="browser-count">…</strong><small>Registered browser installations</small></article><article><span>LOCAL PROTECTION</span><strong>Ready</strong><small>Risk engine available in extension</small></article><article><span>REPORT FORMAT</span><strong>PDF</strong><small>Export from extension dashboard</small></article></div>
-        <ul id="browser-list" aria-label="Registered browsers"></ul><p>Browsing history remains in each browser extension; it is not uploaded to this website.</p><div class="next"><div><span>NEXT STEP</span><h2>Install PhishGuard on your browser.</h2><p>Choose the development package while store publication is pending.</p></div><button class="primary" data-view="download">Open downloads →</button></div>
-      </section>
-    </div>
+      <div class="view" id="view-dashboard" hidden>
+        <section class="portal">
+          <div class="portal-head">
+            <div>
+              <span>SECURITY OVERVIEW</span>
+              <h1>Welcome, <span id="dashboard-name">PhishGuard user</span>.</h1>
+              <p>Install the extension and log in there to activate monitoring.</p>
+            </div>
+            <div class="active">
+              <i></i>
+              <div><b>ACCOUNT SIGNED IN</b><small id="dashboard-email"></small></div>
+            </div>
+          </div>
+          <div class="metrics">
+            <article>
+              <span>CONNECTED BROWSERS</span><strong id="browser-count">…</strong
+              ><small>Registered browser installations</small>
+            </article>
+            <article>
+              <span>LOCAL PROTECTION</span><strong>Ready</strong
+              ><small>Risk engine available in extension</small>
+            </article>
+            <article>
+              <span>REPORT FORMAT</span><strong>PDF</strong
+              ><small>Export from extension dashboard</small>
+            </article>
+          </div>
+          <ul id="browser-list" aria-label="Registered browsers"></ul>
+          <p>
+            Browsing history remains in each browser extension; it is not uploaded to this website.
+          </p>
+          <div class="next">
+            <div>
+              <span>NEXT STEP</span>
+              <h2>Install PhishGuard on your browser.</h2>
+              <p>Choose the development package while store publication is pending.</p>
+            </div>
+            <button class="primary" data-view="download">Open downloads →</button>
+          </div>
+        </section>
+      </div>
 
-    <div class="view" id="view-profile" hidden>
-      <section class="portal narrow"><div class="heading"><span>ACCOUNT</span><h2>Your profile</h2></div>
-        <form class="profile" id="profile-form">
-          <label>Full name<input name="full_name" required></label>
-          <label>Email address<input name="email" disabled></label>
-          <label>User ID<input name="user_id" disabled></label>
-          <button class="primary" type="submit">Save profile</button>
-          <div class="status form-status" hidden></div>
-        </form>
-      </section>
-    </div>
+      <div class="view" id="view-profile" hidden>
+        <section class="portal narrow">
+          <div class="heading">
+            <span>ACCOUNT</span>
+            <h2>Your profile</h2>
+          </div>
+          <form class="profile" id="profile-form">
+            <label>Full name<input name="full_name" required /></label>
+            <label>Email address<input name="email" disabled /></label>
+            <label>User ID<input name="user_id" disabled /></label>
+            <button class="primary" type="submit">Save profile</button>
+            <div class="status form-status" hidden></div>
+          </form>
+        </section>
+      </div>
 
-    <div class="view" id="view-download" hidden>
-      <section class="portal"><div class="heading"><span>BROWSER DOWNLOADS</span><h2>Choose your browser.</h2><p>Download the development package, then sign up or log in inside the extension. Downloads are public.</p></div>
-        <div class="downloads">
-          <article><div>◈</div><h3>Google Chrome</h3><p>Load unpacked at chrome://extensions</p><a class="primary" href="downloads/PhishGuard-Chrome-Edge.zip" download>Download ZIP</a></article>
-          <article><div>◈</div><h3>Microsoft Edge</h3><p>Load unpacked at edge://extensions</p><a class="primary" href="downloads/PhishGuard-Chrome-Edge.zip" download>Download ZIP</a></article>
-          <article><div>◈</div><h3>Mozilla Firefox</h3><p>Load through about:debugging</p><a class="primary" href="downloads/PhishGuard-Firefox.zip" download>Download ZIP</a></article>
-        </div>
-        <div class="notice"><b>Development mode</b><p>ZIPs are for development testing. Firefox installation is temporary until Mozilla signing. Firefox Android awaits device validation.</p></div>
-      </section>
-    </div>
+      <div class="view" id="view-download" hidden>
+        <section class="portal">
+          <div class="heading">
+            <span>BROWSER DOWNLOADS</span>
+            <h2>Choose your browser.</h2>
+            <p>
+              Download the development package, then sign up or log in inside the extension.
+              Downloads are public.
+            </p>
+          </div>
+          <div class="downloads">
+            <article>
+              <div>◈</div>
+              <h3>Google Chrome</h3>
+              <p>Load unpacked at chrome://extensions</p>
+              <a class="primary" href="downloads/PhishGuard-Chrome-Edge.zip" download
+                >Download ZIP</a
+              >
+            </article>
+            <article>
+              <div>◈</div>
+              <h3>Microsoft Edge</h3>
+              <p>Load unpacked at edge://extensions</p>
+              <a class="primary" href="downloads/PhishGuard-Chrome-Edge.zip" download
+                >Download ZIP</a
+              >
+            </article>
+            <article>
+              <div>◈</div>
+              <h3>Mozilla Firefox</h3>
+              <p>Load through about:debugging</p>
+              <a class="primary" href="downloads/PhishGuard-Firefox.zip" download>Download ZIP</a>
+            </article>
+          </div>
+          <div class="notice">
+            <b>Development mode</b>
+            <p>
+              ZIPs are for development testing. Firefox installation is temporary until Mozilla
+              signing. Firefox Android awaits device validation.
+            </p>
+          </div>
+        </section>
+      </div>
 
-    <div class="view" id="view-reset" hidden><section class="auth"><div class="auth-card"><h1>Choose a new password</h1><form id="reset-form"><label>New password<input name="password" type="password" minlength="12" maxlength="128" autocomplete="new-password" required></label><label>Confirm password<input name="confirm" type="password" minlength="12" maxlength="128" autocomplete="new-password" required></label><button class="primary full" type="submit">Update password</button><div class="status form-status" role="status" hidden></div></form></div></section></div>
-    <footer><a href="privacy.html">Privacy &amp; limitations</a><b>PHISHGUARD</b><span>Browser-based security with behavioral risk scoring</span><small>German-Malaysian Institute FYP 2026</small></footer>
-  </main>
-  <script src="config.js"></script>
-  <script src="script.js"></script>
-</body>
+      <div class="view" id="view-reset" hidden>
+        <section class="auth">
+          <div class="auth-card">
+            <h1>Choose a new password</h1>
+            <form id="reset-form">
+              <label
+                >New password<input
+                  name="password"
+                  type="password"
+                  minlength="12"
+                  maxlength="128"
+                  autocomplete="new-password"
+                  required /></label
+              ><label
+                >Confirm password<input
+                  name="confirm"
+                  type="password"
+                  minlength="12"
+                  maxlength="128"
+                  autocomplete="new-password"
+                  required /></label
+              ><button class="primary full" type="submit">Update password</button>
+              <div class="status form-status" role="status" hidden></div>
+            </form>
+          </div>
+        </section>
+      </div>
+      <footer>
+        <a href="privacy.html">Privacy &amp; limitations</a><b>PHISHGUARD</b
+        ><span>Browser-based security with behavioral risk scoring</span
+        ><small>German-Malaysian Institute FYP 2026</small>
+      </footer>
+    </main>
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+  </body>
 </html>

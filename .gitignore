@@ -4,8 +4,11 @@ dist/
 .next/
 .env
 .env.local
+.env.*
+!.env.example
 test-results/
 website/script.js
+website/config.js
 website/downloads/
 website/THIRD-PARTY-NOTICES.txt
 *.tsbuildinfo

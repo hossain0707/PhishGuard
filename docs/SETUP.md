@@ -2,27 +2,29 @@
 
 ## Supabase
 
+Configure the public client values through `.env` (copy `.env.example`) or Vercel environment settings: `PHISHGUARD_SUPABASE_URL`, `PHISHGUARD_SUPABASE_PUBLISHABLE_KEY`, and `PHISHGUARD_WEBSITE_URL`. Build validates the URL and key, generates both client configurations and pins the extension's connection policy. Only standard HTTPS Supabase project hosts are accepted. Website CSP permits Supabase HTTPS project hosts; no other external connection host is allowed by default. Never use a secret/service-role key. Generated `website/config.js` is ignored by Git.
+
 1. Back up the database. Inspect existing `profiles` and `extension_sessions` tables. The migration assumes its declared schema and aborts if an existing sessions table lacks installation IDs; do not drop existing data to force it through.
 2. Review and execute `database/001_accounts.sql` in your Supabase SQL editor. It creates ownership policies, account profiles, browser registration indexes, and a profile-sync trigger. Passwords remain exclusively in Supabase Auth.
 3. Enable email/password authentication and email confirmation. Configure a 12-character minimum password and appropriate password-strength/rate-limit settings. Use production SMTP and configure sender authentication before public distribution; test confirmation and recovery delivery.
 4. Set Auth Site URL to the production portal URL. Allow the exact production and local development redirect URLs. Deployment example: `https://YOUR-PROJECT.vercel.app/`. If users also visit the clean `/index` route, add that exact callback too. Avoid broad production wildcards.
-5. Set extension `WEBSITE_URL` to that URL, then rebuild the packages. Email links complete on the website; the user then signs into the extension. The website implements the standard Supabase implicit recovery callback and new-password form.
+5. Set `PHISHGUARD_WEBSITE_URL` to that URL, then rebuild the packages. Email links complete on the website; the user then signs into the extension. The website implements the standard Supabase implicit recovery callback and new-password form.
 6. Enable your desired Auth abuse protections. Monitor failed logins and registration volume. SDK error messages must not be treated as proof of email existence.
 7. Verify RLS on the actual deployed tables using two test accounts. User A must not read/update/delete user B's rows or insert records with B's user ID. Unauthenticated callers must have no table access. Service-role credentials are never shipped to clients.
 
 Tables:
 
-| Table | Owner | Purpose |
-|---|---|---|
-| `auth.users` | Supabase Auth | Credentials, verification, user metadata |
-| `profiles` | `id = auth.uid()` | Display name and creation date |
+| Table                | Owner                  | Purpose                                                   |
+| -------------------- | ---------------------- | --------------------------------------------------------- |
+| `auth.users`         | Supabase Auth          | Credentials, verification, user metadata                  |
+| `profiles`           | `id = auth.uid()`      | Display name and creation date                            |
 | `extension_sessions` | `user_id = auth.uid()` | Installation UUID, browser, version, last-login timestamp |
 
 Browser rows represent recorded registrations, not live connections. Repeated login upserts the same installation; logout attempts to remove that registration. Offline logout may leave a stale row. Browsing history is never stored in these tables.
 
 ## Vercel
 
-The repository root is `PhishGuard`, with Vercel root directory `.`, framework preset Other, build command `npm run build` and output directory `website`. The root `vercel.json` includes these settings. The original Git repository is preserved at the project root. Review and upload the source files; no push or production deployment was performed by this task.
+The repository root is `PhishGuard`, with Vercel root directory `.`, framework preset Other, build command `npm run build` and output directory `website`. Root `vercel.json` includes these settings. Set the three public configuration variables in Vercel before building. Keep account/cloud administration and deployment verification separate from local mocked checks.
 
 Version-named source folders, duplicate deployments and source ZIP copies were retired. Build produces browser targets in ignored `dist/` directories and website downloads. These are generated outputs of one source project, not additional versions.
 

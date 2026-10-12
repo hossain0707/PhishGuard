@@ -1,23 +1,244 @@
 <!doctype html>
 <html lang="en" data-theme="dark">
-<head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>PhishGuard</title>
-  <link rel="stylesheet" href="theme.css">
-  <style>
-    *{box-sizing:border-box}body{width:370px;max-width:100vw;margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}.header{padding:15px 17px;display:flex;align-items:center;gap:11px;border-bottom:1px solid var(--line);background:var(--surface)}.shield{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--line);background:var(--surface2);color:#d01820;font-size:18px}.header-title{font-size:15px;font-weight:900;letter-spacing:.02em}.header-subtitle{margin-top:3px;color:var(--muted);font-size:9px;letter-spacing:.12em}.theme-btn{margin-left:auto;width:34px;height:34px;border:1px solid var(--line);border-radius:50%;background:var(--surface2);color:var(--text);cursor:pointer}.status-strip{padding:9px 17px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--surface2) 65%,transparent);font-size:9px;font-weight:900;letter-spacing:.12em}.live{display:flex;align-items:center;gap:7px;color:var(--muted)}.live i{width:7px;height:7px;border-radius:50%;background:#75833a;box-shadow:0 0 0 4px rgba(117,131,58,.14)}.engine{color:var(--muted)}.score-section{padding:24px 17px 15px;text-align:center}.score-wrap{position:relative;width:112px;height:112px;margin:0 auto 14px}.score-circle{width:112px;height:112px;border:5px solid;border-radius:50%;display:grid;place-items:center;background:var(--surface);font-size:31px;font-weight:900;box-shadow:var(--shadow)}.score-circle:after{content:"/100";position:absolute;bottom:23px;font-size:8px;color:var(--muted);letter-spacing:.08em}.score-low{border-color:#75833a;color:#75833a}.score-medium{border-color:#c47a16;color:#c47a16}.score-high{border-color:#d01820;color:#d01820}.threat-label{font-size:10px;font-weight:900;letter-spacing:.14em}.label-low{color:#75833a}.label-medium{color:#c47a16}.label-high{color:#d01820}.url-text{max-width:300px;margin:7px auto 0;color:var(--muted);font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.reasons-box{margin:0 15px 13px;padding:13px;border:1px solid var(--line);background:var(--surface)}.reasons-title{margin-bottom:8px;color:var(--muted);font-size:9px;font-weight:900;letter-spacing:.14em}.reason-item{padding:7px 0;border-bottom:1px solid var(--line);color:var(--text);font-size:10px;line-height:1.4}.reason-item:before{content:"◆";margin-right:7px;color:#d01820;font-size:7px}.reason-item:last-child{border-bottom:0}.no-data{margin:18px;padding:35px 18px;border:1px dashed var(--line);color:var(--muted);font-size:11px;line-height:1.5;text-align:center}.no-data:before{content:"◇";display:block;margin-bottom:10px;color:#d01820;font-size:25px}.btn-row{padding:0 15px 15px}.btn{width:100%;padding:11px;border:0;border-radius:5px;background:#b1121b;color:#fff8eb;font-size:11px;font-weight:900;cursor:pointer}.btn:hover{background:#d01820}.footer{padding:10px;border-top:1px solid var(--line);color:var(--muted);font-size:8px;letter-spacing:.1em;text-align:center}
-  </style>
-</head>
-<body>
-  <header class="header">
-    <div class="shield">◆</div>
-    <div><div class="header-title">PhishGuard</div><div class="header-subtitle">REAL-TIME BROWSER PROTECTION</div></div>
-    <button class="theme-btn" id="theme-toggle" title="Toggle light or dark mode">☾</button>
-  </header>
-  <div class="status-strip"><span class="live"><i></i>PROTECTION ACTIVE</span><span class="engine">RULE ENGINE 4.1</span></div>
-  <div id="content" role="status" aria-live="polite"><div class="no-data">Loading the latest security analysis…</div></div>
-  <div class="btn-row"><button class="btn" id="btn-dashboard">Open Security Dashboard →</button></div>
-  <div class="footer">PHISHGUARD • CHROME • EDGE • FIREFOX</div>
-  <script src="popup.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>PhishGuard</title>
+    <link rel="stylesheet" href="theme.css" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        width: 370px;
+        max-width: 100vw;
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .header {
+        padding: 15px 17px;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        border-bottom: 1px solid var(--line);
+        background: var(--surface);
+      }
+      .shield {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--line);
+        background: var(--surface2);
+        color: #d01820;
+        font-size: 18px;
+      }
+      .header-title {
+        font-size: 15px;
+        font-weight: 900;
+        letter-spacing: 0.02em;
+      }
+      .header-subtitle {
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 9px;
+        letter-spacing: 0.12em;
+      }
+      .theme-btn {
+        margin-left: auto;
+        width: 34px;
+        height: 34px;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        background: var(--surface2);
+        color: var(--text);
+        cursor: pointer;
+      }
+      .status-strip {
+        padding: 9px 17px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--line);
+        background: color-mix(in srgb, var(--surface2) 65%, transparent);
+        font-size: 9px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+      }
+      .live {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--muted);
+      }
+      .live i {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #75833a;
+        box-shadow: 0 0 0 4px rgba(117, 131, 58, 0.14);
+      }
+      .engine {
+        color: var(--muted);
+      }
+      .score-section {
+        padding: 24px 17px 15px;
+        text-align: center;
+      }
+      .score-wrap {
+        position: relative;
+        width: 112px;
+        height: 112px;
+        margin: 0 auto 14px;
+      }
+      .score-circle {
+        width: 112px;
+        height: 112px;
+        border: 5px solid;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: var(--surface);
+        font-size: 31px;
+        font-weight: 900;
+        box-shadow: var(--shadow);
+      }
+      .score-circle:after {
+        content: "/100";
+        position: absolute;
+        bottom: 23px;
+        font-size: 8px;
+        color: var(--muted);
+        letter-spacing: 0.08em;
+      }
+      .score-low {
+        border-color: #75833a;
+        color: #75833a;
+      }
+      .score-medium {
+        border-color: #c47a16;
+        color: #c47a16;
+      }
+      .score-high {
+        border-color: #d01820;
+        color: #d01820;
+      }
+      .threat-label {
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.14em;
+      }
+      .label-low {
+        color: #75833a;
+      }
+      .label-medium {
+        color: #c47a16;
+      }
+      .label-high {
+        color: #d01820;
+      }
+      .url-text {
+        max-width: 300px;
+        margin: 7px auto 0;
+        color: var(--muted);
+        font-size: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .reasons-box {
+        margin: 0 15px 13px;
+        padding: 13px;
+        border: 1px solid var(--line);
+        background: var(--surface);
+      }
+      .reasons-title {
+        margin-bottom: 8px;
+        color: var(--muted);
+        font-size: 9px;
+        font-weight: 900;
+        letter-spacing: 0.14em;
+      }
+      .reason-item {
+        padding: 7px 0;
+        border-bottom: 1px solid var(--line);
+        color: var(--text);
+        font-size: 10px;
+        line-height: 1.4;
+      }
+      .reason-item:before {
+        content: "◆";
+        margin-right: 7px;
+        color: #d01820;
+        font-size: 7px;
+      }
+      .reason-item:last-child {
+        border-bottom: 0;
+      }
+      .no-data {
+        margin: 18px;
+        padding: 35px 18px;
+        border: 1px dashed var(--line);
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.5;
+        text-align: center;
+      }
+      .no-data:before {
+        content: "◇";
+        display: block;
+        margin-bottom: 10px;
+        color: #d01820;
+        font-size: 25px;
+      }
+      .btn-row {
+        padding: 0 15px 15px;
+      }
+      .btn {
+        width: 100%;
+        padding: 11px;
+        border: 0;
+        border-radius: 5px;
+        background: #b1121b;
+        color: #fff8eb;
+        font-size: 11px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+      .btn:hover {
+        background: #d01820;
+      }
+      .footer {
+        padding: 10px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 8px;
+        letter-spacing: 0.1em;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="shield">◆</div>
+      <div>
+        <div class="header-title">PhishGuard</div>
+        <div class="header-subtitle">REAL-TIME BROWSER PROTECTION</div>
+      </div>
+      <button class="theme-btn" id="theme-toggle" title="Toggle light or dark mode">☾</button>
+    </header>
+    <div class="status-strip">
+      <span class="live"><i></i>PROTECTION ACTIVE</span><span class="engine">RULE ENGINE 4.1</span>
+    </div>
+    <div id="content" role="status" aria-live="polite">
+      <div class="no-data">Loading the latest security analysis…</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn" id="btn-dashboard">Open Security Dashboard →</button>
+    </div>
+    <div class="footer">PHISHGUARD • CHROME • EDGE • FIREFOX</div>
+    <script src="popup.js"></script>
+  </body>
 </html>
