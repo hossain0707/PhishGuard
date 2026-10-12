@@ -15,16 +15,16 @@ The historical backend hostname in `shared/config.js` was reported unreachable o
 
 Vercel Hobby is appropriate for a small non-commercial FYP demo within platform limits. No custom domain is required. Import `hossain0707/PhishGuard` at https://vercel.com/new, after the feature pull request is reviewed and merged.
 
-| Property | Setting |
-| --- | --- |
-| Plan | Hobby / free |
-| Git branch | Reviewed `main` |
-| Root | `.` |
-| Framework | Other |
-| Install | `npm ci --include=dev` |
-| Build | `npm run build` |
-| Output directory | `website` |
-| Public URL | Actual assigned `*.vercel.app` HTTPS domain |
+| Property         | Setting                                     |
+| ---------------- | ------------------------------------------- |
+| Plan             | Hobby / free                                |
+| Git branch       | Reviewed `main`                             |
+| Root             | `.`                                         |
+| Framework        | Other                                       |
+| Install          | `npm ci --include=dev`                      |
+| Build            | `npm run build`                             |
+| Output directory | `website`                                   |
+| Public URL       | Actual assigned `*.vercel.app` HTTPS domain |
 
 Set these public variables under Vercel Project Settings > Environment Variables **before deploying**:
 

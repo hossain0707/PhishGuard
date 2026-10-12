@@ -12,7 +12,9 @@ for (const link of document.querySelectorAll("[data-store]")) {
 }
 function authError(error) {
   if (/failed to fetch|networkerror|network request failed/i.test(error?.message || ""))
-    return new Error("Authentication server unavailable. Check the active Supabase project URL/key and your network. The extension can still scan locally in guest mode.");
+    return new Error(
+      "Authentication server unavailable. Check the active Supabase project URL/key and your network. The extension can still scan locally in guest mode.",
+    );
   return error;
 }
 // Retire the old unrefreshed hand-written session format; users sign in through the SDK.

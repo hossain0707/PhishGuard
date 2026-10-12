@@ -3,7 +3,11 @@ import { countRisks } from "../../shared/history.js";
 async function load() {
   try {
     const state = await request("GET_STATE");
-    status(state.guestMode ? "Guest mode: scans and reports remain private on this device. Sign in from Profile to use an account." : state.notice || "");
+    status(
+      state.guestMode
+        ? "Guest mode: scans and reports remain private on this device. Sign in from Profile to use an account."
+        : state.notice || "",
+    );
     const log = state.log
       .filter((row) => row.timestamp > state.dashboardSince)
       .slice(-200)

@@ -1,7 +1,8 @@
 (() => {
   const api = globalThis.browser || globalThis.chrome;
   const documentId = crypto.randomUUID();
-  let signature = "", timer;
+  let signature = "",
+    timer;
   let recentScans = [];
   async function scan() {
     const data = {

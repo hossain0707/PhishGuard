@@ -2,13 +2,13 @@
 
 The repository has a provisional PhishGuard SVG shield mark and PNG browser icons. The final PhishGuard logo and original approved GMI artwork have **not been supplied in this repository**, so neither was fabricated. Existing GMI text refers to the academic FYP context, not an endorsement claim.
 
-| Asset | Required format | Intended use |
-| --- | --- | --- |
-| Official GMI logo | Original approved transparent PNG or SVG | Readable credit on website/auth screens, subject to institutional permission |
-| Final PhishGuard mark | SVG master, light/dark variants when needed | Website, auth page, popup, dashboard, reports |
-| Toolbar/store icons | 16, 32, 48, 128 px PNG | `extension/assets/icons/` per current manifest |
-| Website logo/favicon | SVG | `website/logo.svg`, `website/favicon.svg` |
-| Listing screenshots | Browser-store specified sizes | Submit only verified captures of the approved build |
+| Asset                 | Required format                             | Intended use                                                                 |
+| --------------------- | ------------------------------------------- | ---------------------------------------------------------------------------- |
+| Official GMI logo     | Original approved transparent PNG or SVG    | Readable credit on website/auth screens, subject to institutional permission |
+| Final PhishGuard mark | SVG master, light/dark variants when needed | Website, auth page, popup, dashboard, reports                                |
+| Toolbar/store icons   | 16, 32, 48, 128 px PNG                      | `extension/assets/icons/` per current manifest                               |
+| Website logo/favicon  | SVG                                         | `website/logo.svg`, `website/favicon.svg`                                    |
+| Listing screenshots   | Browser-store specified sizes               | Submit only verified captures of the approved build                          |
 
 The 16-pixel toolbar icon should use the simple PhishGuard shield, not two logos squeezed together. GMI branding should appear where readable, with accurate alt text.
 

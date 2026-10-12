@@ -38,7 +38,10 @@ try {
   const auth = await context.newPage();
   await auth.goto(base + "auth.html");
   await context.route("http://127.0.0.1:4173/guest-fixture", (route) =>
-    route.fulfill({ contentType: "text/html", body: "<!doctype html><title>Guest fixture</title>" }),
+    route.fulfill({
+      contentType: "text/html",
+      body: "<!doctype html><title>Guest fixture</title>",
+    }),
   );
   const guestTab = await context.newPage();
   await guestTab.goto("http://127.0.0.1:4173/guest-fixture").catch(() => {});

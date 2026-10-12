@@ -22,7 +22,7 @@ PhishGuard is a rule-based browser extension and companion website developed as 
 
 | Capability            | Behaviour                                                                                                                                       |
 | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| Account onboarding    | Optional signup, email-verification requirement, login, profile editing and website password recovery                                                    |
+| Account onboarding    | Optional signup, email-verification requirement, login, profile editing and website password recovery                                           |
 | Session handling      | Official Supabase SDK refresh; extension credentials in trusted browser-session storage; local cleanup even when logout cannot reach the server |
 | Automatic assessments | Page-load scan, relevant DOM-change reassessment and URL-change polling with bounded work                                                       |
 | Explainable rules     | Weighted indicators, documented thresholds and human-readable reasons                                                                           |
