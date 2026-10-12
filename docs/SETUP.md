@@ -2,6 +2,8 @@
 
 ## Supabase
 
+Guest users may now run local assessments, warnings, dashboard and PDF reports without Supabase; signing in activates a separate per-account local history. Guest logs are not silently transferred to signed-in accounts. Vercel builds require the three production public environment values. See [free deployment handoff](DEPLOY-VERCEL-FREE.md).
+
 Configure the public client values through `.env` (copy `.env.example`) or Vercel environment settings: `PHISHGUARD_SUPABASE_URL`, `PHISHGUARD_SUPABASE_PUBLISHABLE_KEY`, and `PHISHGUARD_WEBSITE_URL`. Build validates the URL and key, generates both client configurations and pins the extension's connection policy. Only standard HTTPS Supabase project hosts are accepted. Website CSP permits Supabase HTTPS project hosts; no other external connection host is allowed by default. Never use a secret/service-role key. Generated `website/config.js` is ignored by Git.
 
 1. Back up the database. Inspect existing `profiles` and `extension_sessions` tables. The migration assumes its declared schema and aborts if an existing sessions table lacks installation IDs; do not drop existing data to force it through.
