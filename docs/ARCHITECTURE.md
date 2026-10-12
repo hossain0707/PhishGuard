@@ -8,7 +8,7 @@ Authentication uses the bundled official Supabase SDK. Only the background handl
 
 Local logout cleanup runs even if token refresh, registration deletion or the server logout request fails. Such a result is labelled local-only cleanup rather than proof of remote session revocation. Build-time configuration rejects privileged keys and sets the browser connection policy to the selected HTTPS Supabase project.
 
-History keys are `history:<authenticated user id>`. Each visit's document ID identifies an assessment; later structural changes replace that assessment instead of counting the same document multiple times. The dashboard displays the most recent 200 assessments since its last clear; report history is separate from that display cutoff. Reports and dashboard use the same owned history and month deletion affects both.
+History keys are `history:<authenticated user id>` for signed-in users and `history:guest` for account-free use. Guest and account records are never merged automatically. Each visit's document ID identifies an assessment; later structural changes replace that assessment instead of counting the same document multiple times. The dashboard displays the most recent 200 assessments since its last clear; report history is separate from that display cutoff. Reports and dashboard use the same owned history and month deletion affects both.
 
 The website authenticates independently using the same Supabase project and accesses browser registration rows protected by RLS. It does not read extension browsing history. Download packages are public. The website and extension are separately authenticated sessions, not seamless single sign-on.
 

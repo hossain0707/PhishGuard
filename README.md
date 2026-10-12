@@ -84,8 +84,10 @@ flowchart LR
 ```mermaid
 flowchart TD
   Load["Page loaded / relevant structure changed"] --> Session{"Signed in?"}
-  Session -- No --> Idle["Monitoring awaits login"]
-  Session -- Yes --> Validate["Validate browser sender and current tab"]
+  Session -- No --> Guest["Use separate local guest history"]
+  Session -- Yes --> Account["Use account-scoped local history"]
+  Guest --> Validate["Validate browser sender and current tab"]
+  Account --> Validate
   Validate --> Score["Apply weighted rules and cap score at 100"]
   Score --> Save["Store redacted assessment under this user"]
   Save --> Risk{"Risk level"}
@@ -176,7 +178,7 @@ Apply/review [the SQL migration](database/001_accounts.sql), enable email confir
 
 Scores are capped at 100: **LOW 0–30 · MEDIUM 31–70 · HIGH 71–100**. Domain matching uses a proper boundary, so `evilgoogle.com` does not match `google.com`.
 
-These are **heuristics, not probabilities**. HTTPS phishing pages can score LOW, legitimate login pages can trigger keywords, and a known-domain discount does not prove safety. Dynamic work is limited to 100 assessments per document, with debounced mutation handling and URL polling. The synthetic evaluation contains intentional false positives and false negatives; it must not be reported as real-world accuracy.
+These are **heuristics, not probabilities**. HTTPS phishing pages can score LOW, legitimate login pages can trigger keywords, and a known-domain discount does not prove safety. Dynamic work is limited to 100 assessments per rolling ten-minute window, with debounced mutation handling and URL polling. The synthetic evaluation contains intentional false positives and false negatives; it must not be reported as real-world accuracy.
 
 ## Privacy and security
 
@@ -219,7 +221,7 @@ Override the selected browser with `TEST_BROWSER_CHANNEL` when needed.
 | Package / repository | ZIP entries match generated sources; outputs, dependencies and private environment files stay out of Git                                    | Reproducible delivery                                        |
 | CI                   | Formatting, build, tests, Firefox validation, browser scenarios, demo checks and production dependency audit                                | Remote run status available in the repository Actions tab    |
 
-The GitHub workflow uses pinned action revisions, read-only job permissions and uploaded verification artifacts. Dependency updates are proposed through Dependabot. No live credentials are required by CI.
+The GitHub workflow uses pinned action revisions, read-only job permissions and CI logs (artifact uploads disabled while quota is exhausted). Dependency updates are proposed through Dependabot. No live credentials are required by CI.
 
 ## Repository layout
 
