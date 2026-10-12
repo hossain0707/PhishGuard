@@ -1,9 +1,9 @@
-import { $, api, request, guarded, toggleTheme, cell, status } from "./ui.js";
+import { $, api, request, toggleTheme, cell, status } from "./ui.js";
 import { countRisks } from "../../shared/history.js";
 async function load() {
   try {
-    const state = await guarded();
-    if (state.notice) status(state.notice);
+    const state = await request("GET_STATE");
+    status(state.guestMode ? "Guest mode: scans and reports remain private on this device. Sign in from Profile to use an account." : state.notice || "");
     const log = state.log
       .filter((row) => row.timestamp > state.dashboardSince)
       .slice(-200)
@@ -47,7 +47,10 @@ $("btn-clear").addEventListener("click", async () => {
   }
 });
 $("btn-report").addEventListener("click", () => (location.href = "report.html"));
-$("btn-profile").addEventListener("click", () => (location.href = "profile.html"));
+$("btn-profile").addEventListener("click", async () => {
+  const state = await request("GET_STATE");
+  location.href = state.guestMode ? "auth.html" : "profile.html";
+});
 $("theme-toggle").addEventListener("click", toggleTheme);
 api.storage.onChanged.addListener((changes, area) => {
   if (area === "local" && Object.keys(changes).some((key) => key.startsWith("history:"))) load();

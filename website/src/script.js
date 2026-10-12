@@ -1,6 +1,20 @@
 import { createAuth, check, credentials } from "../../shared/auth.js";
 import { logoutSession } from "../../shared/logout.js";
 const config = window.PHISHGUARD_CONFIG;
+// Only build-verified official store URLs replace development ZIP downloads.
+for (const link of document.querySelectorAll("[data-store]")) {
+  const listing = window.PHISHGUARD_STORES?.[link.dataset.store];
+  if (listing) {
+    link.href = listing;
+    link.removeAttribute("download");
+    link.textContent = "Install from official store";
+  }
+}
+function authError(error) {
+  if (/failed to fetch|networkerror|network request failed/i.test(error?.message || ""))
+    return new Error("Authentication server unavailable. Check the active Supabase project URL/key and your network. The extension can still scan locally in guest mode.");
+  return error;
+}
 // Retire the old unrefreshed hand-written session format; users sign in through the SDK.
 localStorage.removeItem("phishguard_session");
 const client = createAuth(config, localStorage);
@@ -93,7 +107,7 @@ function submit(id, action) {
     try {
       await action(form, new FormData(form));
     } catch (error) {
-      status(form, error.message || "Please try again.");
+      status(form, authError(error).message || "Please try again.");
     } finally {
       button.disabled = false;
     }
@@ -186,6 +200,6 @@ client.auth.onAuthStateChange((event, value) => {
     if (location.hash) history.replaceState({}, "", location.pathname);
     if (recovering && session) showView("reset");
   } catch (error) {
-    globalStatus(error.message);
+    globalStatus(authError(error).message);
   }
 })();

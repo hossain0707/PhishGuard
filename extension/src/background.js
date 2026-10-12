@@ -41,6 +41,17 @@ const serial = (task) => {
   return result;
 };
 const root = api.runtime.getURL("");
+// Guest assessments stay on-device and never share signed-in account history.
+const GUEST_ID = "guest";
+async function optionalUser(client) {
+  try {
+    return await user(client);
+  } catch {
+    // An unavailable authentication server must not disable local risk assessment.
+    return null;
+  }
+}
+const ownerId = (current) => current?.id || GUEST_ID;
 function trusted(sender) {
   return (
     sender.id === api.runtime.id && typeof sender.url === "string" && sender.url.startsWith(root)
@@ -88,17 +99,17 @@ async function registerBrowser(client, current) {
     : "";
 }
 async function state(client) {
-  const current = await user(client);
+  const current = await optionalUser(client);
+  const owner = ownerId(current);
   const preferences = await api.storage.local.get({ theme: "dark", dashboardClear: {} });
-  let log = [];
-  if (current)
-    log = (await api.storage.local.get(historyKey(current.id)))[historyKey(current.id)] || [];
+  const log = (await api.storage.local.get(historyKey(owner)))[historyKey(owner)] || [];
   const notice = (await api.storage.session.get("historyNotice")).historyNotice || "";
   return {
     user: publicUser(current),
     theme: preferences.theme,
     log,
-    dashboardSince: current ? preferences.dashboardClear[current.id] || "" : "",
+    dashboardSince: preferences.dashboardClear[owner] || "",
+    guestMode: !current,
     version: CONFIG.VERSION,
     notice,
   };
@@ -106,8 +117,8 @@ async function state(client) {
 async function analyzePage(client, message, sender) {
   if (sender.id !== api.runtime.id || !sender.tab || sender.frameId !== 0 || !httpUrl(sender.url))
     throw new Error("Invalid scan source");
-  const current = await user(client);
-  if (!current) return { authenticationRequired: true };
+  const current = await optionalUser(client);
+  const owner = ownerId(current);
   // Browser-provided sender URL is authoritative, never a hostname supplied by the page.
   const actualTab = await api.tabs.get(sender.tab.id);
   if (actualTab.url !== sender.url) return { stale: true };
@@ -116,7 +127,7 @@ async function analyzePage(client, message, sender) {
     timestamp: new Date().toISOString(),
     scanId: `${sender.tab.id}:${sender.documentId || message.documentId || "document"}`,
   };
-  const key = historyKey(current.id);
+  const key = historyKey(owner);
   const previous = (await api.storage.local.get(key))[key] || [];
   try {
     await api.storage.local.set({ [key]: appendHistory(previous, result) });
@@ -130,18 +141,18 @@ async function analyzePage(client, message, sender) {
   const tabKey = `tab:${sender.tab.id}`;
   const entries = await api.storage.session.get([tabKey, `exception:${sender.tab.id}`]);
   await api.storage.session.set({
-    [tabKey]: { ...result, userId: current.id, target: sender.url },
+    [tabKey]: { ...result, userId: owner, target: sender.url },
   });
   const exception = entries[`exception:${sender.tab.id}`];
   const allowed =
     result.threatLevel === "MEDIUM" &&
-    exception?.userId === current.id &&
+    exception?.userId === owner &&
     exception.target === sender.url &&
     exception.expires > Date.now();
   if (result.score > 30 && !allowed) {
     const token = crypto.randomUUID();
     await api.storage.session.set({
-      [`warning:${sender.tab.id}`]: { token, target: sender.url, result, userId: current.id },
+      [`warning:${sender.tab.id}`]: { token, target: sender.url, result, userId: owner },
     });
     // Check again after storage I/O so a slow scan never replaces a newer navigation.
     if ((await api.tabs.get(sender.tab.id)).url === sender.url)
@@ -233,43 +244,46 @@ async function handle(message, sender) {
       return { notice: (await registerBrowser(client, current)) || "Browser registration saved." };
     }
     case "GET_TAB_RESULT": {
-      const current = await requireUser(client);
+      const current = await optionalUser(client);
+      const owner = ownerId(current);
       const tab = await api.tabs.get(message.tabId);
       const result = (await api.storage.session.get(`tab:${message.tabId}`))[
         `tab:${message.tabId}`
       ];
       return {
         result:
-          result?.userId === current.id &&
+          result?.userId === owner &&
           (tab.url === result.target || tab.url?.startsWith(api.runtime.getURL("warning.html")))
             ? result
             : null,
       };
     }
     case "GET_WARNING": {
-      const current = await requireUser(client);
+      const current = await optionalUser(client);
+      const owner = ownerId(current);
       const warning = (await api.storage.session.get(`warning:${sender.tab?.id}`))[
         `warning:${sender.tab?.id}`
       ];
-      if (!warning || warning.userId !== current.id || warning.token !== message.token)
+      if (!warning || warning.userId !== owner || warning.token !== message.token)
         throw new Error("This warning has expired. Return to the dashboard.");
       return { result: warning.result };
     }
     case "PROCEED": {
-      const current = await requireUser(client);
+      const current = await optionalUser(client);
+      const owner = ownerId(current);
       const warning = (await api.storage.session.get(`warning:${sender.tab?.id}`))[
         `warning:${sender.tab?.id}`
       ];
       if (
         !warning ||
-        warning.userId !== current.id ||
+        warning.userId !== owner ||
         warning.token !== message.token ||
         warning.result.threatLevel !== "MEDIUM"
       )
         throw new Error("This warning cannot be bypassed.");
       await api.storage.session.set({
         [`exception:${sender.tab.id}`]: {
-          userId: current.id,
+          userId: owner,
           target: warning.target,
           expires: Date.now() + 5 * 60000,
         },
@@ -278,27 +292,29 @@ async function handle(message, sender) {
       return {};
     }
     case "CLEAR_DASHBOARD": {
-      const current = await requireUser(client);
+      const current = await optionalUser(client);
+      const owner = ownerId(current);
       const stored = await api.storage.local.get({ dashboardClear: {} });
       await api.storage.local.set({
-        dashboardClear: { ...stored.dashboardClear, [current.id]: new Date().toISOString() },
+        dashboardClear: { ...stored.dashboardClear, [owner]: new Date().toISOString() },
       });
       return {};
     }
     case "CLEAR_MONTH": {
-      const current = await requireUser(client);
-      const key = historyKey(current.id);
+      const current = await optionalUser(client);
+      const key = historyKey(ownerId(current));
       const log = (await api.storage.local.get(key))[key] || [];
       const removed = new Set(selectMonth(log, message.month).map((row) => row.scanId));
       await api.storage.local.set({ [key]: log.filter((row) => !removed.has(row.scanId)) });
       return {};
     }
     case "ERASE_HISTORY": {
-      const current = await requireUser(client);
-      await api.storage.local.remove(historyKey(current.id));
+      const current = await optionalUser(client);
+      const owner = ownerId(current);
+      await api.storage.local.remove(historyKey(owner));
       const tabs = await api.storage.session.get(null);
       const keys = Object.keys(tabs).filter(
-        (key) => /^(tab|warning|exception):/.test(key) && tabs[key].userId === current.id,
+        (key) => /^(tab|warning|exception):/.test(key) && tabs[key].userId === owner,
       );
       await api.storage.session.remove(keys);
       return {};

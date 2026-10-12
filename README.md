@@ -22,7 +22,7 @@ PhishGuard is a rule-based browser extension and companion website developed as 
 
 | Capability            | Behaviour                                                                                                                                       |
 | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| Account onboarding    | Signup, email-verification requirement, login, profile editing and website password recovery                                                    |
+| Account onboarding    | Optional signup, email-verification requirement, login, profile editing and website password recovery                                                    |
 | Session handling      | Official Supabase SDK refresh; extension credentials in trusted browser-session storage; local cleanup even when logout cannot reach the server |
 | Automatic assessments | Page-load scan, relevant DOM-change reassessment and URL-change polling with bounded work                                                       |
 | Explainable rules     | Weighted indicators, documented thresholds and human-readable reasons                                                                           |
@@ -137,7 +137,7 @@ npm test
 npm run serve
 ```
 
-Open **http://127.0.0.1:4173**. The website can be previewed without a real account; real signup/login requires a working Supabase configuration.
+Open **http://127.0.0.1:4173**. The website can be previewed without a real account, and the extension performs local guest-mode risk assessments without Supabase. Real signup/login still requires a working Supabase configuration.
 
 | Browser target                  | Development installation                                                                                         |
 | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
@@ -189,7 +189,7 @@ These are **heuristics, not probabilities**. HTTPS phishing pages can score LOW,
 - Logout clears local credentials even when remote cleanup fails; offline cleanup does not prove server-side session revocation.
 - Exported PDFs remain separate files until the user deletes them.
 
-The extension requests `storage`, `tabs` and HTTP/HTTPS site access. Executable dependencies are bundled locally; extension pages use a restrictive CSP and are not exposed as web-accessible account pages.
+The extension can scan in guest mode when authentication is unavailable. Guest history uses its own on-device owner key and is not silently merged into an account. The extension requests `storage`, `tabs` and HTTP/HTTPS site access. Executable dependencies are bundled locally; extension pages use a restrictive CSP and are not exposed as web-accessible account pages.
 
 [Security reporting](SECURITY.md) · [Product privacy disclosure](website/privacy.html) · [Release requirements](docs/RELEASE-READINESS.md)
 

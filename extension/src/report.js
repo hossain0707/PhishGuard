@@ -1,4 +1,4 @@
-import { $, request, guarded, toggleTheme, cell, status } from "./ui.js";
+import { $, request, toggleTheme, cell, status } from "./ui.js";
 import { monthKey, selectMonth, countRisks } from "../../shared/history.js";
 import { makeReport } from "../../shared/pdf.js";
 let state;
@@ -32,7 +32,8 @@ function render() {
 }
 async function load() {
   try {
-    state = await guarded();
+    state = await request("GET_STATE");
+    if (state.guestMode) state.user = { name: "Local guest", email: "Not signed in" };
     render();
     if (state.notice) status(state.notice);
   } catch (error) {

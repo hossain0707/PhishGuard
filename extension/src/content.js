@@ -1,9 +1,8 @@
 (() => {
   const api = globalThis.browser || globalThis.chrome;
   const documentId = crypto.randomUUID();
-  let signature = "",
-    timer,
-    sent = 0;
+  let signature = "", timer;
+  let recentScans = [];
   async function scan() {
     const data = {
       inputCount: document.querySelectorAll('input[type="password"]').length,
@@ -11,12 +10,16 @@
       iframeCount: document.querySelectorAll("iframe").length,
     };
     const next = JSON.stringify([location.href, data]);
-    if (next === signature || sent >= 100) return;
+    if (next === signature) return;
+    // Bounded rolling budget: monitoring resumes after the window rather than stopping forever.
+    const now = Date.now();
+    recentScans = recentScans.filter((timestamp) => now - timestamp < 600000);
+    if (recentScans.length >= 100) return;
     signature = next;
-    sent++;
+    recentScans.push(now);
     try {
       const response = await api.runtime.sendMessage({ type: "ANALYZE_PAGE", data, documentId });
-      if (response?.authenticationRequired) signature = "";
+      if (response?.stale) signature = "";
     } catch {
       /* Browser unloading the document or extension update. */
     }

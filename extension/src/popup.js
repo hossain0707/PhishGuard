@@ -8,10 +8,7 @@ $("btn-dashboard").addEventListener("click", () =>
   try {
     const state = await request("GET_STATE");
     theme(state.theme);
-    if (!state.user) {
-      document.querySelector(".live").textContent = "LOGIN REQUIRED";
-      throw new Error("Log in from the dashboard to activate monitoring.");
-    }
+    if (state.guestMode) document.querySelector(".live").textContent = "GUEST MODE";
     const [tab] = await api.tabs.query({ active: true, currentWindow: true });
     const { result } = await request("GET_TAB_RESULT", { tabId: tab.id });
     if (!result)

@@ -46,6 +46,24 @@ const config = validateDeploymentConfig({
   WEBSITE_URL: process.env.PHISHGUARD_WEBSITE_URL || CONFIG.WEBSITE_URL,
   VERSION: version,
 });
+// Fail closed on public deployment rather than silently bundling an old paused project.
+if (process.env.VERCEL === "1" &&
+    (!process.env.PHISHGUARD_SUPABASE_URL || !process.env.PHISHGUARD_SUPABASE_PUBLISHABLE_KEY || !process.env.PHISHGUARD_WEBSITE_URL))
+  throw new Error("Vercel deploy requires the three PHISHGUARD_* public environment values. Set active Supabase project details and the exact production website URL.");
+const storeHosts = {
+  chrome: ["chromewebstore.google.com"],
+  edge: ["microsoftedge.microsoft.com"],
+  firefox: ["addons.mozilla.org"],
+};
+const stores = {};
+for (const [key, hosts] of Object.entries(storeHosts)) {
+  const value = process.env[`PHISHGUARD_STORE_${key.toUpperCase()}_URL`];
+  if (!value) continue;
+  const url = new URL(value);
+  if (url.protocol !== "https:" || !hosts.includes(url.hostname) || url.username || url.password || url.hash)
+    throw new Error(`Invalid ${key} store URL. Only genuine official HTTPS store listings are allowed.`);
+  stores[key] = url.href;
+}
 const define = { __PHISHGUARD_CONFIG__: JSON.stringify(config) };
 template.content_security_policy.extension_pages =
   template.content_security_policy.extension_pages.replace(
@@ -134,7 +152,7 @@ await build({
 });
 await writeFile(
   path.join(website, "config.js"),
-  `window.PHISHGUARD_CONFIG = ${JSON.stringify(config, null, 2)};\n`,
+  `window.PHISHGUARD_CONFIG = ${JSON.stringify(config, null, 2)};\nwindow.PHISHGUARD_STORES = ${JSON.stringify(stores, null, 2)};\n`,
 );
 await writeFile(path.join(website, "downloads", "SHA256SUMS.txt"), hashes.join("\n") + "\n");
 await mkdir(at("test-results"), { recursive: true });
