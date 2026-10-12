@@ -33,7 +33,7 @@ async function load() {
       const row = document.createElement("tr");
       const td = cell(
         row,
-        "No scans recorded for this account. Reload a web page after logging in.",
+        "No scans recorded yet. Open or reload an HTTP/HTTPS page to begin local assessments.",
       );
       td.colSpan = 5;
       $("log-body").append(row);

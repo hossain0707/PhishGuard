@@ -26,13 +26,13 @@ Official guide: https://learn.microsoft.com/en-us/microsoft-edge/extensions/publ
 
 ## Firefox
 
-Submit through Mozilla's Add-on Developer Hub. Run `web-ext lint`, disclose the relevant collected data, and supply original source plus reproducible build instructions for the bundled dependencies. Select listed distribution or signed unlisted distribution as appropriate. The supplied ZIP is a development package, not an approved signed XPI. Desktop Firefox uses background scripts rather than a Chrome service worker.
+Submit through Mozilla's Add-on Developer Hub. Run `npm run lint:extension` (Mozilla addons-linter), disclose the relevant collected data, and supply original source plus reproducible build instructions for the bundled dependencies. Select listed distribution or signed unlisted distribution as appropriate. The supplied ZIP is a development package, not an approved signed XPI. Desktop Firefox uses background scripts rather than a Chrome service worker.
 
 Official guides: https://extensionworkshop.com/documentation/publish/submitting-an-add-on/ and https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/background
 
 ## Mobile
 
-Firefox Android is the first feasibility target: the candidate manifest declares Android compatibility and shares the Firefox background code. Validate on an actual device and check supported APIs and PDF/download behaviour before enabling Android distribution in the store. Mobile layout screenshots alone are not compatibility evidence.
+Firefox Android remains a future feasibility target; the desktop marketplace manifest does not declare Android support. Validate on an actual device and check supported APIs and PDF/download behaviour before enabling Android distribution. Mobile layout screenshots alone are not compatibility evidence.
 
 Standard mobile Chrome does not provide the desktop extension install workflow. Safari iPhone/iPad requires separate Apple packaging/distribution and platform testing. A mobile URL-checking website could be future work, but would not inspect arbitrary browser pages like an installed extension. No Edge mobile support claim is made without checking that platform's supported extension distribution and APIs.
 

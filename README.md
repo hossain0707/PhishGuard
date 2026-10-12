@@ -254,7 +254,7 @@ Import **this repository root** into Vercel using the **Other** framework preset
 
 A stable HTTPS Vercel URL is sufficient for an academic demonstration; a custom domain is optional. Store packages need separate browser review/signing. Do not describe a development ZIP as a store-approved release.
 
-Before public release: restore/configure the live Supabase project, verify email and deployed ownership policies, provide a real operator/privacy contact, test supported browsers/devices, complete a representative holdout evaluation, obtain approved institutional branding and finish store approvals. [Free Vercel deployment handoff →](docs/DEPLOY-VERCEL-FREE.md) · [Branding handoff →](docs/BRANDING.md) · [Publishing and mobile feasibility →](docs/PUBLISHING.md)
+Before public release: restore/configure the live Supabase project, verify email and deployed ownership policies, provide a real operator/privacy contact, test supported browsers/devices, complete a representative holdout evaluation, obtain approved institutional branding and finish store approvals. [Free Vercel deployment handoff →](docs/DEPLOY-VERCEL-FREE.md) · [Branding handoff →](docs/BRANDING.md) · [Publishing and mobile feasibility →](docs/PUBLISHING.md) · [Free Edge/Firefox store listing package →](docs/STORE-SUBMISSIONS.md)
 
 ## Documentation
 

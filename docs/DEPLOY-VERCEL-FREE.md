@@ -1,6 +1,6 @@
 # PhishGuard — free FYP deployment handoff
 
-**Status:** Deployment is not yet performed. This source branch prepares the project; it does not register a domain, purchase services or create a live database.
+**Status (12 October 2026):** The free PhishGuard website was deployed to https://phishgurd.vercel.app/, and a new free Supabase project `pbwthtftlfgonbhkytxh` was created in Singapore. The existing `profiles` and `extension_sessions` tables use row-level security. Store submission, official branding, production SMTP and independent phishing evaluation remain outstanding. Do not create another hosting project or database.
 
 ## Repair existing Supabase configuration
 

@@ -92,14 +92,13 @@ const manifests = {
     background: { scripts: ["background.js"] },
     browser_specific_settings: {
       gecko: {
-        id: "phishguard@gmi.edu.my",
+        id: "phishguard@hossain0707.github.io",
         strict_min_version: "142.0",
         data_collection_permissions: {
           required: ["personallyIdentifyingInfo", "authenticationInfo"],
           optional: ["technicalAndInteraction"],
         },
       },
-      gecko_android: { strict_min_version: "142.0" },
     },
   },
 };
