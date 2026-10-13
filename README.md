@@ -37,7 +37,7 @@
 | [Public website](https://phishgurd.vercel.app/) | **Live**                    | Vercel Hobby deployment with HTTPS                                                                               |
 | Supabase backend                                | **Provisioned**             | Free project; `profiles` and `extension_sessions` with row-level security                                        |
 | Website account login                           | **Observed working**        | Sign-in and dashboard shown in live testing; comprehensive email/recovery and cross-account checks still pending |
-| Microsoft Edge Add-ons                          | **Submitted — in review**   | Version `4.1.0` shown as *In review* in Partner Center on **13 October 2026**; no public listing URL yet         |
+| Microsoft Edge Add-ons                          | **Submitted — in review**   | Version `4.1.0` shown as _In review_ in Partner Center on **13 October 2026**; no public listing URL yet         |
 | Mozilla Firefox Add-ons                         | **Prepared, not submitted** | Firefox build available; developer account ready, marketplace upload/review still pending                        |
 | Chrome Web Store                                | **Not submitted**           | Separate developer registration and review would be required                                                     |
 
