@@ -1,22 +1,49 @@
-![PhishGuard: animated browser risk-assessment workflow](docs/assets/banner.svg)
+![PhishGuard — browser phishing-risk assessment](docs/assets/banner.svg)
 
 <div align="center">
 
-**Explainable browser risk assessments. Private local evidence.**
+**Explainable browser risk assessments. Private, on-device history.**
 
-`v4.1.0 candidate` · `Manifest V3` · `Node.js 22+` · `Supabase Auth` · `PDF reports`
+[![CI](https://github.com/hossain0707/PhishGuard/actions/workflows/ci.yml/badge.svg)](https://github.com/hossain0707/PhishGuard/actions/workflows/ci.yml)
+![Version](https://img.shields.io/badge/version-4.1.0-0c7a74)
+![Manifest](https://img.shields.io/badge/Manifest-V3-1e293b)
+![FYP](https://img.shields.io/badge/project-FYP%202026-4b5563)
 
-[Demo](#demo) · [Architecture](#architecture) · [Quick start](#quick-start) · [Detection](#detection-model) · [Verification](#verification) · [Deployment](#deployment) · [Documentation](#documentation)
+[**Live website**](https://phishgurd.vercel.app/) · [**Edge ZIP**](https://phishgurd.vercel.app/downloads/PhishGuard-Chrome-Edge.zip) · [**Firefox ZIP**](https://phishgurd.vercel.app/downloads/PhishGuard-Firefox.zip) · [**Privacy policy**](https://phishgurd.vercel.app/privacy.html)
+
+[Overview](#overview) · [Live status](#release-and-store-status) · [Screenshots](#demo-and-screenshots) · [Architecture](#architecture) · [Install](#installation-and-quick-start) · [Evaluation](#verification-and-evidence) · [Docs](#documentation)
 
 </div>
 
 ---
 
-PhishGuard is a rule-based browser extension and companion website developed as a Final Year Project. It automatically assesses HTTP/HTTPS URLs and selected page-structure indicators, explains its risk score, redirects suspicious pages to controlled warnings, and maintains account-separated local dashboards and monthly reports.
+## Overview
 
-**One maintained source repository builds Chrome/Edge and Firefox packages.** Browser targets are generated outputs of the same version; there are no parallel source copies to maintain.
+**PhishGuard** is a browser extension and companion website developed for a Final Year Project (FYP). It checks HTTP/HTTPS URL characteristics and limited page-structure signals, explains a heuristic risk score and shows controlled warnings for suspicious pages. It also provides account-separated **local** assessment history, a dashboard and monthly PDF reports.
 
-> **Release status:** a locally verified implementation candidate, not a certified phishing-prevention product. Live Supabase/email/RLS checks, representative detection evaluation, physical-browser/mobile tests and store approvals remain release gates. Page assessment occurs **after loading**, so redirects cannot guarantee prevention of network requests or credential theft. [Release readiness →](docs/RELEASE-READINESS.md)
+- **Account optional:** basic risk scanning, warnings and local reports work in guest mode.
+- **Transparent decisions:** see the factors behind LOW, MEDIUM and HIGH assessments.
+- **One source codebase:** build dedicated packages for Microsoft Edge/Chrome and Firefox.
+- **Privacy-oriented:** passwords, form values and page text are not read; browsing assessment history is not sent to Supabase.
+- **Companion website:** optional signup, login, account profile and browser-registration information, hosted on Vercel.
+
+> [!IMPORTANT]
+> PhishGuard is an **academic, rule-based prototype**, not a certified anti-phishing product. Scanning occurs **after page load**, scores are not probabilities, and false positives/negatives are possible. A LOW score or HTTPS address does not guarantee safety. Do not rely on it as your only security control.
+
+## Release and store status
+
+| Component | Current state | Notes |
+| --- | --- | --- |
+| [Public website](https://phishgurd.vercel.app/) | **Live** | Vercel Hobby deployment with HTTPS |
+| Supabase backend | **Provisioned** | Free project; `profiles` and `extension_sessions` with row-level security |
+| Website account login | **Observed working** | Sign-in and dashboard shown in live testing; comprehensive email/recovery and cross-account checks still pending |
+| Microsoft Edge Add-ons | **Submitted — in review** | Version `4.1.0` shown as *In review* in Partner Center on **13 October 2026**; no public listing URL yet |
+| Mozilla Firefox Add-ons | **Prepared, not submitted** | Firefox build available; developer account ready, marketplace upload/review still pending |
+| Chrome Web Store | **Not submitted** | Separate developer registration and review would be required |
+
+**Last externally observed store status: 13 October 2026.** Microsoft/Firefox certification status can change; this README is a dated snapshot, not a live store API. The Edge and Firefox ZIP links above are **development packages**, not approved store installations. Until official listings are approved, there are no official install buttons to link.
+
+The requested marketplace publisher display name is **Norah Jasmine**, distinct from the GitHub repository owner. Mozilla and Microsoft manage publisher identity and certification independently. An operator support/account-deletion contact, live email delivery checks, real-browser smoke tests, independent risk evaluation and any permitted GMI artwork remain release requirements. See [release readiness](docs/RELEASE-READINESS.md) and [marketplace preparation](docs/STORE-SUBMISSIONS.md).
 
 ## What is implemented
 
@@ -32,7 +59,7 @@ PhishGuard is a rule-based browser extension and companion website developed as 
 | Reproducible delivery | Locked dependencies, one build pipeline, matching package contents, SHA-256 checksums and locally bundled executable dependencies               |
 | Repository quality    | Pinned CI actions, formatting checks, dependency updates, security guidance and controlled browser/accessibility checks                         |
 
-## Demo
+## Demo and screenshots
 
 ![Animated controlled demo of the actual PhishGuard interface](docs/assets/demo.svg)
 
@@ -126,31 +153,44 @@ erDiagram
 
 Supabase Auth manages passwords; application tables do not duplicate them. Registration upserts use the user/installation pair. `last_seen` represents recorded login/registration activity, **not a live browser connection**. [Trust boundaries and rule rationale →](docs/ARCHITECTURE.md)
 
-## Quick start
+## Installation and quick start
 
-Requirements: **Node.js 22+**, npm, Git, and a supported desktop browser.
+### Try the live website
+
+Open **[phishgurd.vercel.app](https://phishgurd.vercel.app/)** to explore the public portal, account pages and download links. The website alone **cannot monitor arbitrary browser tabs**; monitoring requires installing the desktop extension.
+
+### Install the desktop extension locally
+
+Store approval is **not required** for development or an FYP demonstration.
+
+| Browser | Package / build folder | How to load for testing |
+| --- | --- | --- |
+| **Microsoft Edge** | [Chrome/Edge ZIP](https://phishgurd.vercel.app/downloads/PhishGuard-Chrome-Edge.zip) | Extract ZIP → open `edge://extensions` → enable **Developer mode** → **Load unpacked** → choose extracted folder containing `manifest.json` |
+| **Google Chrome (desktop)** | Same Chrome/Edge ZIP | Extract ZIP → `chrome://extensions` → **Developer mode** → **Load unpacked** |
+| **Mozilla Firefox (desktop)** | [Firefox ZIP](https://phishgurd.vercel.app/downloads/PhishGuard-Firefox.zip) | Extract ZIP → `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on** → select `manifest.json` |
+
+Firefox temporary add-ons are normally removed after a restart. Permanent Firefox distribution requires Mozilla signing. These local procedures are for development/testing, not marketplace certification. **Firefox Android, standard Chrome mobile and Safari iOS are not claimed as supported extension targets.** A phone can display the website, not the desktop extension.
+
+Once installed, open the extension and choose **Continue with local protection (no account)**. Open or reload a test HTTP/HTTPS page, then inspect the extension popup, warning page, local dashboard and monthly report. To test account-specific features, use a verified account and a correctly configured Supabase service.
+
+### Run from source
+
+Requirements: **Node.js 22+**, npm, Git and a desktop browser.
 
 ```bash
 git clone https://github.com/hossain0707/PhishGuard.git
 cd PhishGuard
-npm ci
+npm ci --include=dev
 npm run build
 npm test
 npm run serve
 ```
 
-Open **http://127.0.0.1:4173**. The website can be previewed without a real account, and the extension performs local guest-mode risk assessments without Supabase. Real signup/login still requires a working Supabase configuration.
+Open **http://127.0.0.1:4173** to preview the website. The build also produces `dist/chrome-edge/` and `dist/firefox/` for unpacked browser testing, plus downloadable ZIPs and SHA-256 hashes under `website/downloads/`. Generated artifacts are ignored by Git and should not be committed as parallel source copies.
 
-| Browser target                  | Development installation                                                                                         |
-| ------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Chrome / Edge                   | Enable developer mode in the extension manager; load `dist/chrome-edge` unpacked                                 |
-| Firefox desktop                 | Load `dist/firefox/manifest.json` temporarily through `about:debugging`; permanent installation requires signing |
-| Firefox Android                 | Compatibility candidate requiring physical-device validation before distribution                                 |
-| Standard Chrome mobile / Safari | This repository does not claim support; Safari requires a separate Apple packaging workflow                      |
+### Configure an independent Supabase deployment
 
-### Configure your backend
-
-Copy `.env.example` to `.env`, or set the same public values in Vercel:
+The existing production website uses an active Supabase project and its public client key. **You do not need to create another Supabase project to try PhishGuard.** For your own separate deployment, copy `.env.example` to `.env` and set:
 
 ```dotenv
 PHISHGUARD_SUPABASE_URL=https://YOUR-PROJECT.supabase.co
@@ -158,11 +198,9 @@ PHISHGUARD_SUPABASE_PUBLISHABLE_KEY=sb_publishable_YOUR_PUBLIC_CLIENT_KEY
 PHISHGUARD_WEBSITE_URL=https://YOUR-PROJECT.vercel.app/
 ```
 
-Run `npm run build` again. Build validates the backend URL, rejects secret/service-role keys, sets both browser clients' public configuration and pins the extension connection policy to the chosen project. Generated browser configuration is excluded from Git.
+Rebuild the extension and website after changing these values. Review [the migration](database/001_accounts.sql), configure Supabase Auth Site URL and redirect allowlist, set up production email delivery as needed, and verify row-level security with two separate test users.
 
-Apply/review [the SQL migration](database/001_accounts.sql), enable email confirmation, configure production SMTP and exact allowed callback URLs, and verify ownership using **two real test accounts**. Without environment overrides, the historical supplied public project configuration is retained; that hostname previously failed DNS checks and is not a working live demo.
-
-**Never place a secret/service-role key in a browser client or commit private environment files.** [Complete setup and operations guide →](docs/SETUP.md)
+**Never embed a Supabase secret/service-role key, passwords or private `.env` files into browser bundles or Git.** [Full setup guide](docs/SETUP.md) · [Free deployment guide](docs/DEPLOY-VERCEL-FREE.md).
 
 ## Detection model
 
@@ -195,7 +233,7 @@ The extension can scan in guest mode when authentication is unavailable. Guest h
 
 [Security reporting](SECURITY.md) · [Product privacy disclosure](website/privacy.html) · [Release requirements](docs/RELEASE-READINESS.md)
 
-## Verification
+## Verification and evidence
 
 ```bash
 npm run check
@@ -250,11 +288,34 @@ PhishGuard/
 
 ## Deployment
 
-Import **this repository root** into Vercel using the **Other** framework preset. Root `vercel.json` installs locked build dependencies, runs `npm run build` and publishes `website`. Set the three public configuration values in the deployment environment, rebuild, and allow the exact production Auth callback.
+The maintained public website is **[https://phishgurd.vercel.app/](https://phishgurd.vercel.app/)** (the assigned Vercel project/domain uses the spelling `phishgurd`). The deployment uses the repository's root `vercel.json`, which builds the `website/` output from the same source as both extension packages.
 
-A stable HTTPS Vercel URL is sufficient for an academic demonstration; a custom domain is optional. Store packages need separate browser review/signing. Do not describe a development ZIP as a store-approved release.
+| Layer | Technology | Deployment notes |
+| --- | --- | --- |
+| Web frontend and extension downloads | Vercel Hobby | Public HTTPS website; no custom domain purchased |
+| Optional account and browser registration | Supabase Auth + PostgreSQL | Free Supabase project, owner-scoped table policies |
+| Assessment rules, history and reports | Browser extension | Runs locally after page load; not a cloud scanning service |
+| Quality checks | GitHub Actions | Unit, database, packaging, browser and lint checks on repository commits |
 
-Before public release: restore/configure the live Supabase project, verify email and deployed ownership policies, provide a real operator/privacy contact, test supported browsers/devices, complete a representative holdout evaluation, obtain approved institutional branding and finish store approvals. [Free Vercel deployment handoff →](docs/DEPLOY-VERCEL-FREE.md) · [Branding handoff →](docs/BRANDING.md) · [Publishing and mobile feasibility →](docs/PUBLISHING.md) · [Free Edge/Firefox store listing package →](docs/STORE-SUBMISSIONS.md)
+The project was set up with free-tier resources; **free tiers have usage and service limits**, and they are not an unlimited-cost guarantee. If you deploy your own copy, confirm the provider's current plan terms.
+
+### Browser marketplace publishing
+
+- **Edge:** one `4.1.0` submission was observed as **In review** on 13 October 2026. Do not create a duplicate listing; the public store link becomes available only after approval.
+- **Firefox:** the developer account is prepared under the requested name **Norah Jasmine**, but the public listing has **not been submitted or signed** in the last observed developer dashboard.
+- **Chrome Web Store:** not submitted. Chrome's publisher requirements are separate from Edge and Firefox.
+- Store approval does not automatically update the website. After approval, add only a verified official listing URL using `PHISHGUARD_STORE_EDGE_URL` or `PHISHGUARD_STORE_FIREFOX_URL`, then rebuild.
+
+[Store submission materials](docs/STORE-SUBMISSIONS.md) · [Publishing procedure](docs/PUBLISHING.md) · [Live site privacy policy](https://phishgurd.vercel.app/privacy.html).
+
+## Project ownership and academic context
+
+PhishGuard was built as a **German-Malaysian Institute (GMI) Final Year Project (2026)**. This describes its academic context and **does not imply institutional endorsement**. Permission to use official GMI trademarks or assets must be obtained independently.
+
+- **Source repository:** [hossain0707/PhishGuard](https://github.com/hossain0707/PhishGuard).
+- **Requested marketplace publisher display name:** **Norah Jasmine**. A store publisher identity is distinct from software copyright or source-code ownership.
+- **Contributing:** see [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
+- **License:** this repository **does not currently declare an open-source license**. Public GitHub visibility does not grant general redistribution rights. Third-party packages retain their original licenses and notices. Do not add a new license without the rights holder's approval.
 
 ## Documentation
 
@@ -268,8 +329,9 @@ Before public release: restore/configure the live Supabase project, verify email
 | [FYP evidence](docs/FYP-EVIDENCE.md)                   | Requirements, technical evidence and automation limitations         |
 | [Implementation report](docs/IMPLEMENTATION-REPORT.md) | Recorded work and verification scope                                |
 | [Release readiness](docs/RELEASE-READINESS.md)         | Unverified external production gates                                |
+| [Marketplace submissions](docs/STORE-SUBMISSIONS.md)   | Edge/Firefox package details, permissions and reviewer notes         |
 | [Contributing](CONTRIBUTING.md)                        | Development workflow and review expectations                        |
 | [Security](SECURITY.md)                                | Private vulnerability reporting and sensitive-data handling         |
-| [Changelog](CHANGELOG.md)                              | Implementation-candidate changes                                    |
+| [Changelog](CHANGELOG.md)                              | Changes tracked for version 4.1.0                                    |
 
-**Academic context:** German-Malaysian Institute FYP 2026; institutional logo/branding approval remains pending. **Licensing:** no open-source redistribution licence has been declared for project source. Bundled dependencies retain their own notices; do not assume the repository has an MIT licence.
+**Documentation principle:** distinguish reproduced local results, observed live behaviour and independent store certification. No fictional detection-accuracy statistics are claimed.
