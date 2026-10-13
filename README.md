@@ -32,14 +32,14 @@
 
 ## Release and store status
 
-| Component | Current state | Notes |
-| --- | --- | --- |
-| [Public website](https://phishgurd.vercel.app/) | **Live** | Vercel Hobby deployment with HTTPS |
-| Supabase backend | **Provisioned** | Free project; `profiles` and `extension_sessions` with row-level security |
-| Website account login | **Observed working** | Sign-in and dashboard shown in live testing; comprehensive email/recovery and cross-account checks still pending |
-| Microsoft Edge Add-ons | **Submitted — in review** | Version `4.1.0` shown as *In review* in Partner Center on **13 October 2026**; no public listing URL yet |
-| Mozilla Firefox Add-ons | **Prepared, not submitted** | Firefox build available; developer account ready, marketplace upload/review still pending |
-| Chrome Web Store | **Not submitted** | Separate developer registration and review would be required |
+| Component                                       | Current state               | Notes                                                                                                            |
+| ----------------------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| [Public website](https://phishgurd.vercel.app/) | **Live**                    | Vercel Hobby deployment with HTTPS                                                                               |
+| Supabase backend                                | **Provisioned**             | Free project; `profiles` and `extension_sessions` with row-level security                                        |
+| Website account login                           | **Observed working**        | Sign-in and dashboard shown in live testing; comprehensive email/recovery and cross-account checks still pending |
+| Microsoft Edge Add-ons                          | **Submitted — in review**   | Version `4.1.0` shown as *In review* in Partner Center on **13 October 2026**; no public listing URL yet         |
+| Mozilla Firefox Add-ons                         | **Prepared, not submitted** | Firefox build available; developer account ready, marketplace upload/review still pending                        |
+| Chrome Web Store                                | **Not submitted**           | Separate developer registration and review would be required                                                     |
 
 **Last externally observed store status: 13 October 2026.** Microsoft/Firefox certification status can change; this README is a dated snapshot, not a live store API. The Edge and Firefox ZIP links above are **development packages**, not approved store installations. Until official listings are approved, there are no official install buttons to link.
 
@@ -163,11 +163,11 @@ Open **[phishgurd.vercel.app](https://phishgurd.vercel.app/)** to explore the pu
 
 Store approval is **not required** for development or an FYP demonstration.
 
-| Browser | Package / build folder | How to load for testing |
-| --- | --- | --- |
-| **Microsoft Edge** | [Chrome/Edge ZIP](https://phishgurd.vercel.app/downloads/PhishGuard-Chrome-Edge.zip) | Extract ZIP → open `edge://extensions` → enable **Developer mode** → **Load unpacked** → choose extracted folder containing `manifest.json` |
-| **Google Chrome (desktop)** | Same Chrome/Edge ZIP | Extract ZIP → `chrome://extensions` → **Developer mode** → **Load unpacked** |
-| **Mozilla Firefox (desktop)** | [Firefox ZIP](https://phishgurd.vercel.app/downloads/PhishGuard-Firefox.zip) | Extract ZIP → `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on** → select `manifest.json` |
+| Browser                       | Package / build folder                                                               | How to load for testing                                                                                                                     |
+| ----------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Microsoft Edge**            | [Chrome/Edge ZIP](https://phishgurd.vercel.app/downloads/PhishGuard-Chrome-Edge.zip) | Extract ZIP → open `edge://extensions` → enable **Developer mode** → **Load unpacked** → choose extracted folder containing `manifest.json` |
+| **Google Chrome (desktop)**   | Same Chrome/Edge ZIP                                                                 | Extract ZIP → `chrome://extensions` → **Developer mode** → **Load unpacked**                                                                |
+| **Mozilla Firefox (desktop)** | [Firefox ZIP](https://phishgurd.vercel.app/downloads/PhishGuard-Firefox.zip)         | Extract ZIP → `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on** → select `manifest.json`                                  |
 
 Firefox temporary add-ons are normally removed after a restart. Permanent Firefox distribution requires Mozilla signing. These local procedures are for development/testing, not marketplace certification. **Firefox Android, standard Chrome mobile and Safari iOS are not claimed as supported extension targets.** A phone can display the website, not the desktop extension.
 
@@ -290,12 +290,12 @@ PhishGuard/
 
 The maintained public website is **[https://phishgurd.vercel.app/](https://phishgurd.vercel.app/)** (the assigned Vercel project/domain uses the spelling `phishgurd`). The deployment uses the repository's root `vercel.json`, which builds the `website/` output from the same source as both extension packages.
 
-| Layer | Technology | Deployment notes |
-| --- | --- | --- |
-| Web frontend and extension downloads | Vercel Hobby | Public HTTPS website; no custom domain purchased |
-| Optional account and browser registration | Supabase Auth + PostgreSQL | Free Supabase project, owner-scoped table policies |
-| Assessment rules, history and reports | Browser extension | Runs locally after page load; not a cloud scanning service |
-| Quality checks | GitHub Actions | Unit, database, packaging, browser and lint checks on repository commits |
+| Layer                                     | Technology                 | Deployment notes                                                         |
+| ----------------------------------------- | -------------------------- | ------------------------------------------------------------------------ |
+| Web frontend and extension downloads      | Vercel Hobby               | Public HTTPS website; no custom domain purchased                         |
+| Optional account and browser registration | Supabase Auth + PostgreSQL | Free Supabase project, owner-scoped table policies                       |
+| Assessment rules, history and reports     | Browser extension          | Runs locally after page load; not a cloud scanning service               |
+| Quality checks                            | GitHub Actions             | Unit, database, packaging, browser and lint checks on repository commits |
 
 The project was set up with free-tier resources; **free tiers have usage and service limits**, and they are not an unlimited-cost guarantee. If you deploy your own copy, confirm the provider's current plan terms.
 
@@ -329,9 +329,9 @@ PhishGuard was built as a **German-Malaysian Institute (GMI) Final Year Project 
 | [FYP evidence](docs/FYP-EVIDENCE.md)                   | Requirements, technical evidence and automation limitations         |
 | [Implementation report](docs/IMPLEMENTATION-REPORT.md) | Recorded work and verification scope                                |
 | [Release readiness](docs/RELEASE-READINESS.md)         | Unverified external production gates                                |
-| [Marketplace submissions](docs/STORE-SUBMISSIONS.md)   | Edge/Firefox package details, permissions and reviewer notes         |
+| [Marketplace submissions](docs/STORE-SUBMISSIONS.md)   | Edge/Firefox package details, permissions and reviewer notes        |
 | [Contributing](CONTRIBUTING.md)                        | Development workflow and review expectations                        |
 | [Security](SECURITY.md)                                | Private vulnerability reporting and sensitive-data handling         |
-| [Changelog](CHANGELOG.md)                              | Changes tracked for version 4.1.0                                    |
+| [Changelog](CHANGELOG.md)                              | Changes tracked for version 4.1.0                                   |
 
 **Documentation principle:** distinguish reproduced local results, observed live behaviour and independent store certification. No fictional detection-accuracy statistics are claimed.
