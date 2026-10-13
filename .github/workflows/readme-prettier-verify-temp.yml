@@ -1,0 +1,24 @@
+name: Temporary README formatting preview
+on:
+  push:
+    branches: [docs/readme-live-release-status-20261013]
+permissions:
+  contents: read
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --include=dev
+      - run: npx prettier --write README.md
+      - name: Print formatted README for comparison
+        run: |
+          echo PGFORMATTED_BEGIN
+          base64 -w0 README.md
+          echo
+          echo PGFORMATTED_END
