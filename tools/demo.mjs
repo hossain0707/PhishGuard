@@ -77,7 +77,10 @@ try {
       "http://127.0.0.1:4173/plain",
       32,
       "MEDIUM",
-      ["Unencrypted HTTP transport (not proof of phishing): +12 pts", "IP address used as hostname: +20 pts"],
+      [
+        "Unencrypted HTTP transport (not proof of phishing): +12 pts",
+        "IP address used as hostname: +20 pts",
+      ],
     ],
     [
       "http://127.0.0.1:4173/login",

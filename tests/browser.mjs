@@ -239,23 +239,39 @@ try {
   record("month selection supports empty periods");
   const earlierMonth = "2020-01";
   // Inject a controlled prior-month archive entry, independent of rolling history.
-  await auth.evaluate(async (owner) => new Promise((resolve, reject) => {
-    const open = indexedDB.open("phishguard-archive-v1", 1);
-    open.onerror = () => reject(open.error);
-    open.onsuccess = () => {
-      const db = open.result;
-      const tx = db.transaction("scans", "readwrite");
-      tx.objectStore("scans").put({
-        key: owner + ":historical-fixture", owner, ownerMonth: owner + ":2020-01",
-        month: "2020-01", scanId: "historical-fixture",
-        timestamp: "2020-01-15T12:00:00.000Z", url: "https://example.test/archived",
-        hostname: "example.test", score: 0, threatLevel: "LOW",
-        reasons: ["Controlled archive-only FYP fixture"],
-      });
-      tx.oncomplete = () => { db.close(); resolve(); };
-      tx.onerror = () => { db.close(); reject(tx.error); };
-    };
-  }), state.user.id);
+  await auth.evaluate(
+    async (owner) =>
+      new Promise((resolve, reject) => {
+        const open = indexedDB.open("phishguard-archive-v1", 1);
+        open.onerror = () => reject(open.error);
+        open.onsuccess = () => {
+          const db = open.result;
+          const tx = db.transaction("scans", "readwrite");
+          tx.objectStore("scans").put({
+            key: owner + ":historical-fixture",
+            owner,
+            ownerMonth: owner + ":2020-01",
+            month: "2020-01",
+            scanId: "historical-fixture",
+            timestamp: "2020-01-15T12:00:00.000Z",
+            url: "https://example.test/archived",
+            hostname: "example.test",
+            score: 0,
+            threatLevel: "LOW",
+            reasons: ["Controlled archive-only FYP fixture"],
+          });
+          tx.oncomplete = () => {
+            db.close();
+            resolve();
+          };
+          tx.onerror = () => {
+            db.close();
+            reject(tx.error);
+          };
+        };
+      }),
+    state.user.id,
+  );
   await auth.locator("#month").fill(earlierMonth);
   await auth.locator("#month").dispatchEvent("change");
   await auth.locator("#total").filter({ hasText: /^1$/ }).waitFor();
