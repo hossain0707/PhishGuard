@@ -9,6 +9,11 @@
       inputCount: document.querySelectorAll('input[type="password"]').length,
       formCount: document.forms.length,
       iframeCount: document.querySelectorAll("iframe").length,
+      crossOriginPasswordForm: [...document.forms].filter((form) => {
+        if (!form.querySelector('input[type="password"]')) return false;
+        try { return new URL(form.action || location.href, location.href).origin !== location.origin; }
+        catch { return false; }
+      }).length,
     };
     const next = JSON.stringify([location.href, data]);
     if (next === signature) return;

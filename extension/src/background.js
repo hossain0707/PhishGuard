@@ -1,4 +1,5 @@
 import { CONFIG } from "../../shared/config.js";
+import { archiveAssessment, deleteArchivedOwner, deleteArchivedMonth } from "../../shared/archive.js";
 import { analyze, httpUrl } from "../../shared/risk.js";
 import { appendHistory, historyKey, selectMonth } from "../../shared/history.js";
 import { createAuth, publicUser, credentials, check } from "../../shared/auth.js";
@@ -103,7 +104,7 @@ async function state(client) {
   const owner = ownerId(current);
   const preferences = await api.storage.local.get({ theme: "dark", dashboardClear: {} });
   const log = (await api.storage.local.get(historyKey(owner)))[historyKey(owner)] || [];
-  const notice = (await api.storage.session.get("historyNotice")).historyNotice || "";
+  const notice = (await api.storage.session.get("historyNotice")).historyNotice || (await api.storage.session.get("archiveNotice")).archiveNotice || "";
   return {
     user: publicUser(current),
     theme: preferences.theme,
@@ -138,6 +139,9 @@ async function analyzePage(client, message, sender) {
         "Local history could not be saved. Storage may be full. Monitoring and risk redirects still operate; export or erase old history.",
     });
   }
+  // Persist an independent monthly history without delaying the warning when storage fails.
+  try { await archiveAssessment(owner, result); }
+  catch { await api.storage.session.set({ archiveNotice: "Monthly archive unavailable; check device storage." }); }
   const tabKey = `tab:${sender.tab.id}`;
   const entries = await api.storage.session.get([tabKey, `exception:${sender.tab.id}`]);
   await api.storage.session.set({
@@ -306,12 +310,14 @@ async function handle(message, sender) {
       const log = (await api.storage.local.get(key))[key] || [];
       const removed = new Set(selectMonth(log, message.month).map((row) => row.scanId));
       await api.storage.local.set({ [key]: log.filter((row) => !removed.has(row.scanId)) });
+      await deleteArchivedMonth(ownerId(current), message.month).catch(() => {});
       return {};
     }
     case "ERASE_HISTORY": {
       const current = await optionalUser(client);
       const owner = ownerId(current);
       await api.storage.local.remove(historyKey(owner));
+      await deleteArchivedOwner(owner).catch(() => {});
       const tabs = await api.storage.session.get(null);
       const keys = Object.keys(tabs).filter(
         (key) => /^(tab|warning|exception):/.test(key) && tabs[key].userId === owner,

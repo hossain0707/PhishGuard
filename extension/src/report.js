@@ -1,13 +1,19 @@
 import { $, request, toggleTheme, cell, status } from "./ui.js";
 import { monthKey, selectMonth, countRisks } from "../../shared/history.js";
 import { makeReport } from "../../shared/pdf.js";
+import { archiveExisting, getArchivedMonth, listArchivedMonths } from "../../shared/archive.js";
 let state;
+let owner = "guest";
+let archiveLog = [];
+let archivedMonths = [];
 $("month").value = monthKey();
 $("month").max = monthKey();
-function render() {
+async function render() {
+  archiveLog = await getArchivedMonth(owner, $("month").value).catch(() => []);
   const month = $("month").value;
-  const log = selectMonth(state.log, month);
+  const log = archiveLog.length ? archiveLog : selectMonth(state.log, month);
   const counts = countRisks(log);
+  $("archived-months").textContent = archivedMonths.length ? "Available archives: " + archivedMonths.join(", ") : "No archived months yet; new scans are automatically archived.";
   $("period").textContent =
     `Reporting period: ${month} | ${Intl.DateTimeFormat().resolvedOptions().timeZone}`;
   $("user-name").textContent = state.user.name;
@@ -33,14 +39,17 @@ function render() {
 async function load() {
   try {
     state = await request("GET_STATE");
+    owner = state.user?.id || "guest";
+    await archiveExisting(owner, state.log).catch(() => {});
+    archivedMonths = await listArchivedMonths(owner).catch(() => []);
     if (state.guestMode) state.user = { name: "Local guest", email: "Not signed in" };
-    render();
+    await render();
     if (state.notice) status(state.notice);
   } catch (error) {
     status(error.message);
   }
 }
-$("month").addEventListener("change", () => {
+$("month").addEventListener("change", async () => {
   try {
     render();
   } catch (error) {
@@ -52,7 +61,7 @@ $("theme-toggle").addEventListener("click", toggleTheme);
 $("download").addEventListener("click", async () => {
   try {
     const report = await makeReport(
-      selectMonth(state.log, $("month").value),
+      (await getArchivedMonth(owner, $("month").value).catch(() => selectMonth(state.log, $("month").value))),
       state.user,
       $("month").value,
     );
