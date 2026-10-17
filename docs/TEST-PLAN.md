@@ -35,3 +35,12 @@ Use a lawful, labelled, representative URL/page dataset and disclose its source,
 `npm run evaluate` provides a small synthetic example containing intentional false positives and false negatives. It verifies scoring mechanics, not real-world safety. Do not present its metrics as production accuracy.
 
 For demonstration, use harmless local fixture pages, screenshots and saved results. Avoid exposing evaluators to active malicious sites.
+
+## New release 4.2.0 acceptance cases
+
+- Verify `login` alone stays LOW; suspicious URL and lookalike-brand evidence combine predictably; confirm cross-origin password-form behavior and known limitations.
+- Hold out domains and compare confusion matrices, precision/recall and false-positive rate with legacy v4.1.0 rules. Current weights remain hypotheses until this is measured.
+- Store scans from separate calendar months in IndexedDB, expire rolling history, then regenerate a prior-month PDF without data loss. Verify multi-account and guest separation, explicit deletions and low-storage warning behavior.
+- Verify optional reputation defaults OFF; no URL leaves the extension when OFF. When ON, send to same-origin proxy, test provider outage/no-match and confirmed malicious fixtures with a mocked provider. Ensure the secret API key is never bundled or logged.
+- Test the mobile manual URL checker in iPhone Safari, Edge iOS and Android browsers. It must NOT claim DOM inspection or automatic tab monitoring.
+- Install and operate the Firefox Android build on a physical Android phone with AMO signing; developer/lint results alone are insufficient.

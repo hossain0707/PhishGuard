@@ -3,7 +3,7 @@ const defaults = {
   SUPABASE_URL: "https://pbwthtftlfgonbhkytxh.supabase.co",
   SUPABASE_PUBLISHABLE_KEY: "sb_publishable_IIrYSkTvZhYCdez9Hl9CNg_VSZs4IAb",
   WEBSITE_URL: "https://phishgurd.vercel.app/",
-  VERSION: "4.1.0",
+  VERSION: "4.2.0",
 };
 // Build-time values are public client settings, validated before either bundle is emitted.
 export const CONFIG =
