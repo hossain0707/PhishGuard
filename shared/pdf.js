@@ -116,7 +116,7 @@ export async function makeReport(log, user, month, now = new Date()) {
     muted,
   );
   line(
-    "Queries, fragments and credentials excluded. Local retained records only; deleted/expired records are unavailable.",
+    "No URL queries, fragments or credentials. Includes available device-local monthly archive records only.",
     margin,
     204,
     8,
@@ -168,7 +168,7 @@ export async function makeReport(log, user, month, now = new Date()) {
   pages.forEach((p, i) => {
     page = p;
     line(
-      "PhishGuard | Private local report | Rule engine 4.1.0",
+      "PhishGuard | Private local report | Rule engine 4.2.0",
       margin,
       height - 25,
       8,

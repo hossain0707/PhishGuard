@@ -5,7 +5,7 @@
 **Explainable browser risk assessments. Private, on-device history.**
 
 [![CI](https://github.com/hossain0707/PhishGuard/actions/workflows/ci.yml/badge.svg)](https://github.com/hossain0707/PhishGuard/actions/workflows/ci.yml)
-![Version](https://img.shields.io/badge/version-4.1.0-0c7a74)
+![Version](https://img.shields.io/badge/version-4.2.0-0c7a74)
 ![Manifest](https://img.shields.io/badge/Manifest-V3-1e293b)
 ![FYP](https://img.shields.io/badge/project-FYP%202026-4b5563)
 
@@ -37,11 +37,11 @@
 | [Public website](https://phishgurd.vercel.app/) | **Live**                    | Vercel Hobby deployment with HTTPS                                                                               |
 | Supabase backend                                | **Provisioned**             | Free project; `profiles` and `extension_sessions` with row-level security                                        |
 | Website account login                           | **Observed working**        | Sign-in and dashboard shown in live testing; comprehensive email/recovery and cross-account checks still pending |
-| Microsoft Edge Add-ons                          | **Submitted — in review**   | Version `4.1.0` shown as _In review_ in Partner Center on **13 October 2026**; no public listing URL yet         |
+| Microsoft Edge Add-ons                          | **Submitted — in review**   | Version `4.2.0` shown as _In review_ in Partner Center on **13 October 2026**; no public listing URL yet         |
 | Mozilla Firefox Add-ons                         | **Prepared, not submitted** | Firefox build available; developer account ready, marketplace upload/review still pending                        |
 | Chrome Web Store                                | **Not submitted**           | Separate developer registration and review would be required                                                     |
 
-**Last externally observed store status: 13 October 2026.** Microsoft/Firefox certification status can change; this README is a dated snapshot, not a live store API. The Edge and Firefox ZIP links above are **development packages**, not approved store installations. Until official listings are approved, there are no official install buttons to link.
+**Last externally observed store status: 13 October 2026 (v4.1.0).** The v4.2.0 code is a new development candidate, not that approved or in-review package. Microsoft/Firefox certification status can change; this README is a dated snapshot, not a live store API. The Edge and Firefox ZIP links above are **development packages** (their version depends on the currently deployed build), not approved store installations. Until official listings are approved, there are no official install buttons to link.
 
 The requested marketplace publisher display name is **Norah Jasmine**, distinct from the GitHub repository owner. Mozilla and Microsoft manage publisher identity and certification independently. An operator support/account-deletion contact, live email delivery checks, real-browser smoke tests, independent risk evaluation and any permitted GMI artwork remain release requirements. See [release readiness](docs/RELEASE-READINESS.md) and [marketplace preparation](docs/STORE-SUBMISSIONS.md).
 
@@ -169,7 +169,7 @@ Store approval is **not required** for development or an FYP demonstration.
 | **Google Chrome (desktop)**   | Same Chrome/Edge ZIP                                                                 | Extract ZIP → `chrome://extensions` → **Developer mode** → **Load unpacked**                                                                |
 | **Mozilla Firefox (desktop)** | [Firefox ZIP](https://phishgurd.vercel.app/downloads/PhishGuard-Firefox.zip)         | Extract ZIP → `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on** → select `manifest.json`                                  |
 
-Firefox temporary add-ons are normally removed after a restart. Permanent Firefox distribution requires Mozilla signing. These local procedures are for development/testing, not marketplace certification. **Firefox Android, standard Chrome mobile and Safari iOS are not claimed as supported extension targets.** A phone can display the website, not the desktop extension.
+Firefox temporary add-ons are normally removed after a restart. Permanent Firefox distribution requires Mozilla signing. These local procedures are for development/testing, not marketplace certification. **Firefox Android is a compatibility candidate and still requires a real-device test and Mozilla signing.** Standard Chrome mobile and Safari iOS are not supported extension targets. iPhone users can instead use the manual [PhishGuard web URL checker](https://phishgurd.vercel.app/) after the new website deployment. A phone can display the website, not the desktop extension.
 
 Once installed, open the extension and choose **Continue with local protection (no account)**. Open or reload a test HTTP/HTTPS page, then inspect the extension popup, warning page, local dashboard and monthly report. To test account-specific features, use a verified account and a correctly configured Supabase service.
 
@@ -204,30 +204,34 @@ Rebuild the extension and website after changing these values. Review [the migra
 
 ## Detection model
 
-| Indicator                              | Weight |
-| -------------------------------------- | -----: |
-| Unencrypted HTTP connection            |    +35 |
-| Suspicious keyword in URL              |    +20 |
-| IPv4 / IPv6 address used as hostname   |    +25 |
-| Password input on an HTTP page         |    +20 |
-| More than three iframes                |    +10 |
-| More than five forms                   |    +10 |
-| Exact/subdomain known-domain indicator |    −30 |
+PhishGuard 4.2.0 focuses on **credential phishing** and **brand impersonation** using four explainable evidence stages, not one keyword rule: URL structure → domain verification → credential-form indicators → optional reputation evidence. Each result contains the triggered stages and human-readable reasons.
 
-Scores are capped at 100: **LOW 0–30 · MEDIUM 31–70 · HIGH 71–100**. Domain matching uses a proper boundary, so `evilgoogle.com` does not match `google.com`.
+| Prototype indicator                             |           Weight | Interpretation                                                   |
+| ----------------------------------------------- | ---------------: | ---------------------------------------------------------------- |
+| Unencrypted HTTP                                |              +12 | Transport warning, **not** proof of phishing                     |
+| IP address hostname                             |              +20 | Context indicator, including ordinary local testing              |
+| Keyword in URL path/query                       |               +6 | Weak signal; by itself remains LOW                               |
+| Lookalike / deceptive brand label               |              +40 | Potential brand impersonation; manually reviewed roots           |
+| Password form on HTTP                           |              +35 | Sensitive input on insecure transport                            |
+| Cross-origin password-form action               |              +20 | May be legitimate SSO; review with other signals                 |
+| More than three iframes / five forms            |          +6 each | Weak page-structure signals                                      |
+| Verified third-party malicious reputation match | Minimum score 90 | **Optional**, only after user consent and provider configuration |
 
-These are **heuristics, not probabilities**. HTTPS phishing pages can score LOW, legitimate login pages can trigger keywords, and a known-domain discount does not prove safety. Dynamic work is limited to 100 assessments per rolling ten-minute window, with debounced mutation handling and URL polling. The synthetic evaluation contains intentional false positives and false negatives; it must not be reported as real-world accuracy.
+The thresholds remain **LOW 0–30 · MEDIUM 31–70 · HIGH 71–100** as provisional FYP cutoffs, not probabilities. A Google Safe Browsing lookup is **OFF by default** and uses a server-side key only if an eligible operator configures `PHISHGUARD_SAFE_BROWSING_KEY`; errors and no matches never lower local risk. URLs are sent to the operator website and Google **only with consent**. The URL-only mobile checker cannot inspect real webpage forms.
+
+**Research supports examining these features, not these particular numeric weights.** See [Lecturer improvements and research references](docs/LECTURER-IMPROVEMENTS.md) for 3 academic/standards sources per category and the holdout-evaluation plan. The 10-fixture synthetic test is for logic, not measured real-world detection accuracy. A trusted-looking or HTTPS page can still be malicious.
 
 ## Privacy and security
 
 - No password values, form contents or page text are captured.
 - Persisted assessment URLs omit credentials, query strings and fragments; paths may still contain personal information.
-- Histories are local, separated by account and bounded to 5,000 assessments / 366 days, subject to storage capacity.
+- Rolling scan history is local and account-separated, bounded to 5,000 assessments / 366 days. An independent on-device IndexedDB archive preserves recorded monthly scans until explicit deletion or browser-storage removal; storage quota still applies.
 - Dashboard Clear preserves report history; explicit month deletion and account-history erasure remove owned records.
 - Extension tokens live in browser-session storage; restarting the browser requires login. Website sessions use local browser storage.
 - Cloud account tables use owner-based RLS. Firefox browser metadata registration requires optional technical-data consent.
 - Logout clears local credentials even when remote cleanup fails; offline cleanup does not prove server-side session revocation.
 - Exported PDFs remain separate files until the user deletes them.
+- Optional third-party reputation checks require opt-in and a configured noncommercial API key; they send the checked URL outside the device. Off by default.
 
 The extension can scan in guest mode when authentication is unavailable. Guest history uses its own on-device owner key and is not silently merged into an account. The extension requests `storage`, `tabs` and HTTP/HTTPS site access. Executable dependencies are bundled locally; extension pages use a restrictive CSP and are not exposed as web-accessible account pages.
 
@@ -288,7 +292,7 @@ PhishGuard/
 
 ## Deployment
 
-The maintained public website is **[https://phishgurd.vercel.app/](https://phishgurd.vercel.app/)** (the assigned Vercel project/domain uses the spelling `phishgurd`). The deployment uses the repository's root `vercel.json`, which builds the `website/` output from the same source as both extension packages.
+The last verified public website is **[https://phishgurd.vercel.app/](https://phishgurd.vercel.app/)** (the assigned Vercel project/domain uses the spelling `phishgurd`). The deployment uses the repository's root `vercel.json`, which builds the `website/` output from the same source as both extension packages.
 
 | Layer                                     | Technology                 | Deployment notes                                                         |
 | ----------------------------------------- | -------------------------- | ------------------------------------------------------------------------ |
@@ -301,7 +305,7 @@ The project was set up with free-tier resources; **free tiers have usage and ser
 
 ### Browser marketplace publishing
 
-- **Edge:** one `4.1.0` submission was observed as **In review** on 13 October 2026. Do not create a duplicate listing; the public store link becomes available only after approval.
+- **Edge:** one `4.2.0` submission was observed as **In review** on 13 October 2026. Do not create a duplicate listing; the public store link becomes available only after approval.
 - **Firefox:** the developer account is prepared under the requested name **Norah Jasmine**, but the public listing has **not been submitted or signed** in the last observed developer dashboard.
 - **Chrome Web Store:** not submitted. Chrome's publisher requirements are separate from Edge and Firefox.
 - Store approval does not automatically update the website. After approval, add only a verified official listing URL using `PHISHGUARD_STORE_EDGE_URL` or `PHISHGUARD_STORE_FIREFOX_URL`, then rebuild.
@@ -319,19 +323,20 @@ PhishGuard was built as a **German-Malaysian Institute (GMI) Final Year Project 
 
 ## Documentation
 
-| Document                                               | Purpose                                                             |
-| ------------------------------------------------------ | ------------------------------------------------------------------- |
-| [Architecture](docs/ARCHITECTURE.md)                   | Data flow, trust boundaries, rule catalogue and privacy model       |
-| [Setup and operations](docs/SETUP.md)                  | Supabase schema, authentication, callbacks, deployment and rollback |
-| [User guide](docs/USER-GUIDE.md)                       | Installation, account flows, warnings, history and reports          |
-| [Demo guide](docs/DEMO.md)                             | Repeatable capture and presentation walkthrough                     |
-| [Test plan](docs/TEST-PLAN.md)                         | Automated checks, real-service acceptance and evaluation design     |
-| [FYP evidence](docs/FYP-EVIDENCE.md)                   | Requirements, technical evidence and automation limitations         |
-| [Implementation report](docs/IMPLEMENTATION-REPORT.md) | Recorded work and verification scope                                |
-| [Release readiness](docs/RELEASE-READINESS.md)         | Unverified external production gates                                |
-| [Marketplace submissions](docs/STORE-SUBMISSIONS.md)   | Edge/Firefox package details, permissions and reviewer notes        |
-| [Contributing](CONTRIBUTING.md)                        | Development workflow and review expectations                        |
-| [Security](SECURITY.md)                                | Private vulnerability reporting and sensitive-data handling         |
-| [Changelog](CHANGELOG.md)                              | Changes tracked for version 4.1.0                                   |
+| Document                                                            | Purpose                                                             |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| [Architecture](docs/ARCHITECTURE.md)                                | Data flow, trust boundaries, rule catalogue and privacy model       |
+| [Setup and operations](docs/SETUP.md)                               | Supabase schema, authentication, callbacks, deployment and rollback |
+| [User guide](docs/USER-GUIDE.md)                                    | Installation, account flows, warnings, history and reports          |
+| [Demo guide](docs/DEMO.md)                                          | Repeatable capture and presentation walkthrough                     |
+| [Test plan](docs/TEST-PLAN.md)                                      | Automated checks, real-service acceptance and evaluation design     |
+| [FYP evidence](docs/FYP-EVIDENCE.md)                                | Requirements, technical evidence and automation limitations         |
+| [Implementation report](docs/IMPLEMENTATION-REPORT.md)              | Recorded work and verification scope                                |
+| [Release readiness](docs/RELEASE-READINESS.md)                      | Unverified external production gates                                |
+| [Marketplace submissions](docs/STORE-SUBMISSIONS.md)                | Edge/Firefox package details, permissions and reviewer notes        |
+| [Contributing](CONTRIBUTING.md)                                     | Development workflow and review expectations                        |
+| [Security](SECURITY.md)                                             | Private vulnerability reporting and sensitive-data handling         |
+| [Lecturer implementation/references](docs/LECTURER-IMPROVEMENTS.md) | Scope, stages, papers, mobile verification and research methodology |
+| [Changelog](CHANGELOG.md)                                           | Changes tracked for version 4.2.0                                   |
 
 **Documentation principle:** distinguish reproduced local results, observed live behaviour and independent store certification. No fictional detection-accuracy statistics are claimed.

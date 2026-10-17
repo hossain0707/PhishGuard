@@ -11,7 +11,7 @@
       <a href="index.html">← PhishGuard</a>
       <h1>Privacy and limitations</h1>
       <p>
-        Updated 12 October 2026. PhishGuard is a student FYP prototype for rule-based browser risk
+        Updated 17 October 2026. PhishGuard is a student FYP prototype for rule-based browser risk
         assessment.
       </p>
       <h2>Publisher</h2>
@@ -34,9 +34,19 @@
         While installed, the extension reads the URL and counts of password inputs, forms and
         embedded frames. It does not read passwords, form contents or page text. URLs without
         queries, fragments or credentials, scores, reasons and timestamps remain locally stored and
-        separated by account. Paths may still contain personal information. Up to 5,000 assessments
-        are retained; records older than 366 days are removed on the next scan. Browsing history is
-        not uploaded or sold.
+        separated by account. Paths may still contain personal information. Rolling history retains
+        up to 5,000 assessments for 366 days. Independent account-scoped monthly archives in device
+        IndexedDB can retain older records until explicitly deleted or browser storage is cleared.
+        Disk quotas still apply. Browsing history is not uploaded or sold.
+      </p>
+      <h2>Optional reputation requests</h2>
+      <p>
+        Reputation checking is OFF by default. If users opt in, the URL of the viewed page or
+        manually entered link is sent to the PhishGuard site and (only when configured) to Google
+        Safe Browsing for a potential social-engineering match. Google may process the URL under its
+        own terms. If the service is unavailable or returns no match, the result is inconclusive.
+        This is not part of Supabase browsing history. Do not enable reputation checks for sensitive
+        private URLs.
       </p>
       <h2>Your controls</h2>
       <p>

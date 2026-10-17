@@ -119,6 +119,12 @@ try {
   assert.equal(safe.url(), "https://example.test/verify");
   await safe.evaluate(() => {
     for (let i = 0; i < 6; i++) document.body.append(document.createElement("form"));
+    const form = document.createElement("form");
+    form.action = "https://other.example.test/submit";
+    const password = document.createElement("input");
+    password.type = "password";
+    form.append(password);
+    document.body.append(form);
     for (let i = 0; i < 4; i++) {
       const f = document.createElement("iframe");
       f.src = "about:blank";
@@ -127,6 +133,12 @@ try {
   });
   await safe.waitForURL("**/warning.html?id=**");
   record("dynamic password/form/frame changes trigger reassessment");
+  await context.route("http://127.0.0.1:4173/login", (route) =>
+    route.fulfill({
+      contentType: "text/html",
+      body: '<!doctype html><title>Controlled credential fixture</title><form><input type="password"></form>',
+    }),
+  );
   const high = await context.newPage();
   await high.goto("http://127.0.0.1:4173/login").catch(() => {});
   await high.waitForURL("**/warning.html?id=**");
@@ -191,7 +203,7 @@ try {
           score: i % 3 === 0 ? 80 : 35,
           threatLevel: i % 3 === 0 ? "HIGH" : "MEDIUM",
           reasons: ["Controlled PDF test assessment"],
-          ruleVersion: "4.1.0",
+          ruleVersion: "4.2.0",
         })),
       }),
     { id: state.user.id, timestamp: month.toISOString() },
@@ -223,8 +235,48 @@ try {
   await auth.emulateMedia({ media: "screen" });
   await auth.locator("#month").fill("2020-01");
   await auth.locator("#month").dispatchEvent("change");
-  assert.equal(await auth.locator("#total").textContent(), "0");
+  await auth.locator("#total").filter({ hasText: /^0$/ }).waitFor();
   record("month selection supports empty periods");
+  const earlierMonth = "2020-01";
+  // Inject a controlled prior-month archive entry, independent of rolling history.
+  await auth.evaluate(
+    async (owner) =>
+      new Promise((resolve, reject) => {
+        const open = indexedDB.open("phishguard-archive-v1", 1);
+        open.onerror = () => reject(open.error);
+        open.onsuccess = () => {
+          const db = open.result;
+          const tx = db.transaction("scans", "readwrite");
+          tx.objectStore("scans").put({
+            key: owner + ":historical-fixture",
+            owner,
+            ownerMonth: owner + ":2020-01",
+            month: "2020-01",
+            scanId: "historical-fixture",
+            timestamp: "2020-01-15T12:00:00.000Z",
+            url: "https://example.test/archived",
+            hostname: "example.test",
+            score: 0,
+            threatLevel: "LOW",
+            reasons: ["Controlled archive-only FYP fixture"],
+          });
+          tx.oncomplete = () => {
+            db.close();
+            resolve();
+          };
+          tx.onerror = () => {
+            db.close();
+            reject(tx.error);
+          };
+        };
+      }),
+    state.user.id,
+  );
+  await auth.locator("#month").fill(earlierMonth);
+  await auth.locator("#month").dispatchEvent("change");
+  await auth.locator("#total").filter({ hasText: /^1$/ }).waitFor();
+  await auth.locator("#visits").filter({ hasText: "archived" }).waitFor();
+  record("historical month remains readable independently of rolling scan history");
   await auth.evaluate(
     (month) => chrome.runtime.sendMessage({ type: "CLEAR_MONTH", month }),
     monthValue,

@@ -75,29 +75,34 @@ try {
     ["https://example.test/guide", 0, "LOW", []],
     [
       "http://127.0.0.1:4173/plain",
-      60,
+      32,
       "MEDIUM",
-      ["Unencrypted HTTP connection: +35 pts", "IP address used as hostname: +25 pts"],
+      [
+        "Unencrypted HTTP transport (not proof of phishing): +12 pts",
+        "IP address used as hostname: +20 pts",
+      ],
     ],
     [
       "http://127.0.0.1:4173/login",
-      80,
+      73,
       "HIGH",
       [
-        "Unencrypted HTTP connection: +35 pts",
-        "URL keyword (login): +20 pts",
-        "IP address used as hostname: +25 pts",
+        "Unencrypted HTTP transport (not proof of phishing): +12 pts",
+        "Context keyword in URL (login): +6 pts",
+        "IP address used as hostname: +20 pts",
+        "Password form on HTTP connection: +35 pts",
       ],
     ],
     ["https://example.test/news", 0, "LOW", []],
     [
       "https://example.test/verify",
-      40,
+      38,
       "MEDIUM",
       [
-        "URL keyword (verify): +20 pts",
-        "More than three embedded frames: +10 pts",
-        "More than five forms: +10 pts",
+        "Context keyword in URL (verify): +6 pts",
+        "Password form submits to another origin: +20 pts",
+        "Unusually many embedded frames: +6 pts",
+        "Unusually many forms: +6 pts",
       ],
     ],
     ["https://example.test/docs", 0, "LOW", []],
@@ -109,7 +114,7 @@ try {
     score,
     threatLevel,
     reasons,
-    ruleVersion: "4.1.0",
+    ruleVersion: "4.2.0",
   }));
   await page.evaluate(
     ({ id, fixtures }) => chrome.storage.local.set({ [`history:${id}`]: fixtures }),
@@ -131,6 +136,12 @@ try {
   await warning.locator("#title").filter({ hasText: "Review" }).waitFor();
   await capture(warning, "warning-medium.png");
   await accessibility(warning, "Medium warning");
+  await extension.route("http://127.0.0.1:4173/login", (route) =>
+    route.fulfill({
+      contentType: "text/html",
+      body: '<!doctype html><title>Controlled test</title><form><input type="password"></form>',
+    }),
+  );
   await warning.goto("http://127.0.0.1:4173/login").catch(() => {});
   await warning.waitForURL("**/warning.html?id=**");
   await warning.locator("#title").filter({ hasText: "High-risk" }).waitFor();

@@ -1,5 +1,10 @@
 import { CONFIG } from "../../shared/config.js";
-import { analyze, httpUrl } from "../../shared/risk.js";
+import {
+  archiveAssessment,
+  deleteArchivedOwner,
+  deleteArchivedMonth,
+} from "../../shared/archive.js";
+import { analyze, httpUrl, redactUrl } from "../../shared/risk.js";
 import { appendHistory, historyKey, selectMonth } from "../../shared/history.js";
 import { createAuth, publicUser, credentials, check } from "../../shared/auth.js";
 import { logoutSession } from "../../shared/logout.js";
@@ -103,7 +108,10 @@ async function state(client) {
   const owner = ownerId(current);
   const preferences = await api.storage.local.get({ theme: "dark", dashboardClear: {} });
   const log = (await api.storage.local.get(historyKey(owner)))[historyKey(owner)] || [];
-  const notice = (await api.storage.session.get("historyNotice")).historyNotice || "";
+  const notice =
+    (await api.storage.session.get("historyNotice")).historyNotice ||
+    (await api.storage.session.get("archiveNotice")).archiveNotice ||
+    "";
   return {
     user: publicUser(current),
     theme: preferences.theme,
@@ -122,8 +130,24 @@ async function analyzePage(client, message, sender) {
   // Browser-provided sender URL is authoritative, never a hostname supplied by the page.
   const actualTab = await api.tabs.get(sender.tab.id);
   if (actualTab.url !== sender.url) return { stale: true };
+  const consent = (await api.storage.local.get({ reputationConsent: false })).reputationConsent;
+  let reputation = "unavailable";
+  if (consent) {
+    try {
+      const response = await fetch(new URL("/api/reputation", CONFIG.WEBSITE_URL), {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ url: redactUrl(sender.url) }),
+        signal: AbortSignal.timeout(3500),
+      });
+      const data = await response.json();
+      if (response.ok && data.status === "malicious") reputation = "malicious";
+    } catch {
+      /* Local detection still works when reputation is unavailable. */
+    }
+  }
   const result = {
-    ...analyze(sender.url, message.data || {}),
+    ...analyze(sender.url, message.data || {}, { reputation }),
     timestamp: new Date().toISOString(),
     scanId: `${sender.tab.id}:${sender.documentId || message.documentId || "document"}`,
   };
@@ -136,6 +160,14 @@ async function analyzePage(client, message, sender) {
     await api.storage.session.set({
       historyNotice:
         "Local history could not be saved. Storage may be full. Monitoring and risk redirects still operate; export or erase old history.",
+    });
+  }
+  // Persist an independent monthly history without delaying the warning when storage fails.
+  try {
+    await archiveAssessment(owner, result);
+  } catch {
+    await api.storage.session.set({
+      archiveNotice: "Monthly archive unavailable; check device storage.",
     });
   }
   const tabKey = `tab:${sender.tab.id}`;
@@ -231,6 +263,14 @@ async function handle(message, sender) {
     }
     case "GET_STATE":
       return state(client);
+    case "GET_REPUTATION_CONSENT": {
+      const config = await api.storage.local.get({ reputationConsent: false });
+      return { enabled: Boolean(config.reputationConsent) };
+    }
+    case "SET_REPUTATION_CONSENT": {
+      await api.storage.local.set({ reputationConsent: message.enabled === true });
+      return {};
+    }
     case "PROFILE_UPDATE": {
       await requireUser(client);
       const name = String(message.name || "").trim();
@@ -306,12 +346,14 @@ async function handle(message, sender) {
       const log = (await api.storage.local.get(key))[key] || [];
       const removed = new Set(selectMonth(log, message.month).map((row) => row.scanId));
       await api.storage.local.set({ [key]: log.filter((row) => !removed.has(row.scanId)) });
+      await deleteArchivedMonth(ownerId(current), message.month).catch(() => {});
       return {};
     }
     case "ERASE_HISTORY": {
       const current = await optionalUser(client);
       const owner = ownerId(current);
       await api.storage.local.remove(historyKey(owner));
+      await deleteArchivedOwner(owner).catch(() => {});
       const tabs = await api.storage.session.get(null);
       const keys = Object.keys(tabs).filter(
         (key) => /^(tab|warning|exception):/.test(key) && tabs[key].userId === owner,

@@ -1,4 +1,4 @@
-# Release readiness — 4.1.0 candidate
+# Release readiness — 4.2.0 candidate
 
 Local implementation and testing do not certify the project as “100% production grade.” Release status depends on observed tests and the external checks below.
 
@@ -16,6 +16,15 @@ Local implementation and testing do not certify the project as “100% productio
 - Professional README with architecture/ER diagrams, actual UI screenshots and reduced-motion-aware animated SVGs.
 - Pinned CI workflow, formatting checks, dependency monitoring and controlled desktop accessibility scans.
 
+## Lecturer-feedback changes in 4.2.0
+
+- Explainable multi-stage rules target credential phishing and brand impersonation rather than broad unspecified web risks.
+- Separate account-scoped on-device IndexedDB monthly archive and historical month access.
+- Consent-gated reputation proxy with an optional noncommercial Google Safe Browsing key; not configured by default.
+- Manual, locally running mobile URL checker and iOS Home Screen web-app metadata; NOT automatic iPhone browsing protection.
+- Firefox Android manifest support candidate; physical Android Firefox verification still outstanding.
+- Current scores are still initial **uncalibrated hypotheses**. Research citations describe related evidence but do not justify numerical weights.
+
 ## External release gates
 
 1. Apply/review the migration against the live Supabase schema and verify actual two-user RLS access.
@@ -27,7 +36,7 @@ Local implementation and testing do not certify the project as “100% productio
 7. Complete browser developer-account registration, Mozilla signing and store reviews.
 8. Perform a representative held-out detection evaluation; prototype heuristics have meaningful false positives and false negatives.
 
-No live cloud settings, public deployment, Git push, developer-account purchase or store submission was made during the local implementation. Missing account access and assets are release dependencies, not passed tests. See `test-results/` for generated evidence and `docs/TEST-PLAN.md` for acceptance criteria.
+This 4.2.0 feature branch is not a verified external release; the previous 4.1.0 Edge package was submitted for review separately. No paid service has been purchased for 4.2.0. Missing account access and assets are release dependencies, not passed tests. See `test-results/` for generated evidence and `docs/TEST-PLAN.md` for acceptance criteria.
 
 ## Observed live-service blocker
 
