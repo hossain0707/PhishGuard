@@ -119,7 +119,8 @@
           <form id="url-checker-form" class="checker-form">
             <label for="check-url">Website URL</label>
             <input id="check-url" name="url" type="url" placeholder="https://example.com/login" autocomplete="off" inputmode="url" required />
-            <button class="primary" type="submit">Analyze link locally</button>
+            <label><input type="checkbox" id="check-reputation" /> Also send this URL to the project reputation server (optional, requires configured Google Safe Browsing)</label>
+            <button class="primary" type="submit">Analyze link</button>
           </form>
           <div id="checker-result" class="checker-result" role="status" aria-live="polite" hidden></div>
           <p class="checker-disclaimer">Analysis runs on this device using URL-only rules. No website is opened and the checked URL is not sent to Supabase or a reputation service. HIGH means investigate, not confirmed phishing; LOW does not guarantee safety.</p>

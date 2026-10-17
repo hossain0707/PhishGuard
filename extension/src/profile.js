@@ -6,6 +6,7 @@ async function load() {
     $("email").textContent = user.email;
     $("created").textContent = new Date(user.createdAt).toLocaleDateString();
     $("version").textContent = version;
+    $("reputation-opt-in").checked = (await request("GET_REPUTATION_CONSENT")).enabled;
   } catch (error) {
     status(error.message);
   }
@@ -56,3 +57,10 @@ $("erase").addEventListener("click", async () => {
   }
 });
 load();
+
+$("reputation-opt-in").addEventListener("change", async () => {
+  try {
+    await request("SET_REPUTATION_CONSENT", { enabled: $("reputation-opt-in").checked });
+    status($("reputation-opt-in").checked ? "Optional URL reputation checking enabled on this device." : "URL reputation checking disabled.");
+  } catch (error) { status(error.message); }
+});

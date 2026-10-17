@@ -103,14 +103,25 @@ $("start-button").addEventListener("click", () => showView("download"));
 $("features-button").addEventListener("click", () =>
   $("features").scrollIntoView({ behavior: "smooth" }),
 );
-$("url-checker-form").addEventListener("submit", (event) => {
+$("url-checker-form").addEventListener("submit", async (event) => {
   event.preventDefault();
   const result = $("checker-result");
   const raw = $("check-url").value.trim();
   result.replaceChildren();
   result.hidden = false;
   if (!httpUrl(raw)) { result.textContent = "Enter a valid HTTP or HTTPS URL."; return; }
-  const assessment = analyze(raw);
+  const reputationOptIn = $("check-reputation").checked;
+  let reputation = "unavailable";
+  if (reputationOptIn) {
+    try {
+      const response = await fetch("/api/reputation", {
+        method: "POST", headers: { "content-type": "application/json" },
+        body: JSON.stringify({ url: raw }), signal: AbortSignal.timeout(3500)
+      });
+      if (response.ok) reputation = (await response.json()).status;
+    } catch { /* Clearly label unavailable reputation instead of assuming clean. */ }
+  }
+  const assessment = analyze(raw, {}, { reputation });
   const h = document.createElement("h2");
   h.textContent = assessment.threatLevel + " — " + assessment.score + "/100 (URL-only)";
   result.append(h);
@@ -123,7 +134,7 @@ $("url-checker-form").addEventListener("submit", (event) => {
     section.append(heading,details); result.append(section);
   }
   const note = document.createElement("p");
-  note.textContent = "URL-only result: webpage content and remote reputation have not been checked. This is not a phishing verdict.";
+  note.textContent = "URL-only result: webpage forms are not checked. Reputation: " + (reputationOptIn ? reputation : "not requested") + ". No-match does not prove safety.";
   result.append(note);
 });
 function submit(id, action) {

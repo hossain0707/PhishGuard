@@ -123,8 +123,20 @@ async function analyzePage(client, message, sender) {
   // Browser-provided sender URL is authoritative, never a hostname supplied by the page.
   const actualTab = await api.tabs.get(sender.tab.id);
   if (actualTab.url !== sender.url) return { stale: true };
+  const consent = (await api.storage.local.get({ reputationConsent: false })).reputationConsent;
+  let reputation = "unavailable";
+  if (consent) {
+    try {
+      const response = await fetch(new URL("/api/reputation", CONFIG.WEBSITE_URL), {
+        method: "POST", headers: { "content-type": "application/json" },
+        body: JSON.stringify({ url: sender.url }), signal: AbortSignal.timeout(3500)
+      });
+      const data = await response.json();
+      if (response.ok && data.status === "malicious") reputation = "malicious";
+    } catch { /* Local detection still works when reputation is unavailable. */ }
+  }
   const result = {
-    ...analyze(sender.url, message.data || {}),
+    ...analyze(sender.url, message.data || {}, { reputation }),
     timestamp: new Date().toISOString(),
     scanId: `${sender.tab.id}:${sender.documentId || message.documentId || "document"}`,
   };
@@ -235,6 +247,14 @@ async function handle(message, sender) {
     }
     case "GET_STATE":
       return state(client);
+    case "GET_REPUTATION_CONSENT": {
+      const config = await api.storage.local.get({ reputationConsent: false });
+      return { enabled: Boolean(config.reputationConsent) };
+    }
+    case "SET_REPUTATION_CONSENT": {
+      await api.storage.local.set({ reputationConsent: message.enabled === true });
+      return {};
+    }
     case "PROFILE_UPDATE": {
       await requireUser(client);
       const name = String(message.name || "").trim();
