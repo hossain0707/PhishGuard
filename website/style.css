@@ -578,3 +578,13 @@ footer a {
   vertical-align: middle;
   margin-right: 8px;
 }
+
+/* Standalone phone-friendly URL inspector, with no privileged browser access. */
+.checker-shell { max-width: 850px; margin: 0 auto; min-height: 72vh; }
+.checker-form { display: grid; gap: 12px; background: var(--surface); border: 1px solid var(--line); padding: clamp(16px,4vw,28px); margin-top: 25px; border-radius: 12px; }
+.checker-form label { color: var(--text); font-weight: 700; }
+.checker-form input { width: 100%; padding: 16px; border: 1px solid var(--line); border-radius: 8px; color: var(--text); background: var(--bg); font-size: 16px; }
+.checker-result { margin-top: 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: clamp(18px,4vw,30px); overflow-wrap: anywhere; }
+.checker-result section { margin: 14px 0; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.checker-result p, .checker-disclaimer { color: var(--muted); line-height: 1.7; }
+@media (max-width: 690px) { .checker-shell { padding: 45px 18px; } .checker-form .primary { width: 100%; } .nav { height: auto; min-height: 70px; flex-wrap: wrap; gap: 10px; padding: 14px; } .nav nav { gap: 10px; flex-wrap: wrap; } }

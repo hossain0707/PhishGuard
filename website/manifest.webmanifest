@@ -1,0 +1,19 @@
+{
+  "name": "PhishGuard URL Checker",
+  "short_name": "PhishGuard",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#071014",
+  "theme_color": "#071014",
+  "description": "Offline URL-structure analysis; full protection requires a compatible browser extension.",
+  "icons": [
+    {
+      "src": "logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

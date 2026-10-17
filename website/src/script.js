@@ -1,6 +1,10 @@
 import { createAuth, check, credentials } from "../../shared/auth.js";
+import { analyze, httpUrl } from "../../shared/risk.js";
 import { logoutSession } from "../../shared/logout.js";
 const config = window.PHISHGUARD_CONFIG;
+// Shortcut-compatible optional URL parameter is removed immediately from address history.
+const incomingUrl = new URL(location.href).searchParams.get("url");
+if (incomingUrl) history.replaceState(null, "", location.pathname + location.hash);
 // Only build-verified official store URLs replace development ZIP downloads.
 for (const link of document.querySelectorAll("[data-store]")) {
   const listing = window.PHISHGUARD_STORES?.[link.dataset.store];
@@ -99,6 +103,29 @@ $("start-button").addEventListener("click", () => showView("download"));
 $("features-button").addEventListener("click", () =>
   $("features").scrollIntoView({ behavior: "smooth" }),
 );
+$("url-checker-form").addEventListener("submit", (event) => {
+  event.preventDefault();
+  const result = $("checker-result");
+  const raw = $("check-url").value.trim();
+  result.replaceChildren();
+  result.hidden = false;
+  if (!httpUrl(raw)) { result.textContent = "Enter a valid HTTP or HTTPS URL."; return; }
+  const assessment = analyze(raw);
+  const h = document.createElement("h2");
+  h.textContent = assessment.threatLevel + " — " + assessment.score + "/100 (URL-only)";
+  result.append(h);
+  const host = document.createElement("p"); host.textContent = assessment.hostname; result.append(host);
+  for (const stage of assessment.stages) {
+    const section = document.createElement("section");
+    const heading = document.createElement("strong"); heading.textContent = stage.name;
+    const details = document.createElement("p");
+    details.textContent = stage.findings.join("; ") || "No indicators from this stage";
+    section.append(heading,details); result.append(section);
+  }
+  const note = document.createElement("p");
+  note.textContent = "URL-only result: webpage content and remote reputation have not been checked. This is not a phishing verdict.";
+  result.append(note);
+});
 function submit(id, action) {
   const form = $(id);
   form.addEventListener("submit", async (event) => {
@@ -198,6 +225,10 @@ client.auth.onAuthStateChange((event, value) => {
     const { data, error } = await client.auth.getSession();
     check(error);
     updateSession(data.session);
+    if (incomingUrl && httpUrl(incomingUrl)) {
+      $("check-url").value = incomingUrl;
+      showView("checker");
+    }
     // Remove credentials from browser history after the SDK processes an email link.
     if (location.hash) history.replaceState({}, "", location.pathname);
     if (recovering && session) showView("reset");
