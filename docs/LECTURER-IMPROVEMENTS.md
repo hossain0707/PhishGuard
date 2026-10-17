@@ -43,7 +43,7 @@ Current example contributions (see `shared/risk.js`): HTTP +12; IP hostname +20;
 4. Produce TP, TN, FP, FN, precision, recall, false-positive rate, F1, total sample size, class balance and detection latency. Avoid reporting the ten synthetic fixtures as actual detection accuracy.
 5. Tune rule weights and thresholds on development data; lock a final rule configuration **before** applying the holdout evaluation. Analyze important false positives (legitimate login/SSO) and false negatives (HTTPS, compromised real domains).
 6. Report ablations: URL-only vs +domain vs +credential-page vs +optional reputation, and separately quantify timeout/no-match rate.
-7. Distinguish browser unit/automation with mocked Supabase from real Supabase, real Firefox Android and external store approval.
+7. Distinguish browser unit/automation with mocked Supabase from real production services and desktop-browser store approval.
 
 ## Monthly reports: historical persistence
 
@@ -53,13 +53,11 @@ Current example contributions (see `shared/risk.js`): HTTP +12; IP hostname +20;
 - Earlier history already rotated out **before the upgrade cannot be recovered**; retained older history is imported when its report is first opened.
 - Exported PDF files are independent files and remain available until deleted manually.
 
-## Mobile compatibility and acceptance
+## Platform scope and cost
 
-- **Firefox Android:** the generated Firefox package declares `gecko_android.strict_min_version = 142.0`. Browser CSS is responsive but must be tested on a **real Android Firefox** with extension installation, background lifecycle, web messages, consent UI, redirects, month reports, PDF save and guest/signed-in flows. Mozilla signing/AMO listing is still required for normal distribution. Do not claim Android support until actual success.
-- **Edge Android:** separate Microsoft-controlled mobile extension catalog; desktop marketplace approval does not automatically mean Android support. Do not list as tested.
-- **iPhone (free):** the website contains a **manual, URL-only link checker**, with a web app manifest for Home Screen installation. It performs URL analysis locally. It cannot read page DOM of other apps or automatically protect Safari/Edge browsing. Optional reputation checking transmits URLs only after explicit opt-in.
-- **Safari iOS extension:** requires separate packaging and Apple testing/distribution requirements, not included.
-- **Zero-cost constraint:** existing Vercel Hobby and Supabase Free may suffice within quotas. Optional Google Safe Browsing is noncommercial with an API key and quota limits; no key means reputation is explicitly unavailable, not silently "safe". No paid service or store enrollment was made by this change.
+PhishGuard 4.2.0 is designed for **desktop Chrome, Microsoft Edge and Firefox only**. Mobile extensions, iPhone/Android apps, mobile-specific URL checkers and Home Screen web apps are **outside the scope** of this FYP. Basic responsive layout of the project website remains as a standard website feature, not a mobile phishing-protection claim.
+
+Existing free-tier Vercel Hobby and Supabase Free accounts can continue within quotas. Optional Google Safe Browsing is noncommercial and requires a valid API key configured by the operator; without a key, reputation is explicitly unavailable. No paid services are required for the desktop-only project within free-tier limits.
 
 ## Change map
 
@@ -68,10 +66,8 @@ Current example contributions (see `shared/risk.js`): HTTP +12; IP hostname +20;
 - `extension/src/background.js` — trusted sender, optional reputation, local monthly archive.
 - `shared/archive.js` + `extension/src/report.js` — automatic IndexedDB archive and historical reports.
 - `api/reputation.js` — server-side optional Safe Browsing proxy, key stays on the server.
-- `website/index.html`, `website/src/script.js` — manual iPhone/Android URL checker.
-- `tools/build.mjs` — Firefox Android metadata.
 - `tests/` — unit and browser validation. External acceptance gates are still tracked separately.
 
 ## Before the next official browser-store upload
 
-The Edge v4.1.0 release was already in review before this work. **Do not confuse it with the 4.2.0 development candidate.** Confirm working privacy contact, app review identity, official release package/revision and mobile support on actual devices, then submit a new extension version through the _same_ listing. Never create a duplicate listing.
+The Edge v4.1.0 release was already in review before this work. **Do not confuse it with the 4.2.0 development candidate.** Confirm working privacy contact, app review identity and official desktop release package/revision, then submit a new extension version through the _same_ listing. Never create a duplicate listing.

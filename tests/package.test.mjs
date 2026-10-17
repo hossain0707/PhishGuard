@@ -28,7 +28,6 @@ test("every distributed ZIP matches the current generated extension sources", as
     if (browser === "firefox") {
       assert.equal(manifest.background.service_worker, undefined);
       assert.deepEqual(manifest.background.scripts, ["background.js"]);
-      assert.equal(manifest.browser_specific_settings.gecko_android.strict_min_version, "142.0");
     }
   }
 });

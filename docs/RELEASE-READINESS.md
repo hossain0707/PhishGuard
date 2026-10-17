@@ -9,7 +9,7 @@ Local implementation and testing do not certify the project as “100% productio
 - Correct safe-domain boundaries, authoritative scan URLs, IPv6 detection, dynamic reassessment and per-tab results.
 - Opaque warnings, server-side-of-extension proceed validation, exact medium exception and high bypass denial.
 - Readable paginated PDF download, print alternative, month selection and empty reports.
-- Supported Firefox background manifest and Firefox Android candidate metadata.
+- Supported desktop Firefox background manifest.
 - Ownership RLS migration, reproducible build, matching download archives, dependency lockfile and supporting documentation.
 - Accurate public downloads and detection limitations; privacy page and reduced permissions.
 - Offline logout always clears local credentials; safe environment-driven client configuration rejects privileged keys.
@@ -21,8 +21,6 @@ Local implementation and testing do not certify the project as “100% productio
 - Explainable multi-stage rules target credential phishing and brand impersonation rather than broad unspecified web risks.
 - Separate account-scoped on-device IndexedDB monthly archive and historical month access.
 - Consent-gated reputation proxy with an optional noncommercial Google Safe Browsing key; not configured by default.
-- Manual, locally running mobile URL checker and iOS Home Screen web-app metadata; NOT automatic iPhone browsing protection.
-- Firefox Android manifest support candidate; physical Android Firefox verification still outstanding.
 - Current scores are still initial **uncalibrated hypotheses**. Research citations describe related evidence but do not justify numerical weights.
 
 ## External release gates
@@ -31,12 +29,12 @@ Local implementation and testing do not certify the project as “100% productio
 2. Configure production SMTP, email confirmation, password settings, Site URL and redirect allowlist; test recovery and expiry with real accounts.
 3. Set the final deployed website URL in extension configuration and rebuild.
 4. Deploy and inspect the public website, security headers and privacy/contact details.
-5. Test the actual Edge and Firefox builds; validate Firefox Android on a real device.
+5. Test the actual Chrome, Edge and Firefox desktop builds.
 6. Provide approved final logos, operator identity/contact and listing screenshots. Provisional project icons are included.
 7. Complete browser developer-account registration, Mozilla signing and store reviews.
 8. Perform a representative held-out detection evaluation; prototype heuristics have meaningful false positives and false negatives.
 
-This 4.2.0 feature branch is not a verified external release; the previous 4.1.0 Edge package was submitted for review separately. No paid service has been purchased for 4.2.0. Missing account access and assets are release dependencies, not passed tests. See `test-results/` for generated evidence and `docs/TEST-PLAN.md` for acceptance criteria.
+The v4.2.0 code is merged on GitHub but not yet verified as a published browser-store release; the previous v4.1.0 Edge package was submitted for review separately. No paid service has been purchased for 4.2.0. Missing account access and assets are release dependencies, not passed tests. See `test-results/` for generated evidence and `docs/TEST-PLAN.md` for acceptance criteria.
 
 ## Observed live-service blocker
 
