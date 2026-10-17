@@ -5,7 +5,7 @@
 **Explainable browser risk assessments. Private, on-device history.**
 
 [![CI](https://github.com/hossain0707/PhishGuard/actions/workflows/ci.yml/badge.svg)](https://github.com/hossain0707/PhishGuard/actions/workflows/ci.yml)
-![Version](https://img.shields.io/badge/version-4.1.0-0c7a74)
+![Version](https://img.shields.io/badge/version-4.2.0-0c7a74)
 ![Manifest](https://img.shields.io/badge/Manifest-V3-1e293b)
 ![FYP](https://img.shields.io/badge/project-FYP%202026-4b5563)
 
@@ -37,7 +37,7 @@
 | [Public website](https://phishgurd.vercel.app/) | **Live**                    | Vercel Hobby deployment with HTTPS                                                                               |
 | Supabase backend                                | **Provisioned**             | Free project; `profiles` and `extension_sessions` with row-level security                                        |
 | Website account login                           | **Observed working**        | Sign-in and dashboard shown in live testing; comprehensive email/recovery and cross-account checks still pending |
-| Microsoft Edge Add-ons                          | **Submitted — in review**   | Version `4.1.0` shown as _In review_ in Partner Center on **13 October 2026**; no public listing URL yet         |
+| Microsoft Edge Add-ons                          | **Submitted — in review**   | Version `4.2.0` shown as _In review_ in Partner Center on **13 October 2026**; no public listing URL yet         |
 | Mozilla Firefox Add-ons                         | **Prepared, not submitted** | Firefox build available; developer account ready, marketplace upload/review still pending                        |
 | Chrome Web Store                                | **Not submitted**           | Separate developer registration and review would be required                                                     |
 
@@ -301,7 +301,7 @@ The project was set up with free-tier resources; **free tiers have usage and ser
 
 ### Browser marketplace publishing
 
-- **Edge:** one `4.1.0` submission was observed as **In review** on 13 October 2026. Do not create a duplicate listing; the public store link becomes available only after approval.
+- **Edge:** one `4.2.0` submission was observed as **In review** on 13 October 2026. Do not create a duplicate listing; the public store link becomes available only after approval.
 - **Firefox:** the developer account is prepared under the requested name **Norah Jasmine**, but the public listing has **not been submitted or signed** in the last observed developer dashboard.
 - **Chrome Web Store:** not submitted. Chrome's publisher requirements are separate from Edge and Firefox.
 - Store approval does not automatically update the website. After approval, add only a verified official listing URL using `PHISHGUARD_STORE_EDGE_URL` or `PHISHGUARD_STORE_FIREFOX_URL`, then rebuild.
@@ -332,6 +332,6 @@ PhishGuard was built as a **German-Malaysian Institute (GMI) Final Year Project 
 | [Marketplace submissions](docs/STORE-SUBMISSIONS.md)   | Edge/Firefox package details, permissions and reviewer notes        |
 | [Contributing](CONTRIBUTING.md)                        | Development workflow and review expectations                        |
 | [Security](SECURITY.md)                                | Private vulnerability reporting and sensitive-data handling         |
-| [Changelog](CHANGELOG.md)                              | Changes tracked for version 4.1.0                                   |
+| [Changelog](CHANGELOG.md)                              | Changes tracked for version 4.2.0                                   |
 
 **Documentation principle:** distinguish reproduced local results, observed live behaviour and independent store certification. No fictional detection-accuracy statistics are claimed.

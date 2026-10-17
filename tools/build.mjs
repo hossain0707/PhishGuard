@@ -91,6 +91,7 @@ const manifests = {
     version,
     background: { scripts: ["background.js"] },
     browser_specific_settings: {
+      gecko_android: { strict_min_version: "142.0" },
       gecko: {
         id: "phishguard@hossain0707.github.io",
         strict_min_version: "142.0",

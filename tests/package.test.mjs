@@ -22,12 +22,13 @@ test("every distributed ZIP matches the current generated extension sources", as
       );
     }
     const manifest = JSON.parse(Buffer.from(zip["manifest.json"]).toString());
-    assert.equal(manifest.version, "4.1.0");
+    assert.equal(manifest.version, "4.2.0");
     assert.equal(manifest.web_accessible_resources, undefined);
     assert.deepEqual(manifest.permissions, ["storage", "tabs"]);
     if (browser === "firefox") {
       assert.equal(manifest.background.service_worker, undefined);
       assert.deepEqual(manifest.background.scripts, ["background.js"]);
+      assert.equal(manifest.browser_specific_settings.gecko_android.strict_min_version, "142.0");
     }
   }
 });
