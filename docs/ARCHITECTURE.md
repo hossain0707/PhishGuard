@@ -24,4 +24,4 @@ No password values, page text or form contents are captured. Assessment URL cred
 
 ## Browser variants
 
-Chrome/Edge use a Manifest V3 service worker. Firefox uses a supported background-script event page. APIs are addressed via `browser` where present, otherwise `chrome`; asynchronous message responses preserve the callback channel. Firefox Android is included as a manifest candidate (minimum Firefox 142) but must pass actual device tests and store signing before being listed as supported. Both packages bundle executable dependencies locally; there is no remotely hosted JavaScript.
+Chrome/Edge use a Manifest V3 service worker. Firefox uses a supported background-script event page. APIs are addressed via `browser` where present, otherwise `chrome`; asynchronous message responses preserve the callback channel. Mobile browser-extension builds are out of scope; the minimum supported desktop Firefox version remains 142. Both packages bundle executable dependencies locally; there is no remotely hosted JavaScript.

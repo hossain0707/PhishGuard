@@ -16,8 +16,4 @@ Your history remains on this browser and is separated by account. URLs omit cred
 
 PhishGuard is an explainable rule-based FYP implementation. It can miss phishing pages and flag legitimate sites. Do not enter credentials solely because a score is LOW, and continue using normal browser security controls.
 
-## Phone use (4.2.0 candidate)
-
-On an iPhone, open the PhishGuard website and choose **Check a URL**. Optionally add it to the Home Screen from Safari's Share menu. The checker parses URLs only; it cannot inspect webpage contents or automatically monitor Safari or Edge. Opt in separately if you wish to send the URL to an optional reputation checker; the feature is unavailable unless the operator configures a noncommercial Google API key.
-
-The Firefox Android package is an experimental compatibility candidate and needs real-device testing plus Mozilla signing; do not call it generally supported until those tests pass.
+PhishGuard extension support for this FYP is limited to desktop Chrome, Microsoft Edge and Firefox. Mobile extension development is out of scope.

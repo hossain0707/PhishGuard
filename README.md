@@ -169,7 +169,7 @@ Store approval is **not required** for development or an FYP demonstration.
 | **Google Chrome (desktop)**   | Same Chrome/Edge ZIP                                                                 | Extract ZIP → `chrome://extensions` → **Developer mode** → **Load unpacked**                                                                |
 | **Mozilla Firefox (desktop)** | [Firefox ZIP](https://phishgurd.vercel.app/downloads/PhishGuard-Firefox.zip)         | Extract ZIP → `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on** → select `manifest.json`                                  |
 
-Firefox temporary add-ons are normally removed after a restart. Permanent Firefox distribution requires Mozilla signing. These local procedures are for development/testing, not marketplace certification. **Firefox Android is a compatibility candidate and still requires a real-device test and Mozilla signing.** Standard Chrome mobile and Safari iOS are not supported extension targets. iPhone users can instead use the manual [PhishGuard web URL checker](https://phishgurd.vercel.app/) after the new website deployment. A phone can display the website, not the desktop extension.
+Firefox temporary add-ons are normally removed after a restart. Permanent Firefox distribution requires Mozilla signing. These local procedures are for development/testing, not marketplace certification. **Mobile extensions and iPhone/Android scanning are outside this FYP release scope.** PhishGuard is intended for desktop Chrome, Edge and Firefox.
 
 Once installed, open the extension and choose **Continue with local protection (no account)**. Open or reload a test HTTP/HTTPS page, then inspect the extension popup, warning page, local dashboard and monthly report. To test account-specific features, use a verified account and a correctly configured Supabase service.
 
@@ -217,7 +217,7 @@ PhishGuard 4.2.0 focuses on **credential phishing** and **brand impersonation** 
 | More than three iframes / five forms            |          +6 each | Weak page-structure signals                                      |
 | Verified third-party malicious reputation match | Minimum score 90 | **Optional**, only after user consent and provider configuration |
 
-The thresholds remain **LOW 0–30 · MEDIUM 31–70 · HIGH 71–100** as provisional FYP cutoffs, not probabilities. A Google Safe Browsing lookup is **OFF by default** and uses a server-side key only if an eligible operator configures `PHISHGUARD_SAFE_BROWSING_KEY`; errors and no matches never lower local risk. URLs are sent to the operator website and Google **only with consent**. The URL-only mobile checker cannot inspect real webpage forms.
+The thresholds remain **LOW 0–30 · MEDIUM 31–70 · HIGH 71–100** as provisional FYP cutoffs, not probabilities. A Google Safe Browsing lookup is **OFF by default** and uses a server-side key only if an eligible operator configures `PHISHGUARD_SAFE_BROWSING_KEY`; errors and no matches never lower local risk. URLs are sent to the operator website and Google **only with consent**. Page-structure checks require the installed desktop extension.
 
 **Research supports examining these features, not these particular numeric weights.** See [Lecturer improvements and research references](docs/LECTURER-IMPROVEMENTS.md) for 3 academic/standards sources per category and the holdout-evaluation plan. The 10-fixture synthetic test is for logic, not measured real-world detection accuracy. A trusted-looking or HTTPS page can still be malicious.
 
@@ -336,7 +336,7 @@ PhishGuard was built as a **German-Malaysian Institute (GMI) Final Year Project 
 | [Marketplace submissions](docs/STORE-SUBMISSIONS.md)                | Edge/Firefox package details, permissions and reviewer notes        |
 | [Contributing](CONTRIBUTING.md)                                     | Development workflow and review expectations                        |
 | [Security](SECURITY.md)                                             | Private vulnerability reporting and sensitive-data handling         |
-| [Lecturer implementation/references](docs/LECTURER-IMPROVEMENTS.md) | Scope, stages, papers, mobile verification and research methodology |
+| [Lecturer implementation/references](docs/LECTURER-IMPROVEMENTS.md) | Scope, stages, papers, validation and research methodology |
 | [Changelog](CHANGELOG.md)                                           | Changes tracked for version 4.2.0                                   |
 
 **Documentation principle:** distinguish reproduced local results, observed live behaviour and independent store certification. No fictional detection-accuracy statistics are claimed.
