@@ -82,7 +82,7 @@ const define = { __PHISHGUARD_CONFIG__: JSON.stringify(config) };
 template.content_security_policy.extension_pages =
   template.content_security_policy.extension_pages.replace(
     /connect-src [^;]+;/,
-    `connect-src ${config.SUPABASE_URL};`,
+    `connect-src ${config.SUPABASE_URL} ${new URL(config.WEBSITE_URL).origin};`,
   );
 const manifests = {
   "chrome-edge": { ...template, version },

@@ -4,9 +4,19 @@ export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
   res.setHeader("X-Content-Type-Options", "nosniff");
   if (req.method !== "POST") return res.status(405).json({ status: "method-not-allowed" });
+  // Only our site and extension-origin callers receive cross-origin responses.
   const allowed = process.env.PHISHGUARD_WEBSITE_URL;
-  if (allowed && req.headers.origin && req.headers.origin !== new URL(allowed).origin)
-    return res.status(403).json({ status: "forbidden-origin" });
+  const origin = req.headers.origin || "";
+  const browserExtension = /^(chrome|moz)-extension:\/\/[a-z0-9-]+$/i.test(origin);
+  const permitted = !origin || browserExtension || (allowed && origin === new URL(allowed).origin);
+  if (!permitted) return res.status(403).json({ status: "forbidden-origin" });
+  if (origin) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader("Vary", "Origin");
+  }
+  if (req.method === "OPTIONS") return res.status(204).end();
   const key = process.env.PHISHGUARD_SAFE_BROWSING_KEY;
   if (!key)
     return res
