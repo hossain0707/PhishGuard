@@ -81,7 +81,7 @@ export function analyze(raw, counts = {}, options = {}) {
   const lexical = `${url.pathname}${url.search}`.toLowerCase();
   const bait = KEYWORDS.find((word) => new RegExp(`(^|[^a-z])${word}([^a-z]|$)`).test(lexical));
   stage("URL structure", [
-    [url.protocol === "http:", 10, "Unencrypted HTTP transport (not proof of phishing)"],
+    [url.protocol === "http:", 12, "Unencrypted HTTP transport (not proof of phishing)"],
     [!!bait, 6, `Context keyword in URL (${bait})`],
     [url.username !== "" || url.password !== "", 12, "URL contains userinfo"],
     [url.href.length > 150, 6, "Unusually long URL"],

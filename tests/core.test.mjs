@@ -18,10 +18,10 @@ test("threshold boundaries remain explicit prototype levels", () => {
 });
 test("multi-stage evidence requires corroboration for higher scores", () => {
   assert.equal(analyze("https://example.org/").score, 0);
-  assert.equal(analyze("http://example.org/").score, 10);
+  assert.equal(analyze("http://example.org/").score, 12);
   assert.equal(analyze("https://example.org/login").score, 6);
   assert.equal(analyze("https://[::1]/").score, 20);
-  assert.equal(analyze("http://127.0.0.1/login", { inputCount: 1 }).score, 71);
+  assert.equal(analyze("http://127.0.0.1/login", { inputCount: 1 }).score, 73);
   assert.equal(analyze("http://127.0.0.1/login", { inputCount: 1 }).threatLevel, "HIGH");
   assert.equal(analyze("https://paypa1.com/verify", { inputCount: 1 }).threatLevel, "MEDIUM");
   assert.equal(analyze("https://paypa1.com/verify", { inputCount: 1, crossOriginPasswordForm: 1 }).threatLevel, "MEDIUM");

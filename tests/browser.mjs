@@ -119,6 +119,12 @@ try {
   assert.equal(safe.url(), "https://example.test/verify");
   await safe.evaluate(() => {
     for (let i = 0; i < 6; i++) document.body.append(document.createElement("form"));
+    const form = document.createElement("form");
+    form.action = "https://other.example.test/submit";
+    const password = document.createElement("input");
+    password.type = "password";
+    form.append(password);
+    document.body.append(form);
     for (let i = 0; i < 4; i++) {
       const f = document.createElement("iframe");
       f.src = "about:blank";
@@ -127,6 +133,12 @@ try {
   });
   await safe.waitForURL("**/warning.html?id=**");
   record("dynamic password/form/frame changes trigger reassessment");
+  await context.route("http://127.0.0.1:4173/login", (route) =>
+    route.fulfill({
+      contentType: "text/html",
+      body: '<!doctype html><title>Controlled credential fixture</title><form><input type="password"></form>',
+    }),
+  );
   const high = await context.newPage();
   await high.goto("http://127.0.0.1:4173/login").catch(() => {});
   await high.waitForURL("**/warning.html?id=**");
