@@ -9,9 +9,6 @@
     />
     <title>PhishGuard — Browser risk assessments</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <link rel="manifest" href="manifest.webmanifest" />
-    <meta name="theme-color" content="#071014" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -23,7 +20,6 @@
         <nav>
           <button data-view="home">Home</button>
           <button data-view="download">Download</button>
-          <button data-view="checker">Check a URL</button>
           <span id="guest-nav">
             <button data-view="login">Log in</button>
             <button class="primary small" data-view="signup">Get protected</button>
@@ -54,7 +50,6 @@
             and displays warnings. It cannot guarantee phishing prevention.
           </p>
           <div class="actions">
-            <button class="secondary" data-view="checker">Check a URL on mobile →</button>
             <button class="primary" id="start-button">Start protecting your browser →</button>
             <button class="secondary" id="features-button">See how it works</button>
           </div>
@@ -77,8 +72,8 @@
               <b>01</b>
               <h3>Rule-based detection</h3>
               <p>
-                Weighted indicators examine HTTPS, suspicious keywords, IP-based domains, unsafe
-                password forms and embedded content.
+                Multi-stage analysis combines URL structure, possible brand impersonation, credential-page
+                evidence and optional reputation intelligence.
               </p>
             </article>
             <article>
@@ -106,53 +101,6 @@
               </p>
             </article>
           </div>
-        </section>
-      </div>
-
-      <div class="view" id="view-checker" hidden>
-        <section class="portal checker-shell">
-          <div class="heading">
-            <span>PHISHGUARD MOBILE / DESKTOP</span>
-            <h1>Check a suspicious link</h1>
-            <p>
-              Paste a URL to inspect its structure and possible brand imitation. Works on iPhone and
-              Android without installing an extension. This checker cannot see webpage forms or
-              monitor other browser tabs.
-            </p>
-          </div>
-          <form id="url-checker-form" class="checker-form">
-            <label for="check-url">Website URL</label>
-            <input
-              id="check-url"
-              name="url"
-              type="url"
-              placeholder="https://example.com/login"
-              autocomplete="off"
-              inputmode="url"
-              required
-            />
-            <label
-              ><input type="checkbox" id="check-reputation" /> Also send this URL to the project
-              reputation server (optional, requires configured Google Safe Browsing)</label
-            >
-            <button class="primary" type="submit">Analyze link</button>
-          </form>
-          <div
-            id="checker-result"
-            class="checker-result"
-            role="status"
-            aria-live="polite"
-            hidden
-          ></div>
-          <p class="checker-disclaimer">
-            Analysis runs on this device using URL-only rules. No website is opened and the checked
-            URL is not sent to Supabase or a reputation service. HIGH means investigate, not
-            confirmed phishing; LOW does not guarantee safety.
-          </p>
-          <p>
-            On iPhone, open this website in Safari and choose Share → Add to Home Screen. On
-            Android, use the browser’s install option when offered.
-          </p>
         </section>
       </div>
 
@@ -337,8 +285,7 @@
             <b>Development mode</b>
             <p>
               ZIPs are for development testing. Firefox installation is temporary until Mozilla
-              signing. Firefox Android support is an experimental candidate and requires real-device
-              tests and Mozilla signing.
+              signing. Firefox Android is not included in this desktop release.
             </p>
           </div>
         </section>
