@@ -61,6 +61,12 @@ load();
 $("reputation-opt-in").addEventListener("change", async () => {
   try {
     await request("SET_REPUTATION_CONSENT", { enabled: $("reputation-opt-in").checked });
-    status($("reputation-opt-in").checked ? "Optional URL reputation checking enabled on this device." : "URL reputation checking disabled.");
-  } catch (error) { status(error.message); }
+    status(
+      $("reputation-opt-in").checked
+        ? "Optional URL reputation checking enabled on this device."
+        : "URL reputation checking disabled.",
+    );
+  } catch (error) {
+    status(error.message);
+  }
 });

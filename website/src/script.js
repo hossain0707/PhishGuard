@@ -109,32 +109,46 @@ $("url-checker-form").addEventListener("submit", async (event) => {
   const raw = $("check-url").value.trim();
   result.replaceChildren();
   result.hidden = false;
-  if (!httpUrl(raw)) { result.textContent = "Enter a valid HTTP or HTTPS URL."; return; }
+  if (!httpUrl(raw)) {
+    result.textContent = "Enter a valid HTTP or HTTPS URL.";
+    return;
+  }
   const reputationOptIn = $("check-reputation").checked;
   let reputation = "unavailable";
   if (reputationOptIn) {
     try {
       const response = await fetch("/api/reputation", {
-        method: "POST", headers: { "content-type": "application/json" },
-        body: JSON.stringify({ url: raw }), signal: AbortSignal.timeout(3500)
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ url: raw }),
+        signal: AbortSignal.timeout(3500),
       });
       if (response.ok) reputation = (await response.json()).status;
-    } catch { /* Clearly label unavailable reputation instead of assuming clean. */ }
+    } catch {
+      /* Clearly label unavailable reputation instead of assuming clean. */
+    }
   }
   const assessment = analyze(raw, {}, { reputation });
   const h = document.createElement("h2");
   h.textContent = assessment.threatLevel + " — " + assessment.score + "/100 (URL-only)";
   result.append(h);
-  const host = document.createElement("p"); host.textContent = assessment.hostname; result.append(host);
+  const host = document.createElement("p");
+  host.textContent = assessment.hostname;
+  result.append(host);
   for (const stage of assessment.stages) {
     const section = document.createElement("section");
-    const heading = document.createElement("strong"); heading.textContent = stage.name;
+    const heading = document.createElement("strong");
+    heading.textContent = stage.name;
     const details = document.createElement("p");
     details.textContent = stage.findings.join("; ") || "No indicators from this stage";
-    section.append(heading,details); result.append(section);
+    section.append(heading, details);
+    result.append(section);
   }
   const note = document.createElement("p");
-  note.textContent = "URL-only result: webpage forms are not checked. Reputation: " + (reputationOptIn ? reputation : "not requested") + ". No-match does not prove safety.";
+  note.textContent =
+    "URL-only result: webpage forms are not checked. Reputation: " +
+    (reputationOptIn ? reputation : "not requested") +
+    ". No-match does not prove safety.";
   result.append(note);
 });
 function submit(id, action) {

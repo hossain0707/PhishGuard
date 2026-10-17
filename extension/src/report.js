@@ -13,7 +13,9 @@ async function render() {
   const month = $("month").value;
   const log = archiveLog.length ? archiveLog : selectMonth(state.log, month);
   const counts = countRisks(log);
-  $("archived-months").textContent = archivedMonths.length ? "Available archives: " + archivedMonths.join(", ") : "No archived months yet; new scans are automatically archived.";
+  $("archived-months").textContent = archivedMonths.length
+    ? "Available archives: " + archivedMonths.join(", ")
+    : "No archived months yet; new scans are automatically archived.";
   $("period").textContent =
     `Reporting period: ${month} | ${Intl.DateTimeFormat().resolvedOptions().timeZone}`;
   $("user-name").textContent = state.user.name;
@@ -61,7 +63,9 @@ $("theme-toggle").addEventListener("click", toggleTheme);
 $("download").addEventListener("click", async () => {
   try {
     const report = await makeReport(
-      (await getArchivedMonth(owner, $("month").value).catch(() => selectMonth(state.log, $("month").value))),
+      await getArchivedMonth(owner, $("month").value).catch(() =>
+        selectMonth(state.log, $("month").value),
+      ),
       state.user,
       $("month").value,
     );

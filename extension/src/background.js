@@ -1,5 +1,9 @@
 import { CONFIG } from "../../shared/config.js";
-import { archiveAssessment, deleteArchivedOwner, deleteArchivedMonth } from "../../shared/archive.js";
+import {
+  archiveAssessment,
+  deleteArchivedOwner,
+  deleteArchivedMonth,
+} from "../../shared/archive.js";
 import { analyze, httpUrl } from "../../shared/risk.js";
 import { appendHistory, historyKey, selectMonth } from "../../shared/history.js";
 import { createAuth, publicUser, credentials, check } from "../../shared/auth.js";
@@ -104,7 +108,10 @@ async function state(client) {
   const owner = ownerId(current);
   const preferences = await api.storage.local.get({ theme: "dark", dashboardClear: {} });
   const log = (await api.storage.local.get(historyKey(owner)))[historyKey(owner)] || [];
-  const notice = (await api.storage.session.get("historyNotice")).historyNotice || (await api.storage.session.get("archiveNotice")).archiveNotice || "";
+  const notice =
+    (await api.storage.session.get("historyNotice")).historyNotice ||
+    (await api.storage.session.get("archiveNotice")).archiveNotice ||
+    "";
   return {
     user: publicUser(current),
     theme: preferences.theme,
@@ -128,12 +135,16 @@ async function analyzePage(client, message, sender) {
   if (consent) {
     try {
       const response = await fetch(new URL("/api/reputation", CONFIG.WEBSITE_URL), {
-        method: "POST", headers: { "content-type": "application/json" },
-        body: JSON.stringify({ url: sender.url }), signal: AbortSignal.timeout(3500)
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ url: sender.url }),
+        signal: AbortSignal.timeout(3500),
       });
       const data = await response.json();
       if (response.ok && data.status === "malicious") reputation = "malicious";
-    } catch { /* Local detection still works when reputation is unavailable. */ }
+    } catch {
+      /* Local detection still works when reputation is unavailable. */
+    }
   }
   const result = {
     ...analyze(sender.url, message.data || {}, { reputation }),
@@ -152,8 +163,13 @@ async function analyzePage(client, message, sender) {
     });
   }
   // Persist an independent monthly history without delaying the warning when storage fails.
-  try { await archiveAssessment(owner, result); }
-  catch { await api.storage.session.set({ archiveNotice: "Monthly archive unavailable; check device storage." }); }
+  try {
+    await archiveAssessment(owner, result);
+  } catch {
+    await api.storage.session.set({
+      archiveNotice: "Monthly archive unavailable; check device storage.",
+    });
+  }
   const tabKey = `tab:${sender.tab.id}`;
   const entries = await api.storage.session.get([tabKey, `exception:${sender.tab.id}`]);
   await api.storage.session.set({
