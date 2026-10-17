@@ -1,0 +1,37 @@
+name: Temporary desktop-only verification
+on:
+  push:
+    branches:
+      - chore/desktop-only-lecturer-scope-20261017
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      TEST_BROWSER_CHANNEL: chromium
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: chore/desktop-only-lecturer-scope-20261017
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --include=dev
+      - run: npx prettier --write README.md docs/LECTURER-IMPROVEMENTS.md docs/RELEASE-READINESS.md docs/TEST-PLAN.md docs/USER-GUIDE.md docs/ARCHITECTURE.md website/index.html website/src/script.js website/style.css website/privacy.html tools/build.mjs tests/package.test.mjs
+      - run: npm run format:check
+      - run: npm run build
+      - run: npm test
+      - run: npm run lint:extension
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
+      - run: npm run demo
+      - name: Save formatting
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md docs website tools/build.mjs tests/package.test.mjs
+          git diff --cached --quiet || git commit -m "Format desktop-only scope changes"
+          git push origin HEAD:chore/desktop-only-lecturer-scope-20261017
