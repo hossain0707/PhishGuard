@@ -3,7 +3,7 @@
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
   res.setHeader("X-Content-Type-Options", "nosniff");
-  if (req.method !== "POST") return res.status(405).json({ status: "method-not-allowed" });
+  if (req.method !== "POST" && req.method !== "OPTIONS") return res.status(405).json({ status: "method-not-allowed" });
   // Only our site and extension-origin callers receive cross-origin responses.
   const allowed = process.env.PHISHGUARD_WEBSITE_URL;
   const origin = req.headers.origin || "";
@@ -33,6 +33,11 @@ export default async function handler(req, res) {
   } catch {
     return res.status(400).json({ status: "invalid-url" });
   }
+  // Remove credentials and query/fragment tokens before any third-party query.
+  target.username = "";
+  target.password = "";
+  target.search = "";
+  target.hash = "";
   // Never send local/network-private hostnames or known academic fixtures to third parties.
   const host = target.hostname.toLowerCase();
   if (

@@ -4,7 +4,7 @@ import {
   deleteArchivedOwner,
   deleteArchivedMonth,
 } from "../../shared/archive.js";
-import { analyze, httpUrl } from "../../shared/risk.js";
+import { analyze, httpUrl, redactUrl } from "../../shared/risk.js";
 import { appendHistory, historyKey, selectMonth } from "../../shared/history.js";
 import { createAuth, publicUser, credentials, check } from "../../shared/auth.js";
 import { logoutSession } from "../../shared/logout.js";
@@ -137,7 +137,7 @@ async function analyzePage(client, message, sender) {
       const response = await fetch(new URL("/api/reputation", CONFIG.WEBSITE_URL), {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ url: sender.url }),
+        body: JSON.stringify({ url: redactUrl(sender.url) }),
         signal: AbortSignal.timeout(3500),
       });
       const data = await response.json();

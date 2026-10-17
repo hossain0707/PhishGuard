@@ -1,5 +1,5 @@
 import { createAuth, check, credentials } from "../../shared/auth.js";
-import { analyze, httpUrl } from "../../shared/risk.js";
+import { analyze, httpUrl, redactUrl } from "../../shared/risk.js";
 import { logoutSession } from "../../shared/logout.js";
 const config = window.PHISHGUARD_CONFIG;
 // Shortcut-compatible optional URL parameter is removed immediately from address history.
@@ -120,7 +120,7 @@ $("url-checker-form").addEventListener("submit", async (event) => {
       const response = await fetch("/api/reputation", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ url: raw }),
+        body: JSON.stringify({ url: redactUrl(raw) }),
         signal: AbortSignal.timeout(3500),
       });
       if (response.ok) reputation = (await response.json()).status;
