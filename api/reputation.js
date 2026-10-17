@@ -61,12 +61,10 @@ export default async function handler(req, res) {
         .status(200)
         .json({ status: "unavailable", detail: "Reputation provider returned an error" });
     const body = await request.json();
-    return res
-      .status(200)
-      .json({
-        status: Array.isArray(body.matches) && body.matches.length ? "malicious" : "no-match",
-        provider: "Google Safe Browsing",
-      });
+    return res.status(200).json({
+      status: Array.isArray(body.matches) && body.matches.length ? "malicious" : "no-match",
+      provider: "Google Safe Browsing",
+    });
   } catch {
     return res
       .status(200)

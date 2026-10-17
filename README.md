@@ -206,15 +206,15 @@ Rebuild the extension and website after changing these values. Review [the migra
 
 PhishGuard 4.2.0 focuses on **credential phishing** and **brand impersonation** using four explainable evidence stages, not one keyword rule: URL structure → domain verification → credential-form indicators → optional reputation evidence. Each result contains the triggered stages and human-readable reasons.
 
-| Prototype indicator | Weight | Interpretation |
-| --- | ---: | --- |
-| Unencrypted HTTP | +12 | Transport warning, **not** proof of phishing |
-| IP address hostname | +20 | Context indicator, including ordinary local testing |
-| Keyword in URL path/query | +6 | Weak signal; by itself remains LOW |
-| Lookalike / deceptive brand label | +40 | Potential brand impersonation; manually reviewed roots |
-| Password form on HTTP | +35 | Sensitive input on insecure transport |
-| Cross-origin password-form action | +20 | May be legitimate SSO; review with other signals |
-| More than three iframes / five forms | +6 each | Weak page-structure signals |
+| Prototype indicator                             |           Weight | Interpretation                                                   |
+| ----------------------------------------------- | ---------------: | ---------------------------------------------------------------- |
+| Unencrypted HTTP                                |              +12 | Transport warning, **not** proof of phishing                     |
+| IP address hostname                             |              +20 | Context indicator, including ordinary local testing              |
+| Keyword in URL path/query                       |               +6 | Weak signal; by itself remains LOW                               |
+| Lookalike / deceptive brand label               |              +40 | Potential brand impersonation; manually reviewed roots           |
+| Password form on HTTP                           |              +35 | Sensitive input on insecure transport                            |
+| Cross-origin password-form action               |              +20 | May be legitimate SSO; review with other signals                 |
+| More than three iframes / five forms            |          +6 each | Weak page-structure signals                                      |
 | Verified third-party malicious reputation match | Minimum score 90 | **Optional**, only after user consent and provider configuration |
 
 The thresholds remain **LOW 0–30 · MEDIUM 31–70 · HIGH 71–100** as provisional FYP cutoffs, not probabilities. A Google Safe Browsing lookup is **OFF by default** and uses a server-side key only if an eligible operator configures `PHISHGUARD_SAFE_BROWSING_KEY`; errors and no matches never lower local risk. URLs are sent to the operator website and Google **only with consent**. The URL-only mobile checker cannot inspect real webpage forms.
@@ -323,20 +323,20 @@ PhishGuard was built as a **German-Malaysian Institute (GMI) Final Year Project 
 
 ## Documentation
 
-| Document                                               | Purpose                                                             |
-| ------------------------------------------------------ | ------------------------------------------------------------------- |
-| [Architecture](docs/ARCHITECTURE.md)                   | Data flow, trust boundaries, rule catalogue and privacy model       |
-| [Setup and operations](docs/SETUP.md)                  | Supabase schema, authentication, callbacks, deployment and rollback |
-| [User guide](docs/USER-GUIDE.md)                       | Installation, account flows, warnings, history and reports          |
-| [Demo guide](docs/DEMO.md)                             | Repeatable capture and presentation walkthrough                     |
-| [Test plan](docs/TEST-PLAN.md)                         | Automated checks, real-service acceptance and evaluation design     |
-| [FYP evidence](docs/FYP-EVIDENCE.md)                   | Requirements, technical evidence and automation limitations         |
-| [Implementation report](docs/IMPLEMENTATION-REPORT.md) | Recorded work and verification scope                                |
-| [Release readiness](docs/RELEASE-READINESS.md)         | Unverified external production gates                                |
-| [Marketplace submissions](docs/STORE-SUBMISSIONS.md)   | Edge/Firefox package details, permissions and reviewer notes        |
-| [Contributing](CONTRIBUTING.md)                        | Development workflow and review expectations                        |
-| [Security](SECURITY.md)                                | Private vulnerability reporting and sensitive-data handling         |
+| Document                                                            | Purpose                                                             |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| [Architecture](docs/ARCHITECTURE.md)                                | Data flow, trust boundaries, rule catalogue and privacy model       |
+| [Setup and operations](docs/SETUP.md)                               | Supabase schema, authentication, callbacks, deployment and rollback |
+| [User guide](docs/USER-GUIDE.md)                                    | Installation, account flows, warnings, history and reports          |
+| [Demo guide](docs/DEMO.md)                                          | Repeatable capture and presentation walkthrough                     |
+| [Test plan](docs/TEST-PLAN.md)                                      | Automated checks, real-service acceptance and evaluation design     |
+| [FYP evidence](docs/FYP-EVIDENCE.md)                                | Requirements, technical evidence and automation limitations         |
+| [Implementation report](docs/IMPLEMENTATION-REPORT.md)              | Recorded work and verification scope                                |
+| [Release readiness](docs/RELEASE-READINESS.md)                      | Unverified external production gates                                |
+| [Marketplace submissions](docs/STORE-SUBMISSIONS.md)                | Edge/Firefox package details, permissions and reviewer notes        |
+| [Contributing](CONTRIBUTING.md)                                     | Development workflow and review expectations                        |
+| [Security](SECURITY.md)                                             | Private vulnerability reporting and sensitive-data handling         |
 | [Lecturer implementation/references](docs/LECTURER-IMPROVEMENTS.md) | Scope, stages, papers, mobile verification and research methodology |
-| [Changelog](CHANGELOG.md)                              | Changes tracked for version 4.2.0                                   |
+| [Changelog](CHANGELOG.md)                                           | Changes tracked for version 4.2.0                                   |
 
 **Documentation principle:** distinguish reproduced local results, observed live behaviour and independent store certification. No fictional detection-accuracy statistics are claimed.
