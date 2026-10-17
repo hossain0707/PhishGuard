@@ -10,22 +10,22 @@ Browser tests load the built Chromium extension in Edge and exercise signup, rec
 
 ## Required live acceptance tests
 
-| Test                      | Required result                                                                       |
-| ------------------------- | ------------------------------------------------------------------------------------- |
-| Register/verify account A | Real confirmation email arrives; unverified login is rejected                         |
-| Register/verify account B | Separate real account and dashboard                                                   |
-| RLS requests A → B        | Read is empty; update/delete affect zero rows; forged insert denied                   |
-| Expired token             | SDK refreshes a valid session; invalid refresh requires new login                     |
-| Recovery email            | Exact deployed callback opens reset form; new password works, old password fails      |
-| Offline auth/logout       | Useful error; local credentials removed on extension logout                           |
-| Worker suspension/restart | No lost owner isolation; browser restart requires login                               |
-| Browser registration      | Row upserts, website displays actual recorded registrations                           |
-| Local history             | A cannot see B records; erase removes only current owner                              |
-| Extension packages        | Chrome, Edge and Firefox each install and run independently                           |
-| Large report              | Every retained row appears with readable labels and page numbers                      |
-| Unicode user              | Print alternative preserves the user's complete name                                  |
-| Vercel deployment         | HTTPS, security headers, download URLs, privacy link and email redirects work         |
-| Store review              | Data disclosures match actual behaviour; reviewer can reach authenticated features    |
+| Test                      | Required result                                                                    |
+| ------------------------- | ---------------------------------------------------------------------------------- |
+| Register/verify account A | Real confirmation email arrives; unverified login is rejected                      |
+| Register/verify account B | Separate real account and dashboard                                                |
+| RLS requests A → B        | Read is empty; update/delete affect zero rows; forged insert denied                |
+| Expired token             | SDK refreshes a valid session; invalid refresh requires new login                  |
+| Recovery email            | Exact deployed callback opens reset form; new password works, old password fails   |
+| Offline auth/logout       | Useful error; local credentials removed on extension logout                        |
+| Worker suspension/restart | No lost owner isolation; browser restart requires login                            |
+| Browser registration      | Row upserts, website displays actual recorded registrations                        |
+| Local history             | A cannot see B records; erase removes only current owner                           |
+| Extension packages        | Chrome, Edge and Firefox each install and run independently                        |
+| Large report              | Every retained row appears with readable labels and page numbers                   |
+| Unicode user              | Print alternative preserves the user's complete name                               |
+| Vercel deployment         | HTTPS, security headers, download URLs, privacy link and email redirects work      |
+| Store review              | Data disclosures match actual behaviour; reviewer can reach authenticated features |
 
 ## Detection evaluation
 

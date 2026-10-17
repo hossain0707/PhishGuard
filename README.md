@@ -336,7 +336,7 @@ PhishGuard was built as a **German-Malaysian Institute (GMI) Final Year Project 
 | [Marketplace submissions](docs/STORE-SUBMISSIONS.md)                | Edge/Firefox package details, permissions and reviewer notes        |
 | [Contributing](CONTRIBUTING.md)                                     | Development workflow and review expectations                        |
 | [Security](SECURITY.md)                                             | Private vulnerability reporting and sensitive-data handling         |
-| [Lecturer implementation/references](docs/LECTURER-IMPROVEMENTS.md) | Scope, stages, papers, validation and research methodology |
+| [Lecturer implementation/references](docs/LECTURER-IMPROVEMENTS.md) | Scope, stages, papers, validation and research methodology          |
 | [Changelog](CHANGELOG.md)                                           | Changes tracked for version 4.2.0                                   |
 
 **Documentation principle:** distinguish reproduced local results, observed live behaviour and independent store certification. No fictional detection-accuracy statistics are claimed.
