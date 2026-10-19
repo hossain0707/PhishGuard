@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
-    "@electric-sql/pglite": "^0.5.8",
+    "@electric-sql/pglite": "^0.5.10",
     "addons-linter": "10.13.0",
     "esbuild": "^0.25.0",
     "fflate": "^0.8.2",
