@@ -26,7 +26,7 @@
     "addons-linter": "10.13.0",
     "esbuild": "^0.25.0",
     "fflate": "^0.8.2",
-    "playwright": "^1.56.0",
+    "playwright": "^1.64.1",
     "prettier": "^3.9.10"
   },
   "engines": {
